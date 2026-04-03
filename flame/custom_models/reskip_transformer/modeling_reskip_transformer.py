@@ -63,8 +63,12 @@ class BlockAttnRes(nn.Module):
         self.block_idx = block_idx
         self.num_blocks = num_blocks
 
-    def forward(self, block_outputs: list[torch.Tensor]) -> torch.Tensor:
+    def forward(self, block_outputs: list[torch.Tensor], return_weights: bool = False):
         if len(block_outputs) == 1:
+            if return_weights:
+                batch, seq, _ = block_outputs[0].shape
+                weights = torch.ones(batch, seq, 1, device=block_outputs[0].device, dtype=block_outputs[0].dtype)
+                return block_outputs[0], weights
             return block_outputs[0]
         sources = torch.stack(block_outputs, dim=2)
         _, _, _, hidden_size = sources.shape
@@ -74,7 +78,10 @@ class BlockAttnRes(nn.Module):
         scores = (query * keys).sum(dim=-1) / (math.sqrt(hidden_size) * self.temperature)
         weights = F.softmax(scores, dim=-1)
         combined = (weights.unsqueeze(-1) * values).sum(dim=2)
-        return self.norm(combined)
+        combined = self.norm(combined)
+        if return_weights:
+            return combined, weights
+        return combined
 
 
 class ReskipAttention(nn.Module):
@@ -193,8 +200,12 @@ class ReskipTransformerModel(ReskipTransformerPreTrainedModel):
         self.gradient_checkpointing = False
 
         self.use_attn_res = config.use_attn_res
+        self.enable_skipping = config.enable_skipping
+        self.skip_threshold = config.skip_threshold
         self.layers_per_block = max(1, config.num_hidden_layers // max(config.attn_res_num_blocks, 1))
         self.num_blocks = math.ceil(config.num_hidden_layers / self.layers_per_block)
+        self.block_ranges = self._build_block_ranges()
+        self.last_inference_stats: dict[str, Any] | None = None
         if self.use_attn_res:
             self.block_attn_res = nn.ModuleList(
                 [
@@ -217,6 +228,33 @@ class ReskipTransformerModel(ReskipTransformerPreTrainedModel):
             self.block_output_norm = None
 
         self.post_init()
+
+    def _build_block_ranges(self) -> list[tuple[int, int]]:
+        ranges = []
+        start = 0
+        for block_idx in range(self.num_blocks):
+            end = min(start + self.layers_per_block, len(self.layers))
+            if start >= len(self.layers):
+                break
+            ranges.append((start, end))
+            start = end
+        return ranges
+
+    def set_inference_config(
+        self,
+        *,
+        enable_skipping: Optional[bool] = None,
+        skip_threshold: Optional[float] = None,
+    ) -> None:
+        if enable_skipping is not None:
+            self.enable_skipping = enable_skipping
+            self.config.enable_skipping = enable_skipping
+        if skip_threshold is not None:
+            self.skip_threshold = skip_threshold
+            self.config.skip_threshold = skip_threshold
+
+    def get_last_inference_stats(self) -> dict[str, Any] | None:
+        return self.last_inference_stats
 
     def get_input_embeddings(self):
         return self.embeddings
@@ -263,31 +301,65 @@ class ReskipTransformerModel(ReskipTransformerPreTrainedModel):
             position_ids = torch.arange(hidden_states.shape[1], device=hidden_states.device).unsqueeze(0).expand(hidden_states.shape[0], -1)
 
         all_hidden_states = () if output_hidden_states else None
-        block_outputs = []
+        blocks_executed: list[tuple[int, int, float]] = []
+        executed_block_outputs: list[torch.Tensor] = []
 
-        for layer_idx, layer in enumerate(self.layers):
-            if output_hidden_states:
-                all_hidden_states += (hidden_states,)
+        if not self.use_attn_res:
+            for layer in self.layers:
+                if output_hidden_states:
+                    all_hidden_states += (hidden_states,)
+                hidden_states = layer(
+                    hidden_states,
+                    attention_mask=attention_mask,
+                    position_ids=position_ids,
+                    **kwargs,
+                )[0]
+            blocks_executed = [(block_idx, 0, 1.0) for block_idx in range(len(self.block_ranges))]
+        else:
+            for block_idx, (start, end) in enumerate(self.block_ranges):
+                routed = None
+                importance = 1.0
+                if executed_block_outputs:
+                    routed, weights = self.block_attn_res[block_idx](executed_block_outputs, return_weights=True)
+                    importance = float(weights[:, :, -1].mean().item())
 
-            hidden_states = layer(
-                hidden_states,
-                attention_mask=attention_mask,
-                position_ids=position_ids,
-                **kwargs,
-            )[0]
+                should_skip = (
+                    self.enable_skipping
+                    and not self.training
+                    and 0 < block_idx < len(self.block_ranges) - 1
+                    and importance < self.skip_threshold
+                )
+                if should_skip:
+                    blocks_executed.append((block_idx, -1, importance))
+                    continue
 
-            if self.use_attn_res:
-                is_block_end = ((layer_idx + 1) % self.layers_per_block == 0) or (layer_idx == len(self.layers) - 1)
-                if is_block_end:
-                    block_idx = len(block_outputs)
-                    if block_outputs:
-                        routed = self.block_attn_res[block_idx](block_outputs)
-                        hidden_states = hidden_states + routed
-                        if self.block_output_norm is not None:
-                            hidden_states = self.block_output_norm[block_idx](hidden_states)
-                    block_outputs.append(hidden_states)
+                for layer_idx in range(start, end):
+                    if output_hidden_states:
+                        all_hidden_states += (hidden_states,)
+                    hidden_states = self.layers[layer_idx](
+                        hidden_states,
+                        attention_mask=attention_mask,
+                        position_ids=position_ids,
+                        **kwargs,
+                    )[0]
+
+                if routed is not None:
+                    hidden_states = hidden_states + routed
+                    if self.block_output_norm is not None:
+                        hidden_states = self.block_output_norm[block_idx](hidden_states)
+                executed_block_outputs.append(hidden_states)
+                blocks_executed.append((block_idx, 0, importance))
 
         hidden_states = self.norm(hidden_states)
+        executed_count = sum(1 for _, status, _ in blocks_executed if status >= 0)
+        self.last_inference_stats = {
+            "blocks_executed": blocks_executed,
+            "num_blocks_executed": executed_count,
+            "total_blocks": len(self.block_ranges),
+            "effective_block_ratio": executed_count / max(len(self.block_ranges), 1),
+            "skip_threshold": float(self.skip_threshold),
+            "enable_skipping": bool(self.enable_skipping),
+        }
         if output_hidden_states:
             all_hidden_states += (hidden_states,)
 
@@ -330,6 +402,20 @@ class ReskipTransformerForCausalLM(ReskipTransformerPreTrainedModel, GenerationM
 
     def get_decoder(self):
         return self.model
+
+    def set_inference_config(
+        self,
+        *,
+        enable_skipping: Optional[bool] = None,
+        skip_threshold: Optional[float] = None,
+    ) -> None:
+        self.model.set_inference_config(
+            enable_skipping=enable_skipping,
+            skip_threshold=skip_threshold,
+        )
+
+    def get_last_inference_stats(self) -> dict[str, Any] | None:
+        return self.model.get_last_inference_stats()
 
     def prepare_inputs_for_generation(
         self,

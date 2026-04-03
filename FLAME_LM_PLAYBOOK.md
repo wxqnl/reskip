@@ -101,3 +101,46 @@ NNODE=1 NGPU=4 LOG_RANK=0 bash train.sh \
 而不是：
 
 - `LM -> VLA 的中间桥梁`
+
+## 6. 一键 350M 全流程
+
+如果你要直接跑 `350M baseline + 350M AttnRes + skip sweep + lm_eval benchmark + 结果图`，现在已经有一键脚本：
+
+```bash
+bash flame/scripts/run_reskip_350m_full_pipeline.sh
+```
+
+运行前至少要设置两个环境变量：
+
+```bash
+export TOKENIZER_PATH=/path/to/local_hf_tokenizer
+export DATA_GLOB=/path/to/SlimPajama-627B/data/train-*.parquet
+```
+
+常用可选项：
+
+```bash
+export NGPU=4
+export DEVICE=cuda:0
+export TASKS=lambada_openai,hellaswag,arc_easy,arc_challenge
+export THRESHOLDS="0.01 0.02 0.05 0.10"
+export RESULT_ROOT=../outputs/flame_reskip_350m_pipeline
+```
+
+这个脚本会依次完成：
+
+1. 训练 `350M baseline`
+2. 训练 `350M AttnRes`
+3. 对 `baseline` 做 `lm_eval`
+4. 对 `AttnRes full-depth` 做 `lm_eval`
+5. 对多个 skip threshold 做 `lm_eval + block profile`
+6. 生成：
+   - `reskip_350m_benchmark.png`
+   - `summary_table.json`
+   - `selection_summary.json`
+   - `selection_summary.md`
+
+其中推荐的 skip threshold 会根据自动规则选出：
+
+- 优先选择在 `attnres_full` 分数 3% 以内损失的前提下，执行 block 最少的设置
+- 如果没有满足条件的设置，就退化为选择分数最高的 skip 设置

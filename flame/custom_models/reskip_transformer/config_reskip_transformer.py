@@ -32,6 +32,8 @@ class ReskipTransformerConfig(PretrainedConfig):
         attn_res_num_blocks: int = 8,
         attn_res_temperature: float = 1.0,
         attn_res_output_norm: bool = True,
+        enable_skipping: bool = False,
+        skip_threshold: float = 0.0,
         **kwargs,
     ):
         self.vocab_size = vocab_size
@@ -57,6 +59,8 @@ class ReskipTransformerConfig(PretrainedConfig):
         self.attn_res_num_blocks = attn_res_num_blocks
         self.attn_res_temperature = attn_res_temperature
         self.attn_res_output_norm = attn_res_output_norm
+        self.enable_skipping = enable_skipping
+        self.skip_threshold = skip_threshold
 
         super().__init__(
             pad_token_id=pad_token_id,

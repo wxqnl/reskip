@@ -27,6 +27,9 @@ dependencies = [
     'wandb',
     'tiktoken',
     'tensorboard',
+    'matplotlib',
+    'pyarrow',
+    'lm_eval[hf]',
 ]
 
 [project.optional-dependencies]
