@@ -48,14 +48,6 @@ Run from the outer repo root:
 bash starVLA/examples/LIBERO/train_files/run_libero_train_attnres.sh
 ```
 
-If you want to warm-start the Qwen text backbone from a flame LM checkpoint that
-has already been converted to HF format, pass:
-
-```bash
-language_model_init_checkpoint=/absolute/path/to/flame_reskip_qwen3_attnres_hf \
-bash starVLA/examples/LIBERO/train_files/run_libero_train_attnres.sh
-```
-
 This script launches:
 
 - framework: `QwenOFT`
@@ -71,7 +63,6 @@ accelerate launch \
   --num_processes 8 \
   starVLA/training/train_starvla.py \
   --config_yaml ./starVLA/examples/LIBERO/train_files/starvla_cotrain_libero_attnres.yaml \
-  --framework.qwenvl.language_model_init_checkpoint /absolute/path/to/flame_reskip_qwen3_attnres_hf \
   --framework.attnres.enabled True \
   --framework.attnres.enable_skipping False
 ```

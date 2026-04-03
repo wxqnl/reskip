@@ -1,78 +1,66 @@
-# Flame LM Playbook
+# Flame LM 说明
 
-This document describes the `flame/` LM pretraining path that is compatible with
-the repo's `StarVLA` Qwen backbones.
+这份文档只说明 `flame` 在 LM 主线里的用途，不再讨论和 `StarVLA` 的直接桥接。
 
-## What Changed
+## 1. 现在 flame 用来做什么
 
-- added a new HuggingFace-style custom model type: `reskip_qwen3`
-- added a config-generation script that extracts the text backbone config from a
-  local `Qwen3-VL` / `StarVLA` base model directory
-- updated `flame` to sync `vocab_size`, `bos/eos/pad` ids from the tokenizer at
-  runtime
-- added a `StarVLA` language-model init hook that can load a flame LM checkpoint
-  into `qwen_vl_interface.model.language_model`
+`flame` 的作用是：
 
-Key files:
+- 给 LM 主线提供一个更高性能的训练框架
+- 支持 `Qwen3` 风格的 decoder-only LM 实验
+- 用于做不同参数规模下的 LM 可行性实验
+
+它现在不再承担：
+
+- 直接初始化 `StarVLA`
+- 直接连接 VLA 训练
+
+## 2. 当前实现
+
+关键文件：
 
 - `flame/custom_models/reskip_qwen3/config_reskip_qwen3.py`
 - `flame/custom_models/reskip_qwen3/modeling_reskip_qwen3.py`
 - `flame/scripts/make_reskip_qwen3_config.py`
-- `flame/flame/utils/convert_dcp_to_hf.py`
-- `src/starvla_integration.py`
-- `starVLA/starVLA/model/modules/vlm/QWen3.py`
 
-## Compatibility Rule
+## 3. tokenizer
 
-If you want the LM checkpoint to warm-start VLA training, the LM pretraining
-must use:
+LM 在 flame 里可以使用你自己指定的本地 HuggingFace tokenizer。
 
-- the same tokenizer directory as `StarVLA` `base_vlm`
-- the same text hidden size / layer count / attention layout as the target
-  `Qwen3-VL` text backbone
+要求是：
 
-Do not substitute another tokenizer for this transfer path.
+- tokenizer 本地可加载
+- 和当前 LM 实验目标一致
 
-## Step 1: Generate a Flame Config from the VLA Base Model
+不需要和 `StarVLA` 一致。
 
-Assume your VLA backbone is:
+## 4. 基本流程
 
-- `/path/to/Qwen3-VL-4B-Instruct-Action`
+### 4.1 生成配置
 
-Generate the flame LM config from that local model:
+如果你要做 `Qwen3` 风格 LM，可先生成 config：
 
 ```bash
 cd flame
 python scripts/make_reskip_qwen3_config.py \
-  --base-vlm-path /path/to/Qwen3-VL-4B-Instruct-Action \
-  --output configs/reskip_qwen3_attnres_from_starvla.json \
+  --base-vlm-path /path/to/local/qwen3_or_qwen3_vl_dir \
+  --output configs/reskip_qwen3_attnres.json \
   --use-attn-res \
   --attn-res-num-blocks 8 \
   --attn-res-temperature 1.0
 ```
 
-For a baseline config, omit `--use-attn-res`:
+如果要 baseline，去掉 `--use-attn-res`。
 
-```bash
-cd flame
-python scripts/make_reskip_qwen3_config.py \
-  --base-vlm-path /path/to/Qwen3-VL-4B-Instruct-Action \
-  --output configs/reskip_qwen3_baseline_from_starvla.json
-```
-
-## Step 2: Train in Flame
-
-Use the same local tokenizer/model directory for `--model.tokenizer_path`.
-
-AttnRes LM training:
+### 4.2 训练
 
 ```bash
 cd flame
 NNODE=1 NGPU=4 LOG_RANK=0 bash train.sh \
   --job.config_file flame/flame/models/fla.toml \
   --job.dump_folder ../outputs/flame_reskip_qwen3_attnres \
-  --model.config configs/reskip_qwen3_attnres_from_starvla.json \
-  --model.tokenizer_path /path/to/Qwen3-VL-4B-Instruct-Action \
+  --model.config configs/reskip_qwen3_attnres.json \
+  --model.tokenizer_path /path/to/local_tokenizer \
   --optimizer.name AdamW \
   --optimizer.eps 1e-15 \
   --optimizer.lr 3e-4 \
@@ -98,85 +86,18 @@ NNODE=1 NGPU=4 LOG_RANK=0 bash train.sh \
   --metrics.log_freq 10
 ```
 
-Baseline LM training is identical except:
+## 5. 定位
 
-- `--model.config configs/reskip_qwen3_baseline_from_starvla.json`
-- output dir changed
+`flame` 现在就是 LM 主线的一部分：
 
-## Step 3: Convert Flame Checkpoint to HF Format
+- 可以做 `Qwen3` 风格对比
+- 可以做不同参数量实验
+- 可以独立于 VLA 存在
 
-StarVLA loads a normal HuggingFace-style checkpoint or checkpoint directory. If
-your flame run saved DCP checkpoints, convert one step to HF format:
+如果你的目标是论文主干，优先把它理解成：
 
-```bash
-cd flame
-python flame/utils/convert_dcp_to_hf.py \
-  --path ../outputs/flame_reskip_qwen3_attnres_hf \
-  --step 20000 \
-  --config configs/reskip_qwen3_attnres_from_starvla.json \
-  --tokenizer /path/to/Qwen3-VL-4B-Instruct-Action
-```
+- `LM 的高性能训练后端`
 
-This creates a directory like:
+而不是：
 
-- `../outputs/flame_reskip_qwen3_attnres_hf/config.json`
-- `../outputs/flame_reskip_qwen3_attnres_hf/model.safetensors` or
-  `pytorch_model.bin`
-- tokenizer files
-
-## Step 4: Warm-Start StarVLA from the Flame LM Checkpoint
-
-`StarVLA` now supports:
-
-- `framework.qwenvl.language_model_init_checkpoint`
-- `framework.qwenvl.language_model_init_strict`
-
-You can pass the HF checkpoint directory directly:
-
-```bash
-cd starVLA
-language_model_init_checkpoint=/absolute/path/to/outputs/flame_reskip_qwen3_attnres_hf \
-bash examples/LIBERO/train_files/run_libero_train_attnres.sh
-```
-
-Or call the training script directly:
-
-```bash
-accelerate launch \
-  --config_file starVLA/config/deepseeds/deepspeed_zero2.yaml \
-  --num_processes 8 \
-  starVLA/training/train_starvla.py \
-  --config_yaml ./examples/LIBERO/train_files/starvla_cotrain_libero_attnres.yaml \
-  --framework.qwenvl.base_vlm /path/to/Qwen3-VL-4B-Instruct-Action \
-  --framework.qwenvl.language_model_init_checkpoint /absolute/path/to/outputs/flame_reskip_qwen3_attnres_hf
-```
-
-## What Actually Transfers
-
-The StarVLA loader imports the LM weights into:
-
-- `qwen_vl_interface.model.language_model`
-
-It ignores:
-
-- `lm_head.*`
-- non-language-model weights
-
-This is the intended path:
-
-1. flame text pretraining on SlimPajama
-2. export HF checkpoint
-3. StarVLA language-model warm start
-4. VLA finetuning / rollout evaluation
-
-## Tokenizer Notes
-
-For this transfer-compatible route:
-
-- use the same tokenizer path as `base_vlm`
-- do not replace it with `gpt2` or another tokenizer
-- flame now synchronizes `vocab_size`, `bos_token_id`, `eos_token_id`, and
-  `pad_token_id` from the tokenizer at train startup
-
-If you intentionally switch tokenizer families, you break direct LM-to-VLA
-checkpoint reuse.
+- `LM -> VLA 的中间桥梁`

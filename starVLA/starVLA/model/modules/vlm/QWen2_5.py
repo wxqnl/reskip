@@ -31,10 +31,7 @@ _ACTION_TOKEN_MAX = 153712 # here only for fast_tokenizer, see starVLA/model/mod
 
 
 import torch.nn as nn
-from src.starvla_integration import (
-    StarVLABackboneSkipContext,
-    maybe_load_starvla_language_model_init,
-)
+from src.starvla_integration import StarVLABackboneSkipContext
 
 
 class _QWen_VL_Interface(nn.Module):
@@ -101,7 +98,6 @@ class _QWen_VL_Interface(nn.Module):
         self.model = model
         self.processor = processor
         self.config = config
-        self.language_model_init = maybe_load_starvla_language_model_init(self.model.language_model, config)
 
         self._ACTION_TOKEN_MIN = _ACTION_TOKEN_MIN
         self._ACTION_TOKEN_MAX = _ACTION_TOKEN_MAX
