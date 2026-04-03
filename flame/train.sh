@@ -14,10 +14,10 @@ NNODE=${NNODE:-"1"}
 NGPU=${NGPU:-"8"}
 LOG_RANK=${LOG_RANK:-0}
 
-if [[ -z "${MASTER_ADDR}" ]]; then
+if [[ -z "${MASTER_ADDR:-}" ]]; then
   export MASTER_ADDR="localhost"
 fi
-if [[ -z "${MASTER_PORT}" ]]; then
+if [[ -z "${MASTER_PORT:-}" ]]; then
   export MASTER_PORT="0"
 fi
 
@@ -106,13 +106,13 @@ RUN_NAME="$model-$(basename "$path")"
 RUN_ID="$RUN_NAME-$date"
 
 export WANDB_RESUME=allow
-if [[ -z "${WANDB_PROJECT}" ]]; then
+if [[ -z "${WANDB_PROJECT:-}" ]]; then
   export WANDB_PROJECT="fla"
 fi
-if [[ -z "${WANDB_NAME}" ]]; then
+if [[ -z "${WANDB_NAME:-}" ]]; then
   export WANDB_NAME="$RUN_NAME"
 fi
-if [[ -z "${WANDB_RUN_ID}" ]]; then
+if [[ -z "${WANDB_RUN_ID:-}" ]]; then
   export WANDB_RUN_ID="$RUN_ID"
 fi
 
