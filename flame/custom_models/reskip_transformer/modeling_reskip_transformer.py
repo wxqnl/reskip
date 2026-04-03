@@ -28,6 +28,8 @@ class RotaryEmbedding(nn.Module):
         self.register_buffer("inv_freq", inv_freq, persistent=False)
 
     def forward(self, position_ids: torch.Tensor, dtype: torch.dtype) -> tuple[torch.Tensor, torch.Tensor]:
+        if position_ids.dim() == 1:
+            position_ids = position_ids.unsqueeze(0)
         freqs = torch.einsum("bs,d->bsd", position_ids.to(self.inv_freq.dtype), self.inv_freq)
         emb = torch.cat((freqs, freqs), dim=-1)
         cos = emb.cos()[:, None, :, :].to(dtype=dtype)
@@ -276,7 +278,7 @@ class ReskipTransformerModel(ReskipTransformerPreTrainedModel):
         cu_seqlens: Optional[torch.LongTensor] = None,
         **kwargs,
     ) -> Union[Tuple, BaseModelOutputWithPast]:
-        del past_key_values, cu_seqlens
+        del past_key_values
         output_attentions = False if output_attentions is None else output_attentions
         output_hidden_states = self.config.output_hidden_states if output_hidden_states is None else output_hidden_states
         use_cache = False if use_cache is None else use_cache
@@ -297,8 +299,17 @@ class ReskipTransformerModel(ReskipTransformerPreTrainedModel):
         else:
             hidden_states = inputs_embeds
 
+        if cu_seqlens is not None:
+            raise ValueError(
+                "reskip_transformer does not support packed varlen training/inference via cu_seqlens yet. "
+                "This model uses dense SDPA and currently cannot build segment-wise attention masks from cu_seqlens. "
+                "Disable --training.varlen and use a dense sequence length such as 2048."
+            )
+
         if position_ids is None:
             position_ids = torch.arange(hidden_states.shape[1], device=hidden_states.device).unsqueeze(0).expand(hidden_states.shape[0], -1)
+        elif position_ids.dim() == 1:
+            position_ids = position_ids.unsqueeze(0)
 
         all_hidden_states = () if output_hidden_states else None
         blocks_executed: list[tuple[int, int, float]] = []
