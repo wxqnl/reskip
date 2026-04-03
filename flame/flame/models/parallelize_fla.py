@@ -217,6 +217,61 @@ class TransformerTPPlan(TPPlan):
         }
 
 
+class Qwen3TPPlan(TPPlan):
+
+    @property
+    def model_plan(self):
+        plans = {
+            f"{self.base_model_prefix}.embed_tokens": RowwiseParallel(
+                input_layouts=Replicate(),
+                output_layouts=Shard(1),
+            ),
+            f"{self.base_model_prefix}.norm": SequenceParallel(),
+        }
+        if self.loss_parallel:
+            plans.update(
+                {
+                    "lm_head": ColwiseParallel(
+                        input_layouts=Shard(1),
+                        output_layouts=Shard(-1),
+                        use_local_output=False,
+                    ),
+                }
+            )
+        else:
+            plans.update(
+                {
+                    "lm_head": PrepareModuleWeight(layouts=Replicate()),
+                    "criterion": LinearLossParallel(),
+                }
+            )
+        return plans
+
+    @property
+    def layer_plan(self):
+        return {
+            "input_layernorm": SequenceParallel(),
+            **self.attn_plan,
+            "post_attention_layernorm": SequenceParallel(),
+            **self.mlp_plan,
+        }
+
+    @property
+    def attn_plan(self):
+        return {
+            "self_attn": self.prepare_module_input(
+                input_kwarg_layouts={"hidden_states": Shard(1)},
+                desired_input_kwarg_layouts={"hidden_states": Replicate()},
+            ),
+            "self_attn.q_proj": self.colwise_parallel(),
+            "self_attn.k_proj": self.colwise_parallel(),
+            "self_attn.v_proj": self.colwise_parallel(),
+            "self_attn.q_norm": PrepareModuleWeight(layouts=Replicate()),
+            "self_attn.k_norm": PrepareModuleWeight(layouts=Replicate()),
+            "self_attn.o_proj": self.rowwise_parallel(output_layouts=Shard(1)),
+        }
+
+
 class GLATPPlan(TPPlan):
 
     @property
@@ -241,6 +296,8 @@ TP_PLAN_MAP = {
     "transformer": TransformerTPPlan,
     "gla": GLATPPlan,
     "reskip_transformer": TransformerTPPlan,
+    "qwen3": Qwen3TPPlan,
+    "reskip_qwen3": Qwen3TPPlan,
 }
 
 

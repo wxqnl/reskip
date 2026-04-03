@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from contextlib import AbstractContextManager
 from dataclasses import dataclass
+from pathlib import Path
 from types import MethodType
 from typing import Any, Optional
 
@@ -35,6 +36,79 @@ def _get_cfg_value(cfg: Any, path: str, default: Any = None) -> Any:
         else:
             current = getattr(current, part, None)
     return default if current is None else current
+
+
+def _resolve_checkpoint_path(checkpoint: str | Path) -> Path:
+    checkpoint_path = Path(checkpoint)
+    if checkpoint_path.is_dir():
+        for candidate in (
+            "model.safetensors",
+            "pytorch_model.bin",
+            "pytorch_model.pt",
+            "model.bin",
+        ):
+            candidate_path = checkpoint_path / candidate
+            if candidate_path.exists():
+                return candidate_path
+        raise FileNotFoundError(f"No supported HF checkpoint file found under {checkpoint_path}")
+    return checkpoint_path
+
+
+def _load_checkpoint_state_dict(checkpoint: str | Path) -> dict[str, torch.Tensor]:
+    checkpoint_path = _resolve_checkpoint_path(checkpoint)
+    if checkpoint_path.suffix == ".safetensors":
+        from safetensors.torch import load_file
+
+        return load_file(str(checkpoint_path))
+    state_dict = torch.load(checkpoint_path, map_location="cpu")
+    if isinstance(state_dict, dict) and "model" in state_dict and isinstance(state_dict["model"], dict):
+        return state_dict["model"]
+    return state_dict
+
+
+def load_language_model_init_checkpoint(
+    language_model: nn.Module,
+    checkpoint: str | Path,
+    *,
+    strict: bool = False,
+) -> dict[str, Any]:
+    state_dict = _load_checkpoint_state_dict(checkpoint)
+    target_state = language_model.state_dict()
+    remapped_state: dict[str, torch.Tensor] = {}
+
+    for key, value in state_dict.items():
+        normalized_key = key
+        for prefix in ("model.", "language_model.", "model.language_model."):
+            if normalized_key.startswith(prefix):
+                normalized_key = normalized_key[len(prefix) :]
+                break
+        if normalized_key.startswith("lm_head."):
+            continue
+        if normalized_key in target_state:
+            remapped_state[normalized_key] = value
+
+    missing_keys, unexpected_keys = language_model.load_state_dict(remapped_state, strict=False)
+    if strict and (missing_keys or unexpected_keys):
+        raise RuntimeError(
+            "Language-model init checkpoint mismatch: "
+            f"missing={missing_keys}, unexpected={unexpected_keys}"
+        )
+
+    return {
+        "checkpoint": str(_resolve_checkpoint_path(checkpoint)),
+        "loaded_keys": len(remapped_state),
+        "target_keys": len(target_state),
+        "missing_keys": missing_keys,
+        "unexpected_keys": unexpected_keys,
+    }
+
+
+def maybe_load_starvla_language_model_init(language_model: nn.Module, cfg: Any) -> Optional[dict[str, Any]]:
+    checkpoint = _get_cfg_value(cfg, "framework.qwenvl.language_model_init_checkpoint")
+    if not checkpoint:
+        return None
+    strict = bool(_get_cfg_value(cfg, "framework.qwenvl.language_model_init_strict", False))
+    return load_language_model_init_checkpoint(language_model, checkpoint, strict=strict)
 
 
 @dataclass

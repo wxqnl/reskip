@@ -19,10 +19,16 @@ libero_data_root=playground/Datasets/LEROBOT_LIBERO_DATA
 data_mix=libero_all
 run_root_dir=./results/Checkpoints
 run_id=libero_qwenoft_attnres
+language_model_init_checkpoint=${language_model_init_checkpoint:-}
 
 output_dir=${run_root_dir}/${run_id}
 mkdir -p ${output_dir}
 cp "$0" "${output_dir}/"
+
+lm_init_args=()
+if [ -n "${language_model_init_checkpoint}" ]; then
+  lm_init_args+=(--framework.qwenvl.language_model_init_checkpoint "${language_model_init_checkpoint}")
+fi
 
 accelerate launch \
   --config_file starVLA/config/deepseeds/deepspeed_zero2.yaml \
@@ -47,4 +53,5 @@ accelerate launch \
   --run_root_dir ${run_root_dir} \
   --run_id ${run_id} \
   --wandb_project starVLA_Libero \
-  --wandb_entity jinhuiye
+  --wandb_entity jinhuiye \
+  "${lm_init_args[@]}"

@@ -205,7 +205,13 @@ def main(job_config: JobConfig):
                 f"{color.reset}"
             )
             model_config.fuse_linear_cross_entropy = False
-    model_config.vocab_size = max(tokenizer.vocab_size, model_config.vocab_size)
+    model_config.vocab_size = max(len(tokenizer), model_config.vocab_size)
+    if getattr(tokenizer, "bos_token_id", None) is not None:
+        model_config.bos_token_id = tokenizer.bos_token_id
+    if getattr(tokenizer, "eos_token_id", None) is not None:
+        model_config.eos_token_id = tokenizer.eos_token_id
+    if getattr(tokenizer, "pad_token_id", None) is not None:
+        model_config.pad_token_id = tokenizer.pad_token_id
 
     logger.info(
         f"Building model from the config\n{color.green}{model_config}{color.reset}"
