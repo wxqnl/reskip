@@ -1,0 +1,23 @@
+{
+  "model_type": "reskip_transformer",
+  "vocab_size": 50257,
+  "hidden_size": 896,
+  "intermediate_size": 3584,
+  "num_hidden_layers": 24,
+  "num_attention_heads": 14,
+  "max_position_embeddings": 2048,
+  "rope_theta": 10000.0,
+  "use_rope": true,
+  "hidden_act": "swish",
+  "initializer_range": 0.02,
+  "norm_eps": 1e-06,
+  "attention_bias": false,
+  "tie_word_embeddings": false,
+  "use_cache": false,
+  "fuse_norm": false,
+  "fuse_cross_entropy": false,
+  "fuse_linear_cross_entropy": false,
+  "use_attn_res": false,
+  "attn_res_num_blocks": 8,
+  "attn_res_temperature": 1.0
+}
