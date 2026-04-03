@@ -28,9 +28,16 @@ def save_pretrained(
     config = AutoConfig.from_pretrained(config, trust_remote_code=True)
 
     logger.info(f"Saving the config to {path}")
-    config.save_pretrained(path)
     logger.info(f"Loading the tokenizer from {tokenizer}")
     tokenizer = AutoTokenizer.from_pretrained(tokenizer, trust_remote_code=True)
+    config.vocab_size = len(tokenizer)
+    if getattr(tokenizer, "bos_token_id", None) is not None:
+        config.bos_token_id = tokenizer.bos_token_id
+    if getattr(tokenizer, "eos_token_id", None) is not None:
+        config.eos_token_id = tokenizer.eos_token_id
+    if getattr(tokenizer, "pad_token_id", None) is not None:
+        config.pad_token_id = tokenizer.pad_token_id
+    config.save_pretrained(path)
     logger.info(f"Saving the tokenizer to {path}")
     tokenizer.save_pretrained(path)
 

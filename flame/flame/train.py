@@ -205,7 +205,16 @@ def main(job_config: JobConfig):
                 f"{color.reset}"
             )
             model_config.fuse_linear_cross_entropy = False
-    model_config.vocab_size = max(len(tokenizer), model_config.vocab_size)
+    tokenizer_vocab_size = len(tokenizer)
+    if getattr(model_config, "vocab_size", None) != tokenizer_vocab_size:
+        logger.warning(
+            f"{color.red}"
+            f"Overriding model vocab_size from {getattr(model_config, 'vocab_size', None)} "
+            f"to tokenizer size {tokenizer_vocab_size}. "
+            f"This keeps the LM head aligned with the active tokenizer."
+            f"{color.reset}"
+        )
+    model_config.vocab_size = tokenizer_vocab_size
     if getattr(tokenizer, "bos_token_id", None) is not None:
         model_config.bos_token_id = tokenizer.bos_token_id
     if getattr(tokenizer, "eos_token_id", None) is not None:
@@ -592,6 +601,10 @@ def main(job_config: JobConfig):
                 logger.info(
                     f"{color.blue}lr: {last_lr:.4e} gnorm: {grad_norm:5.2f} "
                     f"{color.magenta}[{str(train_state.elapsed).split('.')[0]:>8}<{str(eta).split('.')[0]:>8}]{color.reset}"
+                )
+                logger.info(
+                    f"{color.blue}exact_loss: {(global_avg_loss.item() if isinstance(global_avg_loss, torch.Tensor) else float(global_avg_loss)):.6f} "
+                    f"exact_gnorm: {(grad_norm.item() if isinstance(grad_norm, torch.Tensor) else float(grad_norm)):.6f}{color.reset}"
                 )
 
             checkpoint.save(
