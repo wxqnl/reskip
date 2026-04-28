@@ -678,10 +678,12 @@ training notes here.
 | LoRA r=16 on (q, k, v, o)   | 16   | full attention | ~14 M           | same          | Smaller rank, more sites |
 | LoRA r=8 on MLP             | 8    | MLP up/down/gate | ~14 M           | same          | MLP-targeted LoRA, often strongest in distillation |
 
-All four trained 10 k steps (2× our retrofit's 5 k canonical) on the
-same v1 50/50 mix (UltraChat + LLaVA-VSFT) under teacher-distillation
-loss only — the same training objective as our retrofit. Same
-optimiser, lr, schedule.
+All four trained 10 k steps (2× our retrofit's 5 k narrow-mix control) on
+the same v1 50/50 mix (UltraChat + LLaVA-VSFT) with assistant-masked CE,
+the standard LoRA SFT objective used by `train_qwen3vl_lora.py`. This is
+matched on data, schedule, optimizer family, and trainable-parameter scale,
+but it does **not** include the retrofit-only skip-branch KL, router entropy
+term, γ gate, or AttnRes residual bridge.
 
 ### N.2 Per-config evaluation (LAMBADA + HellaSwag, n=2000)
 
@@ -697,16 +699,17 @@ optimiser, lr, schedule.
 
 Δ retrofit vs LoRA mean: **LAMBADA acc +5.0 pp, ppl −17 %, HellaSwag
 +1.3 pp**. Δ LoRA mean vs base: **LAMBADA −0.6 pp, ppl ≈, HellaSwag
-+0.3 pp**. At matched parameter count and same training objective,
-LoRA cannot even recover base-level LAMBADA.
++0.3 pp**. At matched parameter count and data budget, standard LoRA SFT
+does not recover base-level LAMBADA on average.
 
 ### N.3 Reading
 
 The +5 pp lift over LoRA-mean cannot come from "more trainable
-parameters" (matched), nor from "more training data" (matched), nor
-from "different objective" (matched). It is attributable to the
-**structural prior** of AttnRes: block-level routing + per-block
-adapter on `r_n − h_{n-1}` + γ-gated bridge.
+parameters" (matched) or "more training data" (matched). The remaining
+difference is the retrofit package: the **structural prior** of AttnRes
+(block-level routing + per-block adapter on `r_n − h_{n-1}` + γ-gated
+bridge) together with the skip-branch KL and entropy regularisation that
+make that structure trainable without destabilising the frozen backbone.
 
 LoRA r=32 on (q, v) seed 0 is the only LoRA config that exceeds base
 (by +0.8 pp); even there, retrofit beats it by **+3.6 pp**. The seed

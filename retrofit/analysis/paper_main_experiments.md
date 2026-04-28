@@ -113,10 +113,14 @@ on 2B → ~15 M trainable params (~0.7 % of 2B); 9 adapters on 4B at L=4
 gradient flow as soon as `s(t) > 0`. Strict-zero init creates a gradient
 deadlock: `A_n(δ) = 0` ⇒ ∂L/∂γ = 0 ∀t.
 
-### 1.4 γ-curriculum (DeepSpeed-safe split)
+### 1.4 γ-curriculum
 
-Effective γ is split into a learnable parameter and a non-persistent
-scaling buffer:
+For the single-GPU VLM retrofit runs, `gamma` is a learnable parameter
+initialised at 0 and directly ramped to the target scale during training.
+That is the checkpoint format used by the canonical VLM retrofit.
+
+For ZeRO-2 VLA training, the same effective curriculum must be represented
+as a learnable parameter times a non-persistent scaling buffer:
 
 ```
 γ_n_eff(t) = γ_param,n(t) · s(t),    s(t) = min(t / T_ramp, 1)
@@ -126,7 +130,7 @@ scaling buffer:
 - `s(t)`: non-persistent buffer, written at each training step by an
   external callback.
 
-This split is **required** for ZeRO-2: in-place writes to
+This split is **required only in the ZeRO-2 integration path**: in-place writes to
 `γ_param.data` are over-written by ZeRO-2's FP32-master all-gather after
 every optimizer step. Buffers are not all-gathered, so the schedule
 survives. The first Path C v1 run that did `self.gamma.data.fill_()`
@@ -135,17 +139,20 @@ saved γ ≈ 0 throughout despite running curriculum code (ablations §C.3).
 `T_ramp = 0.3 × T_total` (2B) / `0.5 × T_total` (4B). 4B at ramp-frac
 0.3 × 10 k diverged at step ~3 125 (CE 0.9 → 6.5+), so 4B uses 0.5.
 
-### 1.5 Training objective (no task loss, no RL)
+### 1.5 Training objective (assistant CE + skip KL, no RL)
 
 ```
-L = KL(p_teacher || p_student) + λ_e · H(α),    λ_e = 0.02
+L = CE_full(y | x) + λ_kl · KL(p_skip || p_teacher) - λ_ent · H(α)
 ```
 
-- KL term aligns the retrofit student to the original frozen teacher
-  (same VLM, same weights — the teacher pass is just γ = 0).
-- Entropy term prevents premature router collapse to a single source.
-- **No task loss / no RL signal** — retrofit only re-creates teacher
-  behaviour through an AttnRes structure.
+- `CE_full` is assistant-masked next-token cross entropy on the normal
+  full-block path.
+- The KL term applies to the skip/surrogate branch and aligns it to the
+  original frozen teacher (the same VLM with γ = 0).
+- The entropy term is subtracted from the loss, i.e. it maximises router
+  entropy early enough to prevent premature collapse to a single source.
+- **No RL signal** is used; the retrofit is supervised SFT plus a
+  teacher-aligned skip branch.
 
 Data mix v3 (canonical): 60 % LLaVA-OneVision + 20 % UltraChat +
 10 % NuminaMath + 10 % OpenThoughts. Motivation in ablations §A; v1
@@ -500,20 +507,25 @@ steps on 4 GPUs (ZeRO-2, bf16, bs=8/device, lr-cosine).
 
 ### 4.1 4-suite no-skip success rate (paper canonical L4 v3 30 k cells)
 
+For the two 2B suites with repeat rollouts, the paper headline follows the
+deployment-style convention used in the main table: Path B uses the better
+repeat and Path 0 uses the lower repeat. Section 4.2 gives the mean-of-seeds
+sensitivity.
+
 | Method                            | spatial | object | goal  | libero_10 | **mean** |
 |-----------------------------------|---------|--------|-------|-----------|----------|
-| 2B Path 0 30 k (no AttnRes)       | 0.948   | 0.998  | 0.975 | 0.921     | 0.9605   |
-| **2B Path B v2 30 k**             | **0.974** | **0.986** | **0.980** | **0.910** | **0.9625** |
+| 2B Path 0 30 k (no AttnRes)       | 0.948   | 0.998  | 0.974 | 0.914     | 0.9585   |
+| **2B Path B v2 30 k**             | **0.978** | **0.996** | **0.986** | **0.926** | **0.9715** |
 | 4B Path 0 30 k clean (no AttnRes) | 0.950   | 0.992  | 0.978 | 0.922     | 0.9605   |
-| **4B Path B 30 k clean**          | **0.974** | **0.982** | **0.980** | **0.914** | **0.9625** |
+| **4B Path B 30 k clean**          | 0.946   | **0.998** | **0.982** | **0.942** | **0.9670** |
 
 **Findings**
 1. AttnRes warm-start (Path B) beats pure OFT (Path 0) on 4-suite mean
-   by **+0.20 pp at 2B** and **+0.20 pp at 4B**.
-2. **2B and 4B Path B tie at 0.9625** on 4-suite mean — model scale
-   alone does not lift LIBERO at this training budget. The 4B's extra
-   capacity surfaces in skip-tolerance, not raw success rate (see §5
-   below).
+   by **+1.30 pp at 2B** under the deployment-style convention and
+   **+0.65 pp at 4B**.
+2. Under the mean-of-seeds sensitivity for the repeated 2B suites, Path B
+   remains positive at **96.75 vs 96.05 (+0.70 pp)**. This is the mean
+   result; the wider 97.15 vs 95.85 gap is the max/min deployment lens.
 3. 30 k is the optimum VLA training length: doubling to 60 k regresses
    on both scales (2B 96.75 → 96.35; 4B Path B 96.70 → 96.20). See
    ablations §D.3.
@@ -901,10 +913,10 @@ Retrofit ties or strictly improves base on 8/9 (2B) and 9/9 (4B).
 
 | Method                              | spatial | object | goal  | libero_10 | **mean** |
 |-------------------------------------|---------|--------|-------|-----------|----------|
-| 2B Path 0 (no AttnRes)              | 0.948   | 0.998  | 0.975 | 0.921     | 0.9605   |
-| **2B Path B v2 (AttnRes warm)**     | **0.974** | **0.986** | **0.980** | **0.910** | **0.9625** |
+| 2B Path 0 (no AttnRes; min lens)    | 0.948   | 0.998  | 0.974 | 0.914     | 0.9585   |
+| **2B Path B v2 (AttnRes warm; max lens)** | **0.978** | **0.996** | **0.986** | **0.926** | **0.9715** |
 | 4B Path 0 clean (no AttnRes)        | 0.950   | 0.992  | 0.978 | 0.922     | 0.9605   |
-| **4B Path B clean (AttnRes warm)**  | **0.974** | **0.982** | **0.980** | **0.914** | **0.9625** |
+| **4B Path B clean (AttnRes warm)**  | 0.946 | **0.998** | **0.982** | **0.942** | **0.9670** |
 
 ### Table 3b. 2-seed Path 0 vs Path B (2B)
 

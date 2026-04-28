@@ -84,7 +84,7 @@ class ResidualAdapter(nn.Module):
 class Qwen3VLAttnResRetrofit(nn.Module):
     """Retrofit Qwen3-VL so AttnRes enters the normal forward path safely.
 
-    For selected late blocks we compute:
+    For selected blocks (all blocks by default) we compute:
       routed_n = AttnRes(h_0..h_{n-1})
       x_n = h_{n-1} + gamma_n * Adapter_n(routed_n - h_{n-1})
 
@@ -143,9 +143,9 @@ class Qwen3VLAttnResRetrofit(nn.Module):
             self.adapters = nn.ModuleList(
                 [ResidualAdapter(self.hidden_size, adapter_rank=adapter_rank) for _ in range(num_blocks)]
             )
-        # Identity-at-init comes from adapter.up == 0, not from gamma == 0.
-        # Keeping gamma non-zero allows adapter weights to receive gradient
-        # immediately, avoiding the dead-start behavior of gamma=0.
+        # Identity-at-init comes from gamma == 0. The adapter up-projection is
+        # small-random rather than zero so gradients flow once the curriculum
+        # moves gamma above zero.
         self.gamma = nn.Parameter(torch.zeros(num_blocks))
 
         self._fwd_alpha_list: list[torch.Tensor] | None = None
