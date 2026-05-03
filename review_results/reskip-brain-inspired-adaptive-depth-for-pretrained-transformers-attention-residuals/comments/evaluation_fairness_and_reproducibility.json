@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Comparison protocol should make fairness assumptions explicit",
+    "quote": "is the canonical partition for both scales: it sits on the accuracy plateau alongside and halves the per-token router count, which is the dominant factor in the inference-cost result below.",
+    "explanation": "Comparative evaluation language was detected. Deep review should verify that baseline tuning, data splits, and reporting conventions are described symmetrically.",
+    "comment_type": "methodology",
+    "severity": "moderate",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "method",
+    "related_sections": [
+      "method"
+    ],
+    "review_lane": "evaluation_fairness_and_reproducibility",
+    "gate_blocker": false
+  }
+]

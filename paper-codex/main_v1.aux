@@ -1,0 +1,159 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\bibstyle{plainnat}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{graves2016adaptive,dehghani2018universal}
+\citation{schuster2022confident,elbayad2020depth}
+\citation{gromov2024unreasonable,men2024shortgpt}
+\citation{raposo2024mixture}
+\citation{dehghani2018universal}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\citation{fu2025attention}
+\citation{fu2025attention}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background: Attention Residuals}{2}{section.2}\protected@file@percent }
+\newlabel{sec:background}{{2}{2}{Background: Attention Residuals}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Standard Residual Connections}{2}{subsection.2.1}\protected@file@percent }
+\citation{gromov2024unreasonable}
+\citation{fu2025attention}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Two-phase \textsc  {AttnRes}{} forward with dynamic \textsc  {ReSkip}{}\relax }}{3}{algorithm.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{alg:online_merge}{{1}{3}{Two-phase \attnres {} forward with dynamic \reskip {}\relax }{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Attention Residuals}{3}{subsection.2.2}\protected@file@percent }
+\newlabel{eq:attnres_weights}{{3}{3}{Attention Residuals}{equation.2.3}{}}
+\newlabel{eq:attnres_combine}{{4}{3}{Attention Residuals}{equation.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}\textsc  {ReSkip}{}: AttnRes-Guided Layer Skipping}{3}{section.3}\protected@file@percent }
+\newlabel{sec:reskip}{{3}{3}{\reskip {}: AttnRes-Guided Layer Skipping}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Motivation and two-phase execution}{3}{subsection.3.1}\protected@file@percent }
+\citation{schuster2022confident}
+\citation{raposo2024mixture}
+\citation{gromov2024unreasonable}
+\citation{elhoushi2024layerskip}
+\citation{penedo2024fineweb}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Method}{4}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:reskip_method}{{3.2}{4}{Method}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Block importance and ablation impact (offline statistics).}{4}{section*.1}\protected@file@percent }
+\newlabel{eq:importance}{{5}{4}{Block importance and ablation impact (offline statistics)}{equation.3.5}{}}
+\newlabel{eq:ablation}{{6}{4}{Block importance and ablation impact (offline statistics)}{equation.3.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Dynamic skip from phase-1 statistics.}{4}{section*.2}\protected@file@percent }
+\newlabel{eq:skip_rule}{{7}{4}{Dynamic skip from phase-1 statistics}{equation.3.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Position-specific calibrated thresholds.}{4}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Eligible-position selection using \emph  {two} signals.}{4}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Implementation.}{4}{section*.5}\protected@file@percent }
+\citation{eval-harness}
+\citation{paperno2016lambada}
+\citation{zellers2019hellaswag}
+\citation{clark2018arc}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {AttnRes routing weights do not predict ablation impact (340M).} (a)\nobreakspace  {}Learned block-level attention $\alpha _{n \to l}$. (b)\nobreakspace  {}Per-block \emph  {AttnRes importance} $I(n)$ (blue, left axis) and \emph  {static removal PPL ratio} $A(n)$ (orange, right axis). Block\nobreakspace  {}2 has moderate $I$ yet the highest removal impact ($8.1\times $ PPL); blocks\nobreakspace  {}3--5 span the space of low ablation impact but with very different importance levels. Dynamic skip needs \emph  {both} signals: low $I$ to trigger often and low $A$ to trigger safely.\relax }}{5}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:reskip_routing}{{1}{5}{\textbf {AttnRes routing weights do not predict ablation impact (340M).} (a)~Learned block-level attention $\alpha _{n \to l}$. (b)~Per-block \emph {AttnRes importance} $I(n)$ (blue, left axis) and \emph {static removal PPL ratio} $A(n)$ (orange, right axis). Block~2 has moderate $I$ yet the highest removal impact ($8.1\times $ PPL); blocks~3--5 span the space of low ablation impact but with very different importance levels. Dynamic skip needs \emph {both} signals: low $I$ to trigger often and low $A$ to trigger safely.\relax }{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Experimental setup}{5}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:reskip_setup}{{3.3}{5}{Experimental setup}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}The importance--ablation disconnect}{5}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:reskip_finding}{{3.4}{5}{The importance--ablation disconnect}{subsection.3.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dynamic skip as a function of the candidate position set $\mathcal  {P}$ on 340M (seq\_len=8192, $M_{\qopname  \relax m{max}}{=}2$, $q{=}0.85$). A single position ($\mathcal  {P}{=}\{5\}$) or naive aggressive sets ($\mathcal  {P}{=}\{2,3,\ldots  ,6\}$) are dominated by our combined choice.\relax }}{5}{table.caption.7}\protected@file@percent }
+\newlabel{tab:reskip_position_ablation}{{1}{5}{Dynamic skip as a function of the candidate position set $\mathcal {P}$ on 340M (seq\_len=8192, $M_{\max }{=}2$, $q{=}0.85$). A single position ($\mathcal {P}{=}\{5\}$) or naive aggressive sets ($\mathcal {P}{=}\{2,3,\ldots ,6\}$) are dominated by our combined choice.\relax }{table.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Downstream benchmark comparison on 340M FineWeb-Edu. Dynamic \textsc  {ReSkip}{} preserves every metric bit-for-bit while running $1.19\times $ faster end-to-end at sequence length 8192.\relax }}{6}{table.caption.8}\protected@file@percent }
+\newlabel{tab:reskip_benchmark}{{2}{6}{Downstream benchmark comparison on 340M FineWeb-Edu. Dynamic \reskip {} preserves every metric bit-for-bit while running $1.19\times $ faster end-to-end at sequence length 8192.\relax }{table.caption.8}{}}
+\newlabel{fig:reskip_pareto}{{2a}{6}{Accuracy--compute Pareto. Our combined position set (orange star) sits strictly below the 5\% PPL tolerance while using the fewest blocks among safe configurations.\relax }{figure.caption.9}{}}
+\newlabel{sub@fig:reskip_pareto}{{a}{6}{Accuracy--compute Pareto. Our combined position set (orange star) sits strictly below the 5\% PPL tolerance while using the fewest blocks among safe configurations.\relax }{figure.caption.9}{}}
+\newlabel{fig:reskip_latency}{{2b}{6}{Wall-clock latency on a single H100 at seq\_len=8192. Moving from $\{5\}/M_{\max }{=}1$ to $\{3,5\}/M_{\max }{=}2$ improves speedup from $1.14\times $ to $1.19\times $.\relax }{figure.caption.9}{}}
+\newlabel{sub@fig:reskip_latency}{{b}{6}{Wall-clock latency on a single H100 at seq\_len=8192. Moving from $\{5\}/M_{\max }{=}1$ to $\{3,5\}/M_{\max }{=}2$ improves speedup from $1.14\times $ to $1.19\times $.\relax }{figure.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textsc  {ReSkip}{} on 340M FineWeb-Edu. Position-calibrated dynamic skip with $\mathcal  {P}{=}\{3,5\}$ strictly dominates the single-position baseline, with zero benchmark degradation.\relax }}{6}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:reskip_pareto_latency}{{2}{6}{\reskip {} on 340M FineWeb-Edu. Position-calibrated dynamic skip with $\mathcal {P}{=}\{3,5\}$ strictly dominates the single-position baseline, with zero benchmark degradation.\relax }{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Results}{6}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:reskip_results}{{3.5}{6}{Results}{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Quality.}{6}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Speed.}{6}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Input dependence.}{6}{section*.12}\protected@file@percent }
+\citation{graves2016adaptive}
+\citation{dehghani2018universal}
+\citation{brohan2023rt,team2024octo,kim2024openvla}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textsc  {ReLoop}{} vs.\ standard \textsc  {AttnRes}{}. \textsc  {ReLoop}{} achieves competitive or better perplexity with significantly fewer unique parameters, and the effective depth adapts to input complexity.\relax }}{7}{table.caption.13}\protected@file@percent }
+\newlabel{tab:loop_results}{{3}{7}{\reloop {} vs.\ standard \attnres {}. \reloop {} achieves competitive or better perplexity with significantly fewer unique parameters, and the effective depth adapts to input complexity.\relax }{table.caption.13}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}\textsc  {ReLoop}{}: AttnRes-Routed Block Looping}{7}{section.4}\protected@file@percent }
+\newlabel{sec:reloop}{{4}{7}{\reloop {}: AttnRes-Routed Block Looping}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Method}{7}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Why This Outperforms Naive Weight Sharing}{7}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Results}{7}{subsection.4.3}\protected@file@percent }
+\citation{raghu2021vision}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces VLA benchmark: action prediction L1 error by task type and skip mode. \textsc  {ReSkip}{}-VLA with modality-aware skipping maintains prediction quality while enabling faster inference through selective block skipping.\relax }}{8}{table.caption.14}\protected@file@percent }
+\newlabel{tab:vla_results}{{4}{8}{VLA benchmark: action prediction L1 error by task type and skip mode. \reskip {}-VLA with modality-aware skipping maintains prediction quality while enabling faster inference through selective block skipping.\relax }{table.caption.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}VLA Adaptive Depth}{8}{section.5}\protected@file@percent }
+\newlabel{sec:vla}{{5}{8}{VLA Adaptive Depth}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Motivation}{8}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Method}{8}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Results}{8}{subsection.5.3}\protected@file@percent }
+\citation{graves2016adaptive}
+\citation{dehghani2018universal}
+\citation{schuster2022confident}
+\citation{raposo2024mixture}
+\citation{gromov2024unreasonable}
+\citation{elhoushi2024layerskip}
+\citation{men2024shortgpt}
+\citation{brohan2023rt}
+\citation{team2024octo}
+\citation{kim2024openvla}
+\citation{zhao2023learning}
+\newlabel{fig:vla_benchmark}{{3a}{9}{VLA benchmark results: action L1 error by skip mode, per-task breakdown, and modality depth utilization.\relax }{figure.caption.15}{}}
+\newlabel{sub@fig:vla_benchmark}{{a}{9}{VLA benchmark results: action L1 error by skip mode, per-task breakdown, and modality depth utilization.\relax }{figure.caption.15}{}}
+\newlabel{fig:modality_routing}{{3b}{9}{Per-modality \attnres {} routing weights showing different depth utilization patterns for vision vs.\ language tokens.\relax }{figure.caption.15}{}}
+\newlabel{sub@fig:modality_routing}{{b}{9}{Per-modality \attnres {} routing weights showing different depth utilization patterns for vision vs.\ language tokens.\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces VLA adaptive depth analysis. (a) Skip modes preserve action prediction quality. (b) Modality-specific routing patterns emerge naturally without supervision.\relax }}{9}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:vla}{{3}{9}{VLA adaptive depth analysis. (a) Skip modes preserve action prediction quality. (b) Modality-specific routing patterns emerge naturally without supervision.\relax }{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Connection to Physics-Aware Depth Routing}{9}{section.6}\protected@file@percent }
+\newlabel{sec:physics}{{6}{9}{Connection to Physics-Aware Depth Routing}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Related Work}{9}{section.7}\protected@file@percent }
+\newlabel{sec:related}{{7}{9}{Related Work}{section.7}{}}
+\citation{huang2017densely}
+\citation{srivastava2015highway}
+\citation{fu2025attention}
+\bibdata{references}
+\bibcite{brohan2023rt}{{1}{2023}{{Brohan et~al.}}{{Brohan, Brown, Carbajal, Chebotar, Chen, Choromanski, et~al.}}}
+\bibcite{clark2018arc}{{2}{2018}{{Clark et~al.}}{{Clark, Cowhey, Etzioni, Khot, Sabharwal, Schoenick, and Tafjord}}}
+\bibcite{dehghani2018universal}{{3}{2019}{{Dehghani et~al.}}{{Dehghani, Gouws, Vinyals, Uszkoreit, and Kaiser}}}
+\bibcite{elbayad2020depth}{{4}{2020}{{Elbayad et~al.}}{{Elbayad, Gu, Grave, and Auli}}}
+\bibcite{elhoushi2024layerskip}{{5}{2024}{{Elhoushi et~al.}}{{Elhoushi, Shrivastava, Liskovich, Hosmer, Wasti, Lai, Mahmoud, Acber, Akin, Bhatnagar, et~al.}}}
+\bibcite{fu2025attention}{{6}{2025}{{Fu et~al.}}{{}}}
+\bibcite{eval-harness}{{7}{2024}{{Gao et~al.}}{{Gao, Tow, Abbasi, Biderman, et~al.}}}
+\bibcite{graves2016adaptive}{{8}{2016}{{Graves}}{{}}}
+\bibcite{gromov2024unreasonable}{{9}{2024}{{Gromov et~al.}}{{Gromov, Tirumala, Shapourian, Glorioso, and Roberts}}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Discussion and Future Work}{10}{section.8}\protected@file@percent }
+\newlabel{sec:discussion}{{8}{10}{Discussion and Future Work}{section.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{10}{section.9}\protected@file@percent }
+\newlabel{sec:conclusion}{{9}{10}{Conclusion}{section.9}{}}
+\bibcite{huang2017densely}{{10}{2017}{{Huang et~al.}}{{Huang, Liu, Van Der~Maaten, and Weinberger}}}
+\bibcite{kim2024openvla}{{11}{2024}{{Kim et~al.}}{{Kim, Pertsch, Karamcheti, Xiao, Balakrishna, Nair, Rafailov, Foster, Lam, Vosshall, et~al.}}}
+\bibcite{men2024shortgpt}{{12}{2024}{{Men et~al.}}{{Men, Xu, Zhang, Wang, Lin, Lu, Han, and Chen}}}
+\bibcite{team2024octo}{{13}{2024}{{Octo Model Team}}{{}}}
+\bibcite{paperno2016lambada}{{14}{2016}{{Paperno et~al.}}{{Paperno, Kruszewski, Lazaridou, Pham, Bernardi, Pezzelle, Baroni, Boleda, and Fern\'{a}ndez}}}
+\bibcite{penedo2024fineweb}{{15}{2024}{{Penedo et~al.}}{{Penedo, Kydl\'{i}\v {c}ek, Allal, Lozhkov, Mitchell, Raffel, Von~Werra, and Wolf}}}
+\bibcite{raghu2021vision}{{16}{2021}{{Raghu et~al.}}{{Raghu, Unterthiner, Kornblith, Zhang, and Dosovitskiy}}}
+\bibcite{raposo2024mixture}{{17}{2024}{{Raposo et~al.}}{{Raposo, Ritter, Richards, Lillicrap, Humphreys, and Santoro}}}
+\bibcite{schuster2022confident}{{18}{2022}{{Schuster et~al.}}{{Schuster, Fisch, Gupta, Dehghani, Bahri, Tran, Tay, and Metzler}}}
+\bibcite{srivastava2015highway}{{19}{2015}{{Srivastava et~al.}}{{Srivastava, Greff, and Schmidhuber}}}
+\bibcite{zellers2019hellaswag}{{20}{2019}{{Zellers et~al.}}{{Zellers, Holtzman, Bisk, Farhadi, and Choi}}}
+\bibcite{zhao2023learning}{{21}{2023}{{Zhao et~al.}}{{Zhao, Kumar, Levine, and Finn}}}
+\bibstyle{plainnat}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Implementation Details}{11}{appendix.A}\protected@file@percent }
+\newlabel{app:implementation}{{A}{11}{Implementation Details}{appendix.A}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Online Softmax Merge with Skipping}{11}{subsection.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Pseudo-Query Initialization}{12}{subsection.A.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Block \textsc  {AttnRes}{} Granularity}{12}{subsection.A.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Training curves showing loss convergence, validation perplexity, and routing entropy over training. The routing entropy stabilizes early, indicating that the \textsc  {AttnRes}{} routing structure is learned within the first few epochs.\relax }}{13}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:training}{{4}{13}{Training curves showing loss convergence, validation perplexity, and routing entropy over training. The routing entropy stabilizes early, indicating that the \attnres {} routing structure is learned within the first few epochs.\relax }{figure.caption.17}{}}
+\gdef \@abspage@last{13}

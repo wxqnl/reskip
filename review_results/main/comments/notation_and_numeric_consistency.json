@@ -1,0 +1,19 @@
+[
+  {
+    "title": "Cross-section numeric consistency should be reconciled",
+    "quote": "We introduce AR-RETROFIT, an identity- preserving gated residual injection that adds an ATTNRES-style routing path to a frozen backbone with well under 1% new parameters.",
+    "explanation": "Multiple sections contain numeric claims. Confirm that the same quantities reconcile across main text, tables, and appendix material.",
+    "comment_type": "presentation",
+    "severity": "moderate",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "abstract",
+    "related_sections": [
+      "abstract",
+      "introduction",
+      "related"
+    ],
+    "review_lane": "notation_and_numeric_consistency",
+    "gate_blocker": false
+  }
+]

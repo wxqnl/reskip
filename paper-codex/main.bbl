@@ -1,0 +1,396 @@
+\begin{thebibliography}{51}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{AI-MO}(2024)]{aimo2024numinamath}
+{AI-MO}.
+\newblock {NuminaMath-CoT}: A dataset of competition-level mathematics problems
+  with chain-of-thought solutions.
+\newblock \url{https://huggingface.co/datasets/AI-MO/NuminaMath-CoT}, 2024.
+
+\bibitem[Bai et~al.(2025)]{bai2025qwen3vl}
+Shuai Bai et~al.
+\newblock {Qwen3-VL} technical report.
+\newblock \emph{arXiv preprint arXiv:2511.21631}, 2025.
+
+\bibitem[Bastos et~al.(2012)Bastos, Usrey, Adams, Mangun, Fries, and
+  Friston]{bastos2012canonical}
+Andre~M. Bastos, W.~Martin Usrey, Rick~A. Adams, George~R. Mangun, Pascal
+  Fries, and Karl~J. Friston.
+\newblock Canonical microcircuits for predictive coding.
+\newblock \emph{Neuron}, 76\penalty0 (4):\penalty0 695--711, 2012.
+\newblock \doi{10.1016/j.neuron.2012.10.038}.
+
+\bibitem[Black et~al.(2024)Black, Brown, Driess, et~al.]{black2024pi0}
+Kevin Black, Noah Brown, Danny Driess, et~al.
+\newblock $\pi_0$: A vision-language-action flow model for general robot
+  control.
+\newblock \emph{arXiv:2410.24164}, 2024.
+
+\bibitem[Brohan et~al.(2023)Brohan, Brown, Carbajal, Chebotar, Chen,
+  Choromanski, et~al.]{brohan2023rt}
+Anthony Brohan, Noah Brown, Justice Carbajal, Yevgen Chebotar, Xi~Chen,
+  Krzysztof Choromanski, et~al.
+\newblock {RT-2}: Vision-language-action models transfer web knowledge to
+  robotic control.
+\newblock \emph{arXiv preprint arXiv:2307.15818}, 2023.
+
+\bibitem[Buschman and Miller(2007)]{buschman2007topdown}
+Timothy~J. Buschman and Earl~K. Miller.
+\newblock Top-down versus bottom-up control of attention in the prefrontal and
+  posterior parietal cortices.
+\newblock \emph{Science}, 315\penalty0 (5820):\penalty0 1860--1862, 2007.
+\newblock \doi{10.1126/science.1138071}.
+
+\bibitem[Chen et~al.(2024)Chen, Li, Dong, Zhang, Zang, Chen, Duan, Wang, Qiao,
+  Lin, and Zhao]{chen2024mmstar}
+Lin Chen, Jinsong Li, Xiaoyi Dong, Pan Zhang, Yuhang Zang, Zehui Chen, Haodong
+  Duan, Jiaqi Wang, Yu~Qiao, Dahua Lin, and Feng Zhao.
+\newblock Are we on the right way for evaluating large vision-language models?
+\newblock In \emph{Neural Information Processing Systems (NeurIPS)}, 2024.
+\newblock MMStar benchmark; arXiv:2403.20330.
+
+\bibitem[{DeepSeek-AI}(2025)]{deepseek2025r1}
+{DeepSeek-AI}.
+\newblock {DeepSeek-R1}: Incentivizing reasoning capability in {LLMs} via
+  reinforcement learning, 2025.
+
+\bibitem[Dehghani et~al.(2019)Dehghani, Gouws, Vinyals, Uszkoreit, and
+  Kaiser]{dehghani2018universal}
+Mostafa Dehghani, Stephan Gouws, Oriol Vinyals, Jakob Uszkoreit, and Lukasz
+  Kaiser.
+\newblock Universal transformers.
+\newblock In \emph{ICLR}, 2019.
+
+\bibitem[DiCarlo et~al.(2012)DiCarlo, Zoccolan, and Rust]{dicarlo2012does}
+James~J. DiCarlo, Davide Zoccolan, and Nicole~C. Rust.
+\newblock How does the brain solve visual object recognition?
+\newblock \emph{Neuron}, 73\penalty0 (3):\penalty0 415--434, 2012.
+\newblock \doi{10.1016/j.neuron.2012.01.010}.
+
+\bibitem[Ding et~al.(2023)Ding, Chen, Xu, Qin, Zheng, Hu, Liu, Sun, and
+  Zhou]{ding2023ultrachat}
+Ning Ding, Yulin Chen, Bokai Xu, Yujia Qin, Zhi Zheng, Shengding Hu, Zhiyuan
+  Liu, Maosong Sun, and Bowen Zhou.
+\newblock Enhancing chat language models by scaling high-quality instructional
+  conversations.
+\newblock \emph{arXiv preprint arXiv:2305.14233}, 2023.
+
+\bibitem[Elbayad et~al.(2020)Elbayad, Gu, Grave, and Auli]{elbayad2020depth}
+Maha Elbayad, Jiatao Gu, Edouard Grave, and Michael Auli.
+\newblock Depth-adaptive transformer.
+\newblock In \emph{ICLR}, 2020.
+
+\bibitem[Elhoushi et~al.(2024)Elhoushi, Shrivastava, Liskovich, Hosmer, Wasti,
+  Lai, Mahmoud, Acun, Agarwal, Roman, Aly, Chen, and Wu]{elhoushi2024layerskip}
+Mostafa Elhoushi, Akshat Shrivastava, Diana Liskovich, Basil Hosmer, Bram
+  Wasti, Liangzhen Lai, Anas Mahmoud, Bilge Acun, Saurabh Agarwal, Ahmed Roman,
+  Ahmed Aly, Beidi Chen, and Carole-Jean Wu.
+\newblock {LayerSkip}: Enabling early exit inference and self-speculative
+  decoding.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 12622--12642.
+  Association for Computational Linguistics, 2024.
+\newblock \doi{10.18653/v1/2024.acl-long.681}.
+\newblock URL \url{https://aclanthology.org/2024.acl-long.681/}.
+
+\bibitem[Gao et~al.(2024)Gao, Tow, Abbasi, Biderman, et~al.]{eval-harness}
+Leo Gao, Jonathan Tow, Baber Abbasi, Stella Biderman, et~al.
+\newblock A framework for few-shot language model evaluation.
+\newblock \url{https://github.com/EleutherAI/lm-evaluation-harness}, 2024.
+
+\bibitem[Graves(2016)]{graves2016adaptive}
+Alex Graves.
+\newblock Adaptive computation time for recurrent neural networks.
+\newblock \emph{arXiv preprint arXiv:1603.08983}, 2016.
+
+\bibitem[Gromov et~al.(2024)Gromov, Tirumala, Shapourian, Glorioso, and
+  Roberts]{gromov2024unreasonable}
+Andrey Gromov, Kushal Tirumala, Hassan Shapourian, Paolo Glorioso, and
+  Daniel~A. Roberts.
+\newblock The unreasonable ineffectiveness of the deeper layers.
+\newblock \emph{arXiv preprint arXiv:2403.17887}, 2024.
+
+\bibitem[Guha et~al.(2025)Guha, Marten, Keh, Raoof, Smyrnis, Bansal, Nezhurina,
+  Mercat, Vu, Sprague, Suvarna, Feuer, Chen, Khan, Frankel, Grover, Choi,
+  Muennighoff, Su, Zhao, Yang, Pimpalgaonkar, Sharma, Ji, Deng, Pratt,
+  Ramanujan, Saad-Falcon, Li, Dave, Albalak, Arora, Wulfe, Hegde, Durrett, Oh,
+  Bansal, Gabriel, Grover, Chang, Shankar, Gokaslan, Merrill, Hashimoto, Choi,
+  Jitsev, Heckel, Sathiamoorthy, Dimakis, and Schmidt]{guha2025openthoughts}
+Etash Guha, Ryan Marten, Sedrick Keh, Negin Raoof, Georgios Smyrnis, Hritik
+  Bansal, Marianna Nezhurina, Jean Mercat, Trung Vu, Zayne Sprague, Ashima
+  Suvarna, Benjamin Feuer, Liangyu Chen, Zaid Khan, Eric Frankel, Sachin
+  Grover, Caroline Choi, Niklas Muennighoff, Shiye Su, Wanjia Zhao, John Yang,
+  Shreyas Pimpalgaonkar, Kartik Sharma, Charlie Cheng-Jie Ji, Yichuan Deng,
+  Sarah Pratt, Vivek Ramanujan, Jon Saad-Falcon, Jeffrey Li, Achal Dave, Alon
+  Albalak, Kushal Arora, Blake Wulfe, Chinmay Hegde, Greg Durrett, Sewoong Oh,
+  Mohit Bansal, Saadia Gabriel, Aditya Grover, Kai-Wei Chang, Vaishaal Shankar,
+  Aaron Gokaslan, Mike~A. Merrill, Tatsunori Hashimoto, Yejin Choi, Jenia
+  Jitsev, Reinhard Heckel, Maheswaran Sathiamoorthy, Alexandros~G. Dimakis, and
+  Ludwig Schmidt.
+\newblock {OpenThoughts}: Data recipes for reasoning models, 2025.
+\newblock URL \url{https://arxiv.org/abs/2506.04178}.
+
+\bibitem[Huang et~al.(2017)Huang, Liu, Van Der~Maaten, and
+  Weinberger]{huang2017densely}
+Gao Huang, Zhuang Liu, Laurens Van Der~Maaten, and Kilian~Q. Weinberger.
+\newblock Densely connected convolutional networks.
+\newblock In \emph{CVPR}, 2017.
+\newblock \doi{10.1109/CVPR.2017.243}.
+
+\bibitem[Kahneman(2011)]{kahneman2011thinking}
+Daniel Kahneman.
+\newblock \emph{Thinking, Fast and Slow}.
+\newblock Farrar, Straus and Giroux, 2011.
+
+\bibitem[Kar et~al.(2019)Kar, Kubilius, Schmidt, Issa, and
+  DiCarlo]{kar2019recurrent}
+Kohitij Kar, Jonas Kubilius, Kailyn Schmidt, Elias~B. Issa, and James~J.
+  DiCarlo.
+\newblock Evidence that recurrent circuits are critical to the ventral stream's
+  execution of core object recognition behavior.
+\newblock \emph{Nature Neuroscience}, 22\penalty0 (6):\penalty0 974--983, 2019.
+\newblock \doi{10.1038/s41593-019-0392-5}.
+
+\bibitem[Kembhavi et~al.(2016)Kembhavi, Salvato, Kolve, Seo, Hajishirzi, and
+  Farhadi]{kembhavi2016ai2d}
+Aniruddha Kembhavi, Michael Salvato, Eric Kolve, Minjoon Seo, Hannaneh
+  Hajishirzi, and Ali Farhadi.
+\newblock A diagram is worth a dozen images.
+\newblock In \emph{European Conference on Computer Vision (ECCV)}, 2016.
+
+\bibitem[Kietzmann et~al.(2019)Kietzmann, Spoerer, S{\"o}rensen, Cichy, Hauk,
+  and Kriegeskorte]{kietzmann2019recurrence}
+Tim~C. Kietzmann, Courtney~J. Spoerer, Lynn K.~A. S{\"o}rensen, Radoslaw~M.
+  Cichy, Olaf Hauk, and Nikolaus Kriegeskorte.
+\newblock Recurrence is required to capture the representational dynamics of
+  the human visual system.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 116\penalty0
+  (43):\penalty0 21854--21863, 2019.
+\newblock \doi{10.1073/pnas.1905544116}.
+
+\bibitem[Kim et~al.(2024)Kim, Pertsch, Karamcheti, Xiao, Balakrishna, Nair,
+  Rafailov, Foster, Lam, Vosshall, et~al.]{kim2024openvla}
+Moo~Jin Kim, Karl Pertsch, Siddharth Karamcheti, Ted Xiao, Ashwin Balakrishna,
+  Suraj Nair, Rafael Rafailov, Ethan Foster, Grace Lam, Maja Vosshall, et~al.
+\newblock Openvla: An open-source vision-language-action model.
+\newblock \emph{arXiv preprint arXiv:2406.09246}, 2024.
+
+\bibitem[Kim et~al.(2025)Kim, Finn, and Liang]{kim2025openvlaoft}
+Moo~Jin Kim, Chelsea Finn, and Percy Liang.
+\newblock Fine-tuning vision-language-action models: Optimizing speed and
+  success.
+\newblock \emph{arXiv preprint arXiv:2502.19645}, 2025.
+
+\bibitem[{Kimi Team} et~al.(2026){Kimi Team}, Chen, Zhang, Su, Xu, Pan, Wang,
+  Wang, Chen, Yin, Chen, Yan, Wei, Zhang, Meng, Hong, Xie, Liu, Lu, Tai, Chen,
+  Men, Guo, Charles, Lu, Sui, Zhu, Zhou, He, Huang, Xu, Wang, Lai, Du, Wu,
+  Yang, and Zhou]{chen2026attnres}
+{Kimi Team}, Guangyu Chen, Yu~Zhang, Jianlin Su, Weixin Xu, Siyuan Pan, Yaoyu
+  Wang, Yucheng Wang, Guanduo Chen, Bohong Yin, Yutian Chen, Junjie Yan, Ming
+  Wei, Y.~Zhang, Fanqing Meng, Chao Hong, Xiaotong Xie, Shaowei Liu, Enzhe Lu,
+  Yunpeng Tai, Yanru Chen, Xin Men, Haiqing Guo, Y.~Charles, Haoyu Lu, Lin Sui,
+  Jinguo Zhu, Zaida Zhou, Weiran He, Weixiao Huang, Xinran Xu, Yuzhi Wang,
+  Guokun Lai, Yulun Du, Yuxin Wu, Zhilin Yang, and Xinyu Zhou.
+\newblock Attention residuals, 2026.
+\newblock URL \url{https://arxiv.org/abs/2603.15031}.
+\newblock Technical report.
+
+\bibitem[Lamme and Roelfsema(2000)]{lamme2000distinct}
+Victor~A.F. Lamme and Pieter~R. Roelfsema.
+\newblock The distinct modes of vision offered by feedforward and recurrent
+  processing.
+\newblock \emph{Trends in Neurosciences}, 23\penalty0 (11):\penalty0 571--579,
+  2000.
+\newblock \doi{10.1016/S0166-2236(00)01657-X}.
+
+\bibitem[Larkum(2013)]{larkum2013cellular}
+Matthew Larkum.
+\newblock A cellular mechanism for cortical associations: an organizing
+  principle for the cerebral cortex.
+\newblock \emph{Trends in Neurosciences}, 36\penalty0 (3):\penalty0 141--151,
+  2013.
+\newblock \doi{10.1016/j.tins.2012.11.006}.
+
+\bibitem[Li et~al.(2024)Li, Zhang, Guo, Zhang, Li, Zhang, Zhang, Zhang, Li,
+  Liu, and Li]{li2024llavaonevision}
+Bo~Li, Yuanhan Zhang, Dong Guo, Renrui Zhang, Feng Li, Hao Zhang, Kaichen
+  Zhang, Peiyuan Zhang, Yanwei Li, Ziwei Liu, and Chunyuan Li.
+\newblock {LLaVA-OneVision}: Easy visual task transfer.
+\newblock \emph{arXiv preprint arXiv:2408.03326}, 2024.
+
+\bibitem[Liu et~al.(2023)Liu, Zhu, Gao, Feng, Liu, Zhu, and
+  Stone]{liu2023libero}
+Bo~Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, and Peter
+  Stone.
+\newblock {LIBERO}: Benchmarking knowledge transfer for lifelong robot
+  learning.
+\newblock In \emph{NeurIPS Datasets and Benchmarks}, 2023.
+
+\bibitem[Liu et~al.(2024{\natexlab{a}})Liu, Duan, Zhang, Li, Zhang, Zhao, Yuan,
+  Wang, He, Liu, Chen, and Lin]{liu2023mmbench}
+Yuan Liu, Haodong Duan, Yuanhan Zhang, Bo~Li, Songyang Zhang, Wangbo Zhao, Yike
+  Yuan, Jiaqi Wang, Conghui He, Ziwei Liu, Kai Chen, and Dahua Lin.
+\newblock Mmbench: Is your multi-modal model an all-around player?
+\newblock In \emph{European Conference on Computer Vision (ECCV)},
+  2024{\natexlab{a}}.
+\newblock arXiv:2307.06281.
+
+\bibitem[Liu et~al.(2024{\natexlab{b}})Liu, Li, Huang, Yang, Yu, Li, Yin, Liu,
+  Jin, and Bai]{liu2024ocrbench}
+Yuliang Liu, Zhang Li, Mingxin Huang, Biao Yang, Wenwen Yu, Chunyuan Li,
+  Xu-Cheng Yin, Cheng-Lin Liu, Lianwen Jin, and Xiang Bai.
+\newblock {OCRBench}: On the hidden mystery of {OCR} in large multimodal
+  models.
+\newblock \emph{Science China Information Sciences}, 67:\penalty0 220102,
+  2024{\natexlab{b}}.
+\newblock \doi{10.1007/s11432-024-4235-6}.
+\newblock arXiv:2305.07895.
+
+\bibitem[Men et~al.(2024)Men, Xu, Zhang, Wang, Lin, Lu, Han, and
+  Chen]{men2024shortgpt}
+Xin Men, Mingyu Xu, Qingyu Zhang, Bingning Wang, Hongyu Lin, Yaojie Lu, Xianpei
+  Han, and Weipeng Chen.
+\newblock Shortgpt: Layers in large language models are more redundant than you
+  expect.
+\newblock \emph{arXiv preprint arXiv:2403.03853}, 2024.
+
+\bibitem[{Octo Model Team}(2024)]{team2024octo}
+{Octo Model Team}.
+\newblock Octo: An open-source generalist robot policy.
+\newblock \emph{arXiv preprint arXiv:2405.12213}, 2024.
+
+\bibitem[{OpenAI}(2024)]{openai2024o1}
+{OpenAI}.
+\newblock Learning to reason with {LLMs}.
+\newblock \url{https://openai.com/index/learning-to-reason-with-llms/}, 2024.
+
+\bibitem[Paperno et~al.(2016)Paperno, Kruszewski, Lazaridou, Pham, Bernardi,
+  Pezzelle, Baroni, Boleda, and Fern\'{a}ndez]{paperno2016lambada}
+Denis Paperno, Germ\'{a}n Kruszewski, Angeliki Lazaridou, Quan~Ngoc Pham,
+  Raffaella Bernardi, Sandro Pezzelle, Marco Baroni, Gemma Boleda, and Raquel
+  Fern\'{a}ndez.
+\newblock The {LAMBADA} dataset: Word prediction requiring a broad discourse
+  context.
+\newblock In \emph{ACL}, 2016.
+
+\bibitem[Penedo et~al.(2024)Penedo, Kydl\'{i}\v{c}ek, Allal, Lozhkov, Mitchell,
+  Raffel, Von~Werra, and Wolf]{penedo2024fineweb}
+Guilherme Penedo, Hynek Kydl\'{i}\v{c}ek, Loubna~Ben Allal, Anton Lozhkov,
+  Margaret Mitchell, Colin Raffel, Leandro Von~Werra, and Thomas Wolf.
+\newblock The {FineWeb} datasets: Decanting the web for the finest text data at
+  scale.
+\newblock \emph{NeurIPS Datasets and Benchmarks}, 2024.
+
+\bibitem[Qu et~al.(2025)Qu, Song, Chen, Yao, Ye, Ding, Wang, Gu, Zhao, Wang,
+  and Li]{qu2025spatialvla}
+Delin Qu, Haoming Song, Qizhi Chen, Yuanqi Yao, Xinyi Ye, Yan Ding, Zhigang
+  Wang, Jiayuan Gu, Bin Zhao, Dong Wang, and Xuelong Li.
+\newblock {SpatialVLA}: Exploring spatial representations for
+  visual-language-action model.
+\newblock \emph{arXiv preprint arXiv:2501.15830}, 2025.
+
+\bibitem[Raghu et~al.(2021)Raghu, Unterthiner, Kornblith, Zhang, and
+  Dosovitskiy]{raghu2021vision}
+Maithra Raghu, Thomas Unterthiner, Simon Kornblith, Chiyuan Zhang, and Alexey
+  Dosovitskiy.
+\newblock Do vision transformers see like convolutional neural networks?
+\newblock In \emph{NeurIPS}, 2021.
+
+\bibitem[Raposo et~al.(2024)Raposo, Ritter, Richards, Lillicrap, Humphreys, and
+  Santoro]{raposo2024mixture}
+David Raposo, Sam Ritter, Blake Richards, Timothy Lillicrap, Peter~Conway
+  Humphreys, and Adam Santoro.
+\newblock Mixture-of-depths: Dynamically allocating compute in
+  transformer-based language models.
+\newblock \emph{arXiv preprint arXiv:2404.02258}, 2024.
+
+\bibitem[Schuster et~al.(2022)Schuster, Fisch, Gupta, Dehghani, Bahri, Tran,
+  Tay, and Metzler]{schuster2022confident}
+Tal Schuster, Adam Fisch, Jai Gupta, Mostafa Dehghani, Dara Bahri, Vinh Tran,
+  Yi~Tay, and Donald Metzler.
+\newblock Confident adaptive language modeling.
+\newblock In \emph{NeurIPS}, 2022.
+
+\bibitem[Snell et~al.(2025)Snell, Lee, Xu, and Kumar]{snell2024scaling}
+Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Kumar.
+\newblock Scaling {LLM} test-time compute optimally can be more effective than
+  scaling model parameters.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2025.
+
+\bibitem[Spoerer et~al.(2020)Spoerer, Kietzmann, Mehrer, Charest, and
+  Kriegeskorte]{spoerer2020recurrent}
+Courtney~J. Spoerer, Tim~C. Kietzmann, Johannes Mehrer, Ian Charest, and
+  Nikolaus Kriegeskorte.
+\newblock Recurrent neural networks can explain flexible trading of speed and
+  accuracy in biological vision.
+\newblock \emph{PLOS Computational Biology}, 16\penalty0 (10):\penalty0
+  e1008215, 2020.
+\newblock \doi{10.1371/journal.pcbi.1008215}.
+
+\bibitem[Srivastava et~al.(2015)Srivastava, Greff, and
+  Schmidhuber]{srivastava2015highway}
+Rupesh~Kumar Srivastava, Klaus Greff, and J{\"u}rgen Schmidhuber.
+\newblock Highway networks.
+\newblock In \emph{ICML Deep Learning Workshop}, 2015.
+
+\bibitem[van Bergen and Kriegeskorte(2020)]{vanbergen2020going}
+Ruben~S. van Bergen and Nikolaus Kriegeskorte.
+\newblock Going in circles is the way forward: the role of recurrence in visual
+  inference.
+\newblock \emph{Current Opinion in Neurobiology}, 65:\penalty0 176--193, 2020.
+\newblock \doi{10.1016/j.conb.2020.11.009}.
+
+\bibitem[Wei et~al.(2022)Wei, Wang, Schuurmans, Bosma, Ichter, Xia, Chi, Le,
+  and Zhou]{wei2022chain}
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia,
+  Ed~H. Chi, Quoc~V. Le, and Denny Zhou.
+\newblock Chain-of-thought prompting elicits reasoning in large language
+  models.
+\newblock In \emph{Neural Information Processing Systems (NeurIPS)}, 2022.
+
+\bibitem[{xAI}(2024)]{grok2024realworldqa}
+{xAI}.
+\newblock {RealWorldQA}: A benchmark for real-world spatial understanding.
+\newblock \url{https://huggingface.co/datasets/xai-org/RealworldQA}, 2024.
+
+\bibitem[Yue et~al.(2024)Yue, Ni, Zhang, Zheng, Liu, Zhang, Stevens, Jiang,
+  Ren, Sun, et~al.]{yue2024mmmu}
+Xiang Yue, Yuansheng Ni, Kai Zhang, Tianyu Zheng, Ruoqi Liu, Ge~Zhang, Samuel
+  Stevens, Dongfu Jiang, Weiming Ren, Yuxuan Sun, et~al.
+\newblock {MMMU}: A massive multi-discipline multimodal understanding and
+  reasoning benchmark for expert {AGI}.
+\newblock In \emph{CVPR}, 2024.
+
+\bibitem[Zelikman et~al.(2024)Zelikman, Harik, Shao, Jayasiri, Haber, and
+  Goodman]{zelikman2024quietstar}
+Eric Zelikman, Georges Harik, Yijia Shao, Varuna Jayasiri, Nick Haber, and
+  Noah~D. Goodman.
+\newblock Quiet-{STaR}: Language models can teach themselves to think before
+  speaking.
+\newblock In \emph{Conference on Language Modeling (COLM)}, 2024.
+
+\bibitem[Zellers et~al.(2019)Zellers, Holtzman, Bisk, Farhadi, and
+  Choi]{zellers2019hellaswag}
+Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi.
+\newblock {HellaSwag}: Can a machine really finish your sentence?
+\newblock In \emph{ACL}, 2019.
+
+\bibitem[Zhao et~al.(2023)Zhao, Kumar, Levine, and Finn]{zhao2023learning}
+Tony~Z. Zhao, Vikash Kumar, Sergey Levine, and Chelsea Finn.
+\newblock Learning fine-grained bimanual manipulation with low-cost hardware.
+\newblock In \emph{RSS}, 2023.
+
+\bibitem[Zheng et~al.(2024)Zheng, Liang, Huang, Gao, Daum{\'e}, Kolobov, Huang,
+  and Yang]{zheng2024tracevla}
+Ruijie Zheng, Yongyuan Liang, Shuaiyi Huang, Jianfeng Gao, Hal Daum{\'e},
+  Andrey Kolobov, Furong Huang, and Jianwei Yang.
+\newblock {TraceVLA}: Visual trace prompting enhances spatial-temporal
+  awareness for generalist robotic policies.
+\newblock \emph{arXiv preprint arXiv:2412.10345}, 2024.
+
+\end{thebibliography}

@@ -13,10 +13,27 @@ import torch.nn.functional as F
 
 sys.path.insert(0, "/home/user01/Minko/reskip2/reskip/retrofit")
 from transformers import AutoModelForImageTextToText, AutoTokenizer
-from train_qwen3vl import build_text_stream
 
 
 MODEL = "/home/user01/Minko/models/Qwen3-VL-2B"
+
+
+def build_text_stream(tok, seq_len=2048, seed=0):
+    """Yield 1-D token tensors of length seq_len from LAMBADA test text.
+
+    Self-contained replacement for the (stale) ``train_qwen3vl.build_text_stream``
+    import. Gromov needs only a handful of sequences for cosine-sim averaging,
+    so plain LAMBADA prose is sufficient.
+    """
+    from datasets import load_dataset
+    ds = load_dataset("EleutherAI/lambada_openai", "en", split="test").shuffle(seed=seed)
+    buf: list[int] = []
+    for ex in ds:
+        ids = tok.encode(ex["text"].strip(), add_special_tokens=False)
+        buf.extend(ids)
+        while len(buf) >= seq_len:
+            seq, buf = buf[:seq_len], buf[seq_len:]
+            yield torch.tensor(seq, dtype=torch.long)
 
 
 @torch.no_grad()
@@ -64,6 +81,8 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--num-seqs", type=int, default=8)
     p.add_argument("--gpu", type=int, default=0)
+    p.add_argument("--output", default=None,
+                   help="If set, save sorted-by-influence layer ranking as JSON.")
     args = p.parse_args()
 
     device = f"cuda:{args.gpu}"
@@ -84,6 +103,19 @@ def main():
     print(f"\nLowest-influence layers (suggest for pruning, lowest first):")
     for rank, lidx in enumerate(ranked[:12]):
         print(f"  #{rank+1}: layer {lidx} (influence={influence[lidx]:.4f})")
+
+    if args.output:
+        import json
+        from pathlib import Path
+        out_path = Path(args.output)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(json.dumps({
+            "model": MODEL,
+            "num_layers": len(influence),
+            "influence": influence,
+            "ranked_low_to_high": ranked,
+        }, indent=2))
+        print(f"\n[gromov] ranking saved to {out_path}")
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ from qwen3vl_attnres_retrofit import Qwen3VLAttnResRetrofit
 MODEL_PATH = "/home/user01/Minko/models/Qwen3-VL-2B"
 
 
-def load(state_path, device):
+def load(state_path, device, model_path=None):
     """Load a fresh UNPATCHED base and a separately-wrapped retrofit.
 
     BUG fixed 2026-04-20: the previous version returned the same ``base``
@@ -37,13 +37,14 @@ def load(state_path, device):
     called the returned "base" and unintentionally measured retrofit-full.
     """
     dtype = torch.bfloat16
-    tok = AutoTokenizer.from_pretrained(MODEL_PATH)
-    true_base = AutoModelForImageTextToText.from_pretrained(MODEL_PATH, dtype=dtype).to(device).eval()
+    mp = model_path or MODEL_PATH
+    tok = AutoTokenizer.from_pretrained(mp)
+    true_base = AutoModelForImageTextToText.from_pretrained(mp, dtype=dtype).to(device).eval()
     if state_path is None:
         return true_base, None, tok
     # Separate base for the retrofit wrapper so ``true_base.model.language_model.forward``
     # stays as HF's stock forward.
-    retro_base = AutoModelForImageTextToText.from_pretrained(MODEL_PATH, dtype=dtype).to(device).eval()
+    retro_base = AutoModelForImageTextToText.from_pretrained(mp, dtype=dtype).to(device).eval()
     ck = torch.load(state_path, map_location="cpu")
     cfg = ck.get("config", {})
     kwargs = dict(num_blocks=cfg.get("num_blocks", 14))
@@ -57,7 +58,7 @@ def load(state_path, device):
 
 
 @torch.no_grad()
-def calibrate_thresholds(model, tok, device, n=32, seq_len=512):
+def calibrate_thresholds(model, tok, device, n=32, seq_len=512, q=0.85):
     ds = load_dataset("EleutherAI/lambada_openai", "en", split="test").select(range(n, n + n))
     per_block = defaultdict(list)
     for ex in ds:
@@ -70,7 +71,7 @@ def calibrate_thresholds(model, tok, device, n=32, seq_len=512):
     for b, vals in per_block.items():
         if vals:
             vs = sorted(vals)
-            thr[b] = vs[int(0.85 * (len(vs) - 1))]
+            thr[b] = vs[int(q * (len(vs) - 1))]
     return thr
 
 
@@ -110,6 +111,7 @@ def bench(m, input_ids, n_decode, warmup, timed):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--state-path", required=True)
+    p.add_argument("--model-path", default=None)
     p.add_argument("--prefill-lens", default="1024,2048")
     p.add_argument("--decode-tokens", type=int, default=128)
     p.add_argument("--warmup", type=int, default=3)
@@ -117,15 +119,16 @@ def main():
     p.add_argument("--gpu", type=int, default=0)
     p.add_argument("--eligible", default="4,6")
     p.add_argument("--max-skips", type=int, default=2)
+    p.add_argument("--q", type=float, default=0.85)
     args = p.parse_args()
     device = f"cuda:{args.gpu}"
 
-    base_wrap, retro, tok = load(args.state_path, device)
-    thr = calibrate_thresholds(retro, tok, device)
+    base_wrap, retro, tok = load(args.state_path, device, args.model_path)
+    thr = calibrate_thresholds(retro, tok, device, q=args.q)
     eligible = set(int(x) for x in args.eligible.split(","))
     dyn_cfg = dict(thresholds=thr, eligible_blocks=eligible, max_skips=args.max_skips)
     print(f"decode tokens per call: {args.decode_tokens}, warmup={args.warmup}, timed={args.timed}", flush=True)
-    print(f"dyn-skip config: q=0.85, max_skips={args.max_skips}, eligible={sorted(eligible)}")
+    print(f"dyn-skip config: q={args.q}, max_skips={args.max_skips}, eligible={sorted(eligible)}")
     for seq in [int(x) for x in args.prefill_lens.split(",")]:
         ids = torch.randint(0, 100000, (1, seq), device=device)
 

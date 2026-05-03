@@ -1,0 +1,17 @@
+{
+  "headline_claims": [
+    "We introduce AR-RETROFIT, an identity- preserving gated residual injection that adds an ATTNRES-style routing path to a frozen backbone with well under 1% new parameters.",
+    "The biological analogue motivating this paper is different: control is embedded in the processing substrate rather than attached as a separate decision head.",
+    "The central problem in this paper is how to install such a signal into standard pretrained transformers through a short fine-tune, while preserving their original capabilities and making the signal usable for calibrated depth skipping."
+  ],
+  "closure_targets": [],
+  "section_claims": {
+    "abstract": [
+      "We introduce AR-RETROFIT, an identity- preserving gated residual injection that adds an ATTNRES-style routing path to a frozen backbone with well under 1% new parameters."
+    ],
+    "introduction": [
+      "The biological analogue motivating this paper is different: control is embedded in the processing substrate rather than attached as a separate decision head.",
+      "The central problem in this paper is how to install such a signal into standard pretrained transformers through a short fine-tune, while preserving their original capabilities and making the signal usable for calibrated depth skipping."
+    ]
+  }
+}

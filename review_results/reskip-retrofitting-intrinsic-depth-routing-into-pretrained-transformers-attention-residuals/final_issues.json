@@ -1,0 +1,75 @@
+[
+  {
+    "title": "Abstract and conclusion claims need explicit evidence traceability",
+    "quote": "",
+    "explanation": "At least one headline claim was detected. Deep review should check whether experiments and conclusion language trace back to the same bounded evidence base.",
+    "comment_type": "claim_accuracy",
+    "severity": "major",
+    "confidence": "low",
+    "source_kind": "llm",
+    "source_section": "abstract",
+    "related_sections": [
+      "abstract",
+      "results",
+      "conclusion"
+    ],
+    "root_cause_key": "abstract-and-conclusion-claims-need-explicit-evidence-traceability",
+    "review_lane": "claims_vs_evidence",
+    "gate_blocker": false,
+    "quote_verified": false
+  },
+  {
+    "title": "Cross-section numeric consistency should be reconciled",
+    "quote": "The practical obstacle is that existing models are trained from scratch with the modified residual; reproducing this at the 2--7B scale that real applications need costs tens of thousands of GPU-hours (Appendix~app:motivation).",
+    "explanation": "Multiple sections contain numeric claims. Confirm that the same quantities reconcile across main text, tables, and appendix material.",
+    "comment_type": "presentation",
+    "severity": "moderate",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "introduction",
+    "related_sections": [
+      "introduction",
+      "method",
+      "related"
+    ],
+    "root_cause_key": "cross-section-numeric-consistency-should-be-reconciled",
+    "review_lane": "notation_and_numeric_consistency",
+    "gate_blocker": false,
+    "quote_verified": true
+  },
+  {
+    "title": "Comparison protocol should make fairness assumptions explicit",
+    "quote": "is the canonical partition for both scales: it sits on the accuracy plateau alongside and halves the per-token router count, which is the dominant factor in the inference-cost result below.",
+    "explanation": "Comparative evaluation language was detected. Deep review should verify that baseline tuning, data splits, and reporting conventions are described symmetrically.",
+    "comment_type": "methodology",
+    "severity": "moderate",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "method",
+    "related_sections": [
+      "method"
+    ],
+    "root_cause_key": "comparison-protocol-should-make-fairness-assumptions-explicit",
+    "review_lane": "evaluation_fairness_and_reproducibility",
+    "gate_blocker": false,
+    "quote_verified": true
+  },
+  {
+    "title": "Novelty claim should be grounded against the closest prior work",
+    "quote": "",
+    "explanation": "The paper positions itself against prior work, but the current wording should make the closest comparator and the real novelty delta explicit instead of relying on broad superiority language.",
+    "comment_type": "claim_accuracy",
+    "severity": "moderate",
+    "confidence": "low",
+    "source_kind": "llm",
+    "source_section": "related_work",
+    "related_sections": [
+      "related_work",
+      "results"
+    ],
+    "root_cause_key": "novelty-claim-should-be-grounded-against-the-closest-prior-work",
+    "review_lane": "prior_art_and_novelty_grounding",
+    "gate_blocker": false,
+    "quote_verified": false
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Result claims should identify comparison scope and uncertainty",
+    "quote": "Earlier L=2 runs remain in the appendix as ablation controls, but L=4 is the canonical setting because it preserves the accuracy plateau while halving router calls relative to L=2.",
+    "explanation": "The results section reports comparative performance. Confirm whether the paper states the evaluation scope, variance, and fairness conditions tightly enough for a reviewer.",
+    "comment_type": "methodology",
+    "severity": "moderate",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "experiment",
+    "related_sections": [
+      "experiment",
+      "methods"
+    ],
+    "review_lane": "evaluation_fairness_and_reproducibility",
+    "gate_blocker": false
+  }
+]

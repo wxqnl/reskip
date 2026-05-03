@@ -1,0 +1,301 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\bibstyle{plainnat}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{chen2026attnres}
+\citation{liu2023libero}
+\citation{schuster2022confident,elbayad2020depth}
+\citation{raposo2024mixture}
+\citation{gromov2024unreasonable,men2024shortgpt}
+\citation{dehghani2018universal}
+\citation{graves2016adaptive}
+\citation{chen2026attnres}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Insight.}{1}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{From LLMs to latency-critical VLAs.}{2}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{But training \textsc  {AttnRes}{} from scratch is prohibitive.}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Contributions.}{2}{section*.4}\protected@file@percent }
+\citation{liu2023libero}
+\citation{black2024pi0,kim2024openvla}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Forward-pass wall-clock at 340M scale (H100, bfloat16, batch 1, random tokens, median of 20 runs). The \textsc  {AttnRes}{} overhead is what every block-level \textsc  {AttnRes}{} forward pays before any skip decision is made.\relax }}{3}{table.caption.5}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:motivation_340m_latency}{{1}{3}{Forward-pass wall-clock at 340M scale (H100, bfloat16, batch 1, random tokens, median of 20 runs). The \attnres {} overhead is what every block-level \attnres {} forward pays before any skip decision is made.\relax }{table.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}The Latency Problem \textsc  {AttnRes}{} Must Solve}{3}{section.2}\protected@file@percent }
+\newlabel{sec:motivation}{{2}{3}{The Latency Problem \attnres {} Must Solve}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}\textsc  {AttnRes}{} is not free: block-level probe overhead at 340M}{3}{subsection.2.1}\protected@file@percent }
+\newlabel{sec:motivation_latency}{{2.1}{3}{\attnres {} is not free: block-level probe overhead at 340M}{subsection.2.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Reading the table.}{3}{section*.6}\protected@file@percent }
+\citation{bai2025qwen3vl}
+\citation{zhu2025internvl3}
+\citation{li2024llavaonevision}
+\citation{kim2024openvla}
+\citation{black2024pi0}
+\citation{team2024octo}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Stock Qwen3-VL-2B forward-pass latency (H100, bfloat16, batch 1, single image where applicable). The ``what it represents'' column maps sequence length to VLA usage.\relax }}{4}{table.caption.7}\protected@file@percent }
+\newlabel{tab:motivation_vlm_latency}{{2}{4}{Stock Qwen3-VL-2B forward-pass latency (H100, bfloat16, batch 1, single image where applicable). The ``what it represents'' column maps sequence length to VLA usage.\relax }{table.caption.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Published training scales for recent open VLMs and VLAs at the 0.5--7B class. Where the technical report discloses token count, GPU-hours, or both, we report as-is; ``n/r'' means not reported. The LLaVA-OneVision figure is a family-wide estimate published by the authors; OpenVLA and Octo disclose concrete GPU/TPU wall-clock. The bottom row is a lower-bound extrapolation: pretraining a 2B \textsc  {AttnRes}{}-VLM from scratch cannot take less compute than the same-scale standard-residual models above, and block-level \textsc  {AttnRes}{} adds further per-step overhead (Table\nobreakspace  {}\ref  {tab:motivation_340m_latency}).\relax }}{4}{table.caption.8}\protected@file@percent }
+\newlabel{tab:motivation_cost}{{3}{4}{Published training scales for recent open VLMs and VLAs at the 0.5--7B class. Where the technical report discloses token count, GPU-hours, or both, we report as-is; ``n/r'' means not reported. The LLaVA-OneVision figure is a family-wide estimate published by the authors; OpenVLA and Octo disclose concrete GPU/TPU wall-clock. The bottom row is a lower-bound extrapolation: pretraining a 2B \attnres {}-VLM from scratch cannot take less compute than the same-scale standard-residual models above, and block-level \attnres {} adds further per-step overhead (Table~\ref {tab:motivation_340m_latency}).\relax }{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Why this is a load-bearing constraint for VLA}{4}{subsection.2.2}\protected@file@percent }
+\newlabel{sec:motivation_vla}{{2.2}{4}{Why this is a load-bearing constraint for VLA}{subsection.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}From-scratch \textsc  {AttnRes}{} at VLA scale is prohibitive}{4}{subsection.2.3}\protected@file@percent }
+\newlabel{sec:motivation_cost}{{2.3}{4}{From-scratch \attnres {} at VLA scale is prohibitive}{subsection.2.3}{}}
+\citation{chen2026attnres}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Summary: the gap a solution has to close}{5}{subsection.2.4}\protected@file@percent }
+\newlabel{sec:motivation_gap}{{2.4}{5}{Summary: the gap a solution has to close}{subsection.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Background: Attention Residuals}{5}{section.3}\protected@file@percent }
+\newlabel{sec:background}{{3}{5}{Background: Attention Residuals}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Standard residual connections}{5}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Attention Residuals}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{eq:attnres}{{2}{5}{Attention Residuals}{equation.3.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Two-phase execution.}{5}{section*.9}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Two-phase \textsc  {AttnRes}{} forward with dynamic \textsc  {ReSkip}{}\relax }}{6}{algorithm.1}\protected@file@percent }
+\newlabel{alg:two_phase}{{1}{6}{Two-phase \attnres {} forward with dynamic \reskip {}\relax }{algorithm.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}\textsc  {ReSkip}{}: AttnRes-Guided Layer Skipping}{6}{section.4}\protected@file@percent }
+\newlabel{sec:reskip}{{4}{6}{\reskip {}: AttnRes-Guided Layer Skipping}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Method}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:reskip_method}{{4.1}{6}{Method}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Two offline scores per block.}{6}{section*.10}\protected@file@percent }
+\newlabel{eq:importance}{{3}{6}{Two offline scores per block}{equation.4.3}{}}
+\newlabel{eq:ablation}{{4}{6}{Two offline scores per block}{equation.4.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Dynamic skip from phase-1 statistics.}{6}{section*.11}\protected@file@percent }
+\newlabel{eq:skip_rule}{{5}{6}{Dynamic skip from phase-1 statistics}{equation.4.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Position-specific calibrated thresholds.}{6}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Eligible-position selection uses both $I$ and $A$.}{6}{section*.13}\protected@file@percent }
+\citation{schuster2022confident}
+\citation{raposo2024mixture}
+\citation{gromov2024unreasonable}
+\citation{elhoushi2024layerskip}
+\citation{chen2026attnres}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textsc  {ReSkip}{} versus representative adaptive-computation methods.\relax }}{7}{table.caption.16}\protected@file@percent }
+\newlabel{tab:method_comparison}{{4}{7}{\reskip {} versus representative adaptive-computation methods.\relax }{table.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {\textsc  {AttnRes}{} routing weights do not predict ablation impact (340M).} (a)\nobreakspace  {}Learned block-level attention $\alpha _{n \to l}$. (b)\nobreakspace  {}Per-block \emph  {\textsc  {AttnRes}{} importance} $I(n)$ (blue, left axis) and \emph  {static removal PPL ratio} $A(n)$ (orange, right axis). Block\nobreakspace  {}2 has moderate $I$ yet the highest removal impact ($8.1\times $ PPL); blocks\nobreakspace  {}3--5 span the space of low ablation impact but with very different importance levels. \textsc  {ReSkip}{} needs \emph  {both} signals: low $I$ to trigger often and low $A$ to trigger safely.\relax }}{7}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:reskip_routing}{{1}{7}{\textbf {\attnres {} routing weights do not predict ablation impact (340M).} (a)~Learned block-level attention $\alpha _{n \to l}$. (b)~Per-block \emph {\attnres {} importance} $I(n)$ (blue, left axis) and \emph {static removal PPL ratio} $A(n)$ (orange, right axis). Block~2 has moderate $I$ yet the highest removal impact ($8.1\times $ PPL); blocks~3--5 span the space of low ablation impact but with very different importance levels. \reskip {} needs \emph {both} signals: low $I$ to trigger often and low $A$ to trigger safely.\relax }{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {paragraph}{Cost of the skip decision.}{7}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Comparison to existing methods.}{7}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}The importance--ablation disconnect}{7}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:reskip_disconnect}{{4.2}{7}{The importance--ablation disconnect}{subsection.4.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Dynamic skip as a function of the candidate position set $\mathcal  {P}$ on 340M ($M_{\qopname  \relax m{max}}{=}2$, $q{=}0.85$).\relax }}{7}{table.caption.18}\protected@file@percent }
+\newlabel{tab:reskip_position_ablation}{{5}{7}{Dynamic skip as a function of the candidate position set $\mathcal {P}$ on 340M ($M_{\max }{=}2$, $q{=}0.85$).\relax }{table.caption.18}{}}
+\citation{penedo2024fineweb}
+\citation{eval-harness}
+\citation{paperno2016lambada}
+\citation{zellers2019hellaswag}
+\citation{clark2018arc}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Downstream benchmark comparison on 340M FineWeb-Edu. Dynamic \textsc  {ReSkip}{} preserves every metric while running $1.19\times $ faster end-to-end at sequence length 8192.\relax }}{8}{table.caption.20}\protected@file@percent }
+\newlabel{tab:reskip_benchmark}{{6}{8}{Downstream benchmark comparison on 340M FineWeb-Edu. Dynamic \reskip {} preserves every metric while running $1.19\times $ faster end-to-end at sequence length 8192.\relax }{table.caption.20}{}}
+\newlabel{fig:reskip_pareto}{{2a}{8}{Accuracy--compute Pareto. $\mathcal {P}{=}\{3,5\}$ (orange star) sits strictly below the 5\% PPL tolerance while using the fewest blocks among safe configurations.\relax }{figure.caption.21}{}}
+\newlabel{sub@fig:reskip_pareto}{{a}{8}{Accuracy--compute Pareto. $\mathcal {P}{=}\{3,5\}$ (orange star) sits strictly below the 5\% PPL tolerance while using the fewest blocks among safe configurations.\relax }{figure.caption.21}{}}
+\newlabel{fig:reskip_latency}{{2b}{8}{Wall-clock latency on a single H100 at seq\_len=8192. Moving from $\{5\}/M_{\max }{=}1$ to $\{3,5\}/M_{\max }{=}2$ improves speedup from $1.14\times $ to $1.19\times $.\relax }{figure.caption.21}{}}
+\newlabel{sub@fig:reskip_latency}{{b}{8}{Wall-clock latency on a single H100 at seq\_len=8192. Moving from $\{5\}/M_{\max }{=}1$ to $\{3,5\}/M_{\max }{=}2$ improves speedup from $1.14\times $ to $1.19\times $.\relax }{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textsc  {ReSkip}{} on 340M FineWeb-Edu. Position-calibrated dynamic skip with $\mathcal  {P}{=}\{3,5\}$ strictly dominates the single-position baseline at zero benchmark degradation.\relax }}{8}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:reskip_pareto_latency}{{2}{8}{\reskip {} on 340M FineWeb-Edu. Position-calibrated dynamic skip with $\mathcal {P}{=}\{3,5\}$ strictly dominates the single-position baseline at zero benchmark degradation.\relax }{figure.caption.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Results on 340M from-scratch \textsc  {AttnRes}{}}{8}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:reskip_results}{{4.3}{8}{Results on 340M from-scratch \attnres {}}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Setup.}{8}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Quality.}{8}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Speed.}{9}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Input dependence.}{9}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Validation, not contribution.}{9}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}\textsc  {AR-Retrofit}{}: Retrofit Method}{9}{section.5}\protected@file@percent }
+\newlabel{sec:retrofit}{{5}{9}{\retrofit {}: Retrofit Method}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Problem statement}{9}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Why this is not trivial.}{9}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}The $\gamma $-gated residual-injection method}{9}{subsection.5.2}\protected@file@percent }
+\newlabel{sec:retrofit_method}{{5.2}{9}{The $\gamma $-gated residual-injection method}{subsection.5.2}{}}
+\newlabel{eq:gamma_gate}{{6}{9}{The $\gamma $-gated residual-injection method}{equation.5.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Identity at initialisation.}{10}{section*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Why gate-and-adapt instead of the pure paper-proposed routes.}{10}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What trains and what freezes.}{10}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Router numerics.}{10}{section*.30}\protected@file@percent }
+\newlabel{sec:retrofit_cache}{{5.2}{10}{Skip as a special case of the same path}{section*.31}{}}
+\@writefile{toc}{\contentsline {paragraph}{Skip as a special case of the same path.}{10}{section*.31}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Skip under \texttt  {use\_cache=True}.}{10}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Training objective}{11}{subsection.5.3}\protected@file@percent }
+\newlabel{sec:retrofit_recipe}{{5.3}{11}{Training objective}{subsection.5.3}{}}
+\newlabel{eq:retrofit_loss}{{7}{11}{Training objective}{equation.5.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Why skip-branch KL matters.}{11}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Experiments}{11}{section.6}\protected@file@percent }
+\newlabel{sec:experiments}{{6}{11}{Experiments}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Phase 1: From-scratch \textsc  {AttnRes}{} across scales}{11}{subsection.6.1}\protected@file@percent }
+\newlabel{sec:exp_scale}{{6.1}{11}{Phase 1: From-scratch \attnres {} across scales}{subsection.6.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Headline findings from the 340M experiment (Section\nobreakspace  {}\ref  {sec:reskip_results}).}{11}{section*.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Planned remaining scales.}{11}{section*.35}\protected@file@percent }
+\citation{bai2025qwen3vl}
+\citation{ding2023ultrachat}
+\citation{liu2023llava}
+\citation{li2024llavaonevision}
+\citation{paperno2016lambada}
+\citation{zellers2019hellaswag}
+\citation{liu2023mmbench}
+\citation{yue2024mmmu}
+\citation{chen2024mmstar}
+\citation{kembhavi2016ai2d}
+\citation{liu2024ocrbench}
+\citation{grok2024realworldqa}
+\@writefile{toc}{\contentsline {paragraph}{Why the rest of the paper does not wait on these.}{12}{section*.36}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Phase 2: \textsc  {AR-Retrofit}{} on Qwen3-VL-2B}{12}{subsection.6.2}\protected@file@percent }
+\newlabel{sec:exp_retrofit}{{6.2}{12}{Phase 2: \retrofit {} on Qwen3-VL-2B}{subsection.6.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{What Phase\nobreakspace  {}2 tests.}{12}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Targets.}{12}{section*.38}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Setup.}{12}{section*.39}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Evaluation.}{12}{section*.40}\protected@file@percent }
+\citation{liu2023mmbench}
+\citation{liu2023mmbench}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces \textbf  {Retrofit on Qwen3-VL-2B, text benchmarks and identity-at-init.} H\_r256\_5k is the $5$k-step v1 retrofit, used throughout the paper for Pareto, wall-clock, and VLA warm-start. Dynamic skip uses the rule of Section\nobreakspace  {}\ref  {sec:reskip_method} with $q{=}0.95$, $M_{\qopname  \relax m{max}}{=}1$, $\mathcal  {P}{=}\{4,6,11\}$, thresholds calibrated on 32 held-out LAMBADA prefixes. LAMBADA / HellaSwag at $n{=}500$; MMBench / MMMU / MMStar at $n{=}300$/$94$/$500$ via our lightweight likelihood rubric---Table\nobreakspace  {}\ref  {tab:retrofit_vlm_full} reports the v3 retrofit on the authoritative \texttt  {lmms-eval} full-set grader.\relax }}{13}{table.caption.42}\protected@file@percent }
+\newlabel{tab:retrofit_qwen}{{7}{13}{\textbf {Retrofit on Qwen3-VL-2B, text benchmarks and identity-at-init.} H\_r256\_5k is the $5$k-step v1 retrofit, used throughout the paper for Pareto, wall-clock, and VLA warm-start. Dynamic skip uses the rule of Section~\ref {sec:reskip_method} with $q{=}0.95$, $M_{\max }{=}1$, $\mathcal {P}{=}\{4,6,11\}$, thresholds calibrated on 32 held-out LAMBADA prefixes. LAMBADA / HellaSwag at $n{=}500$; MMBench / MMMU / MMStar at $n{=}300$/$94$/$500$ via our lightweight likelihood rubric---Table~\ref {tab:retrofit_vlm_full} reports the v3 retrofit on the authoritative \texttt {lmms-eval} full-set grader.\relax }{table.caption.42}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces \textbf  {Retrofit on Qwen3-VL-2B and 4B, full \texttt  {lmms-eval} VLM benchmarks.} v3 retrofits (LLaVA-OneVision-anchored, $10$k steps) evaluated on the official full splits via \texttt  {lmms-eval}. Every v3 2B cell meets or beats base on six benchmarks; MMMU $+2.5$pp, MMBench $+3.5$pp, AI2D $+2.9$pp, OCR $+3.7$pp, RealWorldQA $+2.0$pp. On 4B, v3 also meets or beats base on $4/6$; the one material regression (MMStar $-3.7$pp) is itself an artifact of the default $L{=}2$ partition: the block-partition sweep in Section\nobreakspace  {}\ref  {sec:exp_block_partition} recovers MMStar to $+0.8$pp at $L{=}4$. MMBench is reported on the OpenAI GPT-$4$ judge (consistent with \citep  {liu2023mmbench}); MMMU is \texttt  {mmmu\_val}, MMStar is the 6-subcategory average.\relax }}{13}{table.caption.43}\protected@file@percent }
+\newlabel{tab:retrofit_vlm_full}{{8}{13}{\textbf {Retrofit on Qwen3-VL-2B and 4B, full \texttt {lmms-eval} VLM benchmarks.} v3 retrofits (LLaVA-OneVision-anchored, $10$k steps) evaluated on the official full splits via \texttt {lmms-eval}. Every v3 2B cell meets or beats base on six benchmarks; MMMU $+2.5$pp, MMBench $+3.5$pp, AI2D $+2.9$pp, OCR $+3.7$pp, RealWorldQA $+2.0$pp. On 4B, v3 also meets or beats base on $4/6$; the one material regression (MMStar $-3.7$pp) is itself an artifact of the default $L{=}2$ partition: the block-partition sweep in Section~\ref {sec:exp_block_partition} recovers MMStar to $+0.8$pp at $L{=}4$. MMBench is reported on the OpenAI GPT-$4$ judge (consistent with \citep {liu2023mmbench}); MMMU is \texttt {mmmu\_val}, MMStar is the 6-subcategory average.\relax }{table.caption.43}{}}
+\@writefile{toc}{\contentsline {paragraph}{Identity-at-init.}{13}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Full-path: retrofit preserves base (v1) and strictly improves on it (v3).}{13}{section*.44}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces \textbf  {Dynamic skip Pareto} on the canonical $5$k $\gamma {\to }1$ retrofit of Qwen3-VL-2B, eligible positions $\mathcal  {P}{=}\{4,6,11\}$. Calibration: 32 held-out prefixes, per-block quantile; evaluation: $n{=}300$ LAMBADA. The $q{=}0.95$, $M{=}1$ row is the recommended operating point; it is the only setting where dynamic skip \emph  {improves} LAMBADA accuracy over the retrofit full path ($0.593$ vs.\ $0.576$).\relax }}{14}{table.caption.46}\protected@file@percent }
+\newlabel{tab:retrofit_pareto}{{9}{14}{\textbf {Dynamic skip Pareto} on the canonical $5$k $\gamma {\to }1$ retrofit of Qwen3-VL-2B, eligible positions $\mathcal {P}{=}\{4,6,11\}$. Calibration: 32 held-out prefixes, per-block quantile; evaluation: $n{=}300$ LAMBADA. The $q{=}0.95$, $M{=}1$ row is the recommended operating point; it is the only setting where dynamic skip \emph {improves} LAMBADA accuracy over the retrofit full path ($0.593$ vs.\ $0.576$).\relax }{table.caption.46}{}}
+\@writefile{toc}{\contentsline {paragraph}{Dynamic skip at near-zero cost.}{14}{section*.45}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Wall-clock speed.}{14}{section*.48}\protected@file@percent }
+\citation{chen2026attnres}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces \textbf  {Wall-clock latency} on a single H100, bfloat16, random input tokens, batch $1$, median of $20$ timed forwards after $5$ warmup. \texttt  {use\_cache=True} is the regime production \texttt  {generate} runs in; \texttt  {use\_cache=False} is pure prefill. Retrofit row uses the v1 H\_r256\_5k checkpoint; skip row uses $\mathcal  {P}{=}\{4,6\}$, $q{=}0.85$, $M_{\qopname  \relax m{max}}{=}2$. Row VLA is the same retrofit loaded into the VLA in-backbone forward of Section\nobreakspace  {}\ref  {sec:vla}---identical within $0.5\%$ of VLM retrofit, confirming the per-block router+adapter cost is the structural bottleneck.\relax }}{15}{table.caption.47}\protected@file@percent }
+\newlabel{tab:retrofit_latency}{{10}{15}{\textbf {Wall-clock latency} on a single H100, bfloat16, random input tokens, batch $1$, median of $20$ timed forwards after $5$ warmup. \texttt {use\_cache=True} is the regime production \texttt {generate} runs in; \texttt {use\_cache=False} is pure prefill. Retrofit row uses the v1 H\_r256\_5k checkpoint; skip row uses $\mathcal {P}{=}\{4,6\}$, $q{=}0.85$, $M_{\max }{=}2$. Row VLA is the same retrofit loaded into the VLA in-backbone forward of Section~\ref {sec:vla}---identical within $0.5\%$ of VLM retrofit, confirming the per-block router+adapter cost is the structural bottleneck.\relax }{table.caption.47}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces \textbf  {Block partition ablation.} Retrofit with the v3 recipe (frozen base $+$ adapter rank $256$ $+$ $\gamma $-curriculum over the first $50\%$ of $10$k total steps $+$ LLaVA-OneVision-anchored mix) at four partitions per scale. $L$ is layers-per-block; $N{=}L_{\text  {total}}/L$ is the number of blocks. Every cell at $L{\geq }2$ meets or beats base on MMBench / MMMU / AI2D; $L{=}1$ is worst by several points at both scales. On 4B, $L{=}4$ strictly beats base on $5/6$ benchmarks.\relax }}{15}{table.caption.50}\protected@file@percent }
+\newlabel{tab:block_partition}{{11}{15}{\textbf {Block partition ablation.} Retrofit with the v3 recipe (frozen base $+$ adapter rank $256$ $+$ $\gamma $-curriculum over the first $50\%$ of $10$k total steps $+$ LLaVA-OneVision-anchored mix) at four partitions per scale. $L$ is layers-per-block; $N{=}L_{\text {total}}/L$ is the number of blocks. Every cell at $L{\geq }2$ meets or beats base on MMBench / MMMU / AI2D; $L{=}1$ is worst by several points at both scales. On 4B, $L{=}4$ strictly beats base on $5/6$ benchmarks.\relax }{table.caption.50}{}}
+\@writefile{toc}{\contentsline {paragraph}{Note on VLM vs.\ VLA speed.}{15}{section*.49}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Block partition: how to pick $N$}{15}{subsubsection.6.2.1}\protected@file@percent }
+\newlabel{sec:exp_block_partition}{{6.2.1}{15}{Block partition: how to pick $N$}{subsubsection.6.2.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}Data mix and training-length sweet spot}{16}{subsubsection.6.2.2}\protected@file@percent }
+\newlabel{sec:exp_data_mix}{{6.2.2}{16}{Data mix and training-length sweet spot}{subsubsection.6.2.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{v1 (narrow VL): $5$k is the ceiling.}{16}{section*.51}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{v3 (LLaVA-OneVision-anchored): $10$k is stable and strictly positive.}{16}{section*.52}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{A $\gamma $-free control at the opposite structural extreme.}{16}{section*.53}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Per-block skip importance and the importance--ablation disconnect.}{16}{section*.54}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Where Qwen3-VL-2B sits in the current open VLM landscape.}{16}{section*.55}\protected@file@percent }
+\citation{li2024llavaonevision}
+\citation{wang2024qwen2vl}
+\citation{chen2024internvl25}
+\citation{zhu2025internvl3}
+\citation{bai2025qwen25vl}
+\citation{bai2025qwen3vl}
+\citation{abdin2024phi35}
+\citation{team2025gemma3}
+\citation{bai2025qwen3vl}
+\citation{li2024llavaonevision}
+\citation{yao2024minicpmv}
+\citation{zhu2025internvl3}
+\citation{bai2025qwen3vl}
+\citation{raghu2021vision}
+\citation{brohan2023rt,team2024octo,kim2024openvla}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces \textbf  {Open VLM landscape at the 0.5--8B class.} Numbers are taken from each model's own technical report or official model card (primary source). ``---'' means the primary source did not report that benchmark in a directly comparable form. MMBench column is English v1.1 (test split) where available, else the older MMBench-EN (dev); MMMU is the val split; MathVista is testmini; OCRBench is on a $0$--$1000$ scale. Our retrofit row is left blank: our in-harness eval uses a lightweight likelihood-based rubric on benchmark subsets and is not directly comparable to VLMEvalKit-based published scores; apples-to-apples gains are measured against our own harness and are reported in Table\nobreakspace  {}\ref  {tab:retrofit_qwen}.\relax }}{17}{table.caption.56}\protected@file@percent }
+\newlabel{tab:vlm_landscape}{{12}{17}{\textbf {Open VLM landscape at the 0.5--8B class.} Numbers are taken from each model's own technical report or official model card (primary source). ``---'' means the primary source did not report that benchmark in a directly comparable form. MMBench column is English v1.1 (test split) where available, else the older MMBench-EN (dev); MMMU is the val split; MathVista is testmini; OCRBench is on a $0$--$1000$ scale. Our retrofit row is left blank: our in-harness eval uses a lightweight likelihood-based rubric on benchmark subsets and is not directly comparable to VLMEvalKit-based published scores; apples-to-apples gains are measured against our own harness and are reported in Table~\ref {tab:retrofit_qwen}.\relax }{table.caption.56}{}}
+\@writefile{toc}{\contentsline {paragraph}{Limitations of the current results.}{17}{section*.57}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}VLA Application}{17}{section.7}\protected@file@percent }
+\newlabel{sec:vla}{{7}{17}{VLA Application}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Motivation}{17}{subsection.7.1}\protected@file@percent }
+\citation{kim2025openvlaoft}
+\citation{liu2023libero}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Experimental setup}{18}{subsection.7.2}\protected@file@percent }
+\newlabel{sec:vla_setup}{{7.2}{18}{Experimental setup}{subsection.7.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Backbone and action head.}{18}{section*.58}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Data and eval.}{18}{section*.59}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Paths.}{18}{section*.60}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}LIBERO results}{18}{subsection.7.3}\protected@file@percent }
+\newlabel{sec:vla_results}{{7.3}{18}{LIBERO results}{subsection.7.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Finding V1: the VLM retrofit warm-start is net positive at both scales.}{18}{section*.62}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Finding V2: the VLM retrofit is not substitutable by longer VLA training.}{18}{section*.63}\protected@file@percent }
+\citation{li2024simplerenv}
+\citation{kim2025openvlaoft}
+\citation{li2024simplerenv}
+\citation{kim2025openvlaoft}
+\citation{li2024simplerenv}
+\citation{team2024octo,kim2025openvlaoft}
+\citation{brohan2023rt,li2024simplerenv}
+\citation{kim2024openvla,kim2025openvlaoft}
+\citation{zheng2024tracevla}
+\citation{qu2025spatialvla}
+\citation{black2024pi0,kim2025openvlaoft}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces \textbf  {LIBERO 4-suite success rates (\%)} for Qwen3-VL-2B/4B under the three training paths (Section\nobreakspace  {}\ref  {sec:vla_setup}). Entries are success rates over $500$ rollouts per suite ($2{,}000$ per policy). \emph  {Path 0} is the stock-backbone OFT baseline; \emph  {Path B} warm-starts from our VLM retrofit (H\_r256\_5k for 2B, H\_4B\_r256\_5k for 4B); \emph  {Path C} runs the $\gamma $-curriculum directly on VLA data without the VLM retrofit. Clean 4B indicates a base VLM with no action-token embeddings added (see Section\nobreakspace  {}\ref  {sec:vla_pitfall}). Path B at $60$k and the $4$B Path 0 at $60$k are included to probe the effect of doubling the VLA budget.\relax }}{19}{table.caption.61}\protected@file@percent }
+\newlabel{tab:vla_libero}{{13}{19}{\textbf {LIBERO 4-suite success rates (\%)} for Qwen3-VL-2B/4B under the three training paths (Section~\ref {sec:vla_setup}). Entries are success rates over $500$ rollouts per suite ($2{,}000$ per policy). \emph {Path 0} is the stock-backbone OFT baseline; \emph {Path B} warm-starts from our VLM retrofit (H\_r256\_5k for 2B, H\_4B\_r256\_5k for 4B); \emph {Path C} runs the $\gamma $-curriculum directly on VLA data without the VLM retrofit. Clean 4B indicates a base VLM with no action-token embeddings added (see Section~\ref {sec:vla_pitfall}). Path B at $60$k and the $4$B Path 0 at $60$k are included to probe the effect of doubling the VLA budget.\relax }{table.caption.61}{}}
+\@writefile{toc}{\contentsline {paragraph}{Finding V3: $30$k is the sweet spot; $60$k over-trains the warm-start.}{19}{section*.64}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Pipeline pitfall: unfrozen action-token embeddings corrupt Path B}{19}{subsection.7.4}\protected@file@percent }
+\newlabel{sec:vla_pitfall}{{7.4}{19}{Pipeline pitfall: unfrozen action-token embeddings corrupt Path B}{subsection.7.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Context: recent open VLAs on standard benchmarks}{19}{subsection.7.5}\protected@file@percent }
+\newlabel{sec:vla_context}{{7.5}{19}{Context: recent open VLAs on standard benchmarks}{subsection.7.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.6}Planned follow-ups}{19}{subsection.7.6}\protected@file@percent }
+\newlabel{sec:vla_future}{{7.6}{19}{Planned follow-ups}{subsection.7.6}{}}
+\citation{graves2016adaptive}
+\citation{dehghani2018universal}
+\citation{schuster2022confident}
+\citation{raposo2024mixture}
+\citation{gromov2024unreasonable}
+\citation{men2024shortgpt}
+\citation{elhoushi2024layerskip}
+\citation{huang2017densely}
+\citation{srivastava2015highway}
+\citation{chen2026attnres}
+\citation{brohan2023rt}
+\citation{team2024octo}
+\citation{kim2024openvla}
+\citation{black2024pi0}
+\citation{zhao2023learning}
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces \textbf  {Open VLA landscape on standard benchmarks.} LIBERO entries are success rates (\%) per task suite; SimplerEnv entries are aggregate success rates (\%), split by robot setup where both are reported. ``---'' indicates not reported in the primary source. Following common practice, $\pi _0$ and Octo-Base LIBERO numbers are taken from OpenVLA-OFT\nobreakspace  {}\citep  {kim2025openvlaoft}, which re-ran all three policies under a uniform LIBERO protocol; RT-2-X SimplerEnv numbers are from the SimplerEnv paper\nobreakspace  {}\citep  {li2024simplerenv}. Our rows use the $30$k Path B warm-start results from Table\nobreakspace  {}\ref  {tab:vla_libero} (clean 4B base).\relax }}{20}{table.caption.65}\protected@file@percent }
+\newlabel{tab:vla_landscape}{{14}{20}{\textbf {Open VLA landscape on standard benchmarks.} LIBERO entries are success rates (\%) per task suite; SimplerEnv entries are aggregate success rates (\%), split by robot setup where both are reported. ``---'' indicates not reported in the primary source. Following common practice, $\pi _0$ and Octo-Base LIBERO numbers are taken from OpenVLA-OFT~\citep {kim2025openvlaoft}, which re-ran all three policies under a uniform LIBERO protocol; RT-2-X SimplerEnv numbers are from the SimplerEnv paper~\citep {li2024simplerenv}. Our rows use the $30$k Path B warm-start results from Table~\ref {tab:vla_libero} (clean 4B base).\relax }{table.caption.65}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Related Work}{20}{section.8}\protected@file@percent }
+\newlabel{sec:related}{{8}{20}{Related Work}{section.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Adaptive computation.}{20}{section*.66}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Layer pruning and skipping.}{20}{section*.67}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Residual-connection innovations.}{20}{section*.68}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Vision-Language-Action models.}{20}{section*.69}\protected@file@percent }
+\bibdata{references}
+\bibstyle{plainnat}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Discussion}{21}{section.9}\protected@file@percent }
+\newlabel{sec:discussion}{{9}{21}{Discussion}{section.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{Summary.}{21}{section*.70}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{21}{section*.71}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Future work: weight-shared AttnRes (\textsc  {ReLoop}{}).}{21}{section*.72}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Broader impact.}{21}{section*.73}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Implementation details}{21}{appendix.A}\protected@file@percent }
+\newlabel{app:implementation}{{A}{21}{Implementation details}{appendix.A}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Online softmax merge with skip}{21}{subsection.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Pseudo-query initialisation (Section\nobreakspace  {}\ref  {sec:reskip} from-scratch)}{22}{subsection.A.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Retrofit hyperparameters}{22}{subsection.A.3}\protected@file@percent }
+\newlabel{app:retrofit_hparams}{{A.3}{22}{Retrofit hyperparameters}{subsection.A.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.4}Block granularity}{22}{subsection.A.4}\protected@file@percent }
+\newlabel{app:block_granularity}{{A.4}{22}{Block granularity}{subsection.A.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.5}Identity-at-init details}{22}{subsection.A.5}\protected@file@percent }
+\newlabel{app:identity}{{A.5}{22}{Identity-at-init details}{subsection.A.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.6}Skip under \texttt  {use\_cache=True}: correctness verification}{22}{subsection.A.6}\protected@file@percent }
+\newlabel{app:kv_equiv}{{A.6}{22}{Skip under \texttt {use\_cache=True}: correctness verification}{subsection.A.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.7}$\gamma {=}1$ transition stability}{22}{subsection.A.7}\protected@file@percent }
+\newlabel{app:gamma_stability}{{A.7}{22}{$\gamma {=}1$ transition stability}{subsection.A.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.8}Retrofit ablations}{22}{subsection.A.8}\protected@file@percent }
+\newlabel{app:route_ablations}{{A.8}{22}{Retrofit ablations}{subsection.A.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.9}Adapter-rank ablation}{23}{subsection.A.9}\protected@file@percent }
+\newlabel{app:rank_ablation}{{A.9}{23}{Adapter-rank ablation}{subsection.A.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.10}$\gamma {\to }1$ retrofit ablation}{23}{subsection.A.10}\protected@file@percent }
+\newlabel{app:retrofit_ablation}{{A.10}{23}{$\gamma {\to }1$ retrofit ablation}{subsection.A.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces \textbf  {Retrofit ablation} on Qwen3-VL-2B. $\gamma $-free: $\gamma _n$ trainable around $0$, adapter-dominated (opposite structural extreme to the canonical). All others: $\gamma $-curriculum $0{\to }1$ over the first $30\%$ of steps. ``n=300 MMBench noise floor $\pm 1$ question'' corresponds to $\pm 0.33$pp.\relax }}{23}{table.caption.74}\protected@file@percent }
+\newlabel{tab:retrofit_ablation}{{15}{23}{\textbf {Retrofit ablation} on Qwen3-VL-2B. $\gamma $-free: $\gamma _n$ trainable around $0$, adapter-dominated (opposite structural extreme to the canonical). All others: $\gamma $-curriculum $0{\to }1$ over the first $30\%$ of steps. ``n=300 MMBench noise floor $\pm 1$ question'' corresponds to $\pm 0.33$pp.\relax }{table.caption.74}{}}
+\@writefile{toc}{\contentsline {paragraph}{Over-training signature at $\gamma {=}1$.}{23}{section*.75}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Rank and data are subordinate.}{23}{section*.76}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{$\gamma $-free as the opposite extreme.}{23}{section*.77}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.11}Per-block skip importance}{24}{subsection.A.11}\protected@file@percent }
+\newlabel{app:block_removal}{{A.11}{24}{Per-block skip importance}{subsection.A.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.12}Calibration set (dynamic skip)}{24}{subsection.A.12}\protected@file@percent }
+\newlabel{app:calibration}{{A.12}{24}{Calibration set (dynamic skip)}{subsection.A.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.13}Data-mix ablation (v1 $\to $ v2 $\to $ v3)}{24}{subsection.A.13}\protected@file@percent }
+\newlabel{app:data_mix}{{A.13}{24}{Data-mix ablation (v1 $\to $ v2 $\to $ v3)}{subsection.A.13}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {16}{\ignorespaces \textbf  {Data-mix ablation.} Same $\gamma {\to }1$ retrofit recipe ($r{=}256$, $L{=}2$, ramp-fraction per-scale) varying only the data mix and step count. v1 at $5$k is preserved, but at $10$k it collapses on $4$B (AI2D $-23$pp). v2 crashes diagram-reasoning on 2B despite raising MMStar math subtasks. v3 at $10$k is net-positive on every VL benchmark at 2B and matches base at 4B (with the $L{=}4$ partition of Section\nobreakspace  {}\ref  {sec:exp_block_partition}, $4$B $\times $ v3 is strictly positive). All numbers from \texttt  {lmms-eval} full splits.\relax }}{24}{table.caption.78}\protected@file@percent }
+\newlabel{tab:data_mix_ablation}{{16}{24}{\textbf {Data-mix ablation.} Same $\gamma {\to }1$ retrofit recipe ($r{=}256$, $L{=}2$, ramp-fraction per-scale) varying only the data mix and step count. v1 at $5$k is preserved, but at $10$k it collapses on $4$B (AI2D $-23$pp). v2 crashes diagram-reasoning on 2B despite raising MMStar math subtasks. v3 at $10$k is net-positive on every VL benchmark at 2B and matches base at 4B (with the $L{=}4$ partition of Section~\ref {sec:exp_block_partition}, $4$B $\times $ v3 is strictly positive). All numbers from \texttt {lmms-eval} full splits.\relax }{table.caption.78}{}}
+\gdef \@abspage@last{24}

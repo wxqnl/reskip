@@ -1,0 +1,19 @@
+[
+  {
+    "title": "Cross-section numeric consistency should be reconciled",
+    "quote": "The dual-process distinction~kahneman2011thinking contrasts System~1 (fast, automatic) with System~2 (slow, deliberate); the same dichotomy has direct correlates in cortical processing, where easy stimuli are recognised through shallow feedforward sweeps and harder ones recruit recurrent and deeper circuits~lamme2000distinct, kar2019recurrent, kietzmann2019recurrence, spoerer2020recurrent.",
+    "explanation": "Multiple sections contain numeric claims. Confirm that the same quantities reconcile across main text, tables, and appendix material.",
+    "comment_type": "presentation",
+    "severity": "moderate",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "introduction",
+    "related_sections": [
+      "introduction",
+      "method",
+      "related"
+    ],
+    "review_lane": "notation_and_numeric_consistency",
+    "gate_blocker": false
+  }
+]

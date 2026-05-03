@@ -1,0 +1,11 @@
+{
+  "headline_claims": [
+    "The central problem in this paper is how to install such a signal into a standard pretrained transformer through a short fine-tune, while preserving its original capabilities and making the signal usable for skipping."
+  ],
+  "closure_targets": [],
+  "section_claims": {
+    "introduction": [
+      "The central problem in this paper is how to install such a signal into a standard pretrained transformer through a short fine-tune, while preserving its original capabilities and making the signal usable for skipping."
+    ]
+  }
+}

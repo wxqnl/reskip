@@ -160,6 +160,78 @@ MODEL_REGISTRY_V2.register_manifest(
 )
 
 
+# --------------------------------------------------------------------------
+# POPE metric patch: lmms-eval pope.utils.pope_process_results does strict
+# `pred == "yes"`/`"no"`. Qwen3-VL output drifts by 1 token under retrofit
+# (`"Yes."` vs `"yes"`), giving correct answers a 0 score. Patch to extract
+# the first yes/no word so semantically-correct predictions count.
+# --------------------------------------------------------------------------
+import re as _re
+import lmms_eval.tasks.pope.utils as _pope_utils
+
+def _pope_process_results_fuzzy(doc, results):
+    raw = results[0].lower().strip()
+    m = _re.search(r"\b(yes|no)\b", raw)
+    pred = m.group(1) if m else raw
+    gt_ans = doc["answer"].lower().strip()
+    assert gt_ans in ["yes", "no"]
+    score = 1.0 if pred == gt_ans else 0.0
+    return {
+        k: {"question_id": doc["question_id"], "score": score, "prediction": pred, "ground_truth": gt_ans}
+        for k in ("pope_accuracy", "pope_precision", "pope_recall", "pope_f1_score", "pope_yes_ratio")
+    }
+
+_pope_utils.pope_process_results = _pope_process_results_fuzzy
+print("[retrofit] patched lmms_eval.tasks.pope.utils.pope_process_results -> fuzzy yes/no matcher", flush=True)
+
+
+# --------------------------------------------------------------------------
+# Static-pruning baseline (Gromov / ShortGPT style): drop N decoder layers
+# from Qwen3-VL-2B's text decoder by overriding their forward to identity.
+# --------------------------------------------------------------------------
+
+
+@register_model("qwen3_vl_pruned")
+class Qwen3_VL_Pruned(Qwen3_VL):
+    """Qwen3-VL base with specific text-decoder layers replaced by identity.
+
+    Use ``model_args`` like:
+        pretrained=/path/to/Qwen3-VL-2B,skip_layers=14|18|20|24,...
+    """
+
+    def __init__(self, skip_layers: str = "", **kwargs):
+        super().__init__(**kwargs)
+        if not skip_layers:
+            print("[pruned] WARNING: skip_layers empty — running base model")
+            return
+        # Pipe '|' separator (',' is reserved by lmms-eval model_args parsing).
+        sep = "|" if "|" in skip_layers else ","
+        skip_set = sorted(int(x) for x in skip_layers.split(sep) if x.strip())
+        layers = self._model.model.language_model.layers
+        for i in skip_set:
+            if i < 0 or i >= len(layers):
+                raise ValueError(f"skip_layer {i} out of range [0, {len(layers)})")
+            # Qwen3VLTextDecoderLayer.forward returns torch.Tensor (single).
+            # Identity passes hidden_states through unchanged.
+            def _identity(self, hidden_states, *args, **kwargs):
+                return hidden_states
+            import types
+            layers[i].forward = types.MethodType(_identity, layers[i])
+        print(
+            f"[pruned] dropped {len(skip_set)}/{len(layers)} layers: {skip_set}",
+            flush=True,
+        )
+
+
+MODEL_REGISTRY_V2.register_manifest(
+    ModelManifest(
+        model_id="qwen3_vl_pruned",
+        simple_class_path="lmms_eval_retrofit.Qwen3_VL_Pruned",
+    ),
+    overwrite=True,
+)
+
+
 if __name__ == "__main__":
     # Re-enter lmms-eval's CLI with our plugin registered.
     import lmms_eval.__main__ as m

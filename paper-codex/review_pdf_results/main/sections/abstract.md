@@ -1,0 +1,16 @@
+Abstract
+Pretrained transformers normally execute all layers for every token, even though different inputs may
+require different effective depth. We study whether a standard pretrained transformer can be equipped
+with an intrinsic depth-routing pathway without retraining from scratch. We build on Attention Residuals,
+whose routing weights over previous block outputs are computed before the next block executes, and
+introduce AR-RETROFIT, a γ-gated residual-injection fine-tune that installs this pathway while freezing the
+base model and adding well under 1% new parameters. The retrofit is identity-preserving at initialization,
+trains in a short SFT-style run, and converges to a model whose block inputs are routed by ATTNRES
+rather than by a fixed residual path. On Qwen3-VL-2B and 4B, AR-RETROFIT improves the pretrained
+backbone on most lmms-eval benchmarks and produces gains that parameter-matched LoRA controls
+do not reproduce. We then use the learned routing weights as a calibrated dynamic-depth signal: RESKIP
+validates the signal on a 340M from-scratch model, supports conservative skipping on the retrofitted VLM,
+and transfers to LIBERO policies through a VLA warm-start. The resulting system should be read as
+a practical retrofit mechanism for intrinsic depth routing, with adaptive skipping and VLA transfer as
+supporting evidence rather than as universal claims about optimal inference.
+## 1

@@ -1,0 +1,150 @@
+\begin{thebibliography}{21}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Brohan et~al.(2023)Brohan, Brown, Carbajal, Chebotar, Chen,
+  Choromanski, et~al.]{brohan2023rt}
+Anthony Brohan, Noah Brown, Justice Carbajal, Yevgen Chebotar, Xi~Chen,
+  Krzysztof Choromanski, et~al.
+\newblock Rt-2: Vision-language-action models transfer web knowledge to robotic
+  control.
+\newblock \emph{arXiv preprint arXiv:2307.15818}, 2023.
+
+\bibitem[Clark et~al.(2018)Clark, Cowhey, Etzioni, Khot, Sabharwal, Schoenick,
+  and Tafjord]{clark2018arc}
+Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa
+  Schoenick, and Oyvind Tafjord.
+\newblock Think you have solved question answering? {Try ARC}, the ai2
+  reasoning challenge.
+\newblock \emph{arXiv:1803.05457}, 2018.
+
+\bibitem[Dehghani et~al.(2019)Dehghani, Gouws, Vinyals, Uszkoreit, and
+  Kaiser]{dehghani2018universal}
+Mostafa Dehghani, Stephan Gouws, Oriol Vinyals, Jakob Uszkoreit, and Lukasz
+  Kaiser.
+\newblock Universal transformers.
+\newblock In \emph{ICLR}, 2019.
+
+\bibitem[Elbayad et~al.(2020)Elbayad, Gu, Grave, and Auli]{elbayad2020depth}
+Maha Elbayad, Jiatao Gu, Edouard Grave, and Michael Auli.
+\newblock Depth-adaptive transformer.
+\newblock 2020.
+
+\bibitem[Elhoushi et~al.(2024)Elhoushi, Shrivastava, Liskovich, Hosmer, Wasti,
+  Lai, Mahmoud, Acber, Akin, Bhatnagar, et~al.]{elhoushi2024layerskip}
+Mostafa Elhoushi, Akshat Shrivastava, Diana Liskovich, Basil Hosmer, Bram
+  Wasti, Liangzhen Lai, Anas Mahmoud, Bilge Acber, Saurabh Akin, Ashish
+  Bhatnagar, et~al.
+\newblock Layerskip: Enabling early exit inference and self-speculative
+  decoding.
+\newblock \emph{arXiv preprint arXiv:2404.16710}, 2024.
+
+\bibitem[Fu et~al.(2025)]{fu2025attention}
+Daniel~Y. Fu et~al.
+\newblock Attention residual.
+\newblock \emph{arXiv preprint}, 2025.
+\newblock Original AttnRes paper.
+
+\bibitem[Gao et~al.(2024)Gao, Tow, Abbasi, Biderman, et~al.]{eval-harness}
+Leo Gao, Jonathan Tow, Baber Abbasi, Stella Biderman, et~al.
+\newblock A framework for few-shot language model evaluation.
+\newblock \url{https://github.com/EleutherAI/lm-evaluation-harness}, 2024.
+
+\bibitem[Graves(2016)]{graves2016adaptive}
+Alex Graves.
+\newblock Adaptive computation time for recurrent neural networks.
+\newblock \emph{arXiv preprint arXiv:1603.08983}, 2016.
+
+\bibitem[Gromov et~al.(2024)Gromov, Tirumala, Shapourian, Glorioso, and
+  Roberts]{gromov2024unreasonable}
+Andrey Gromov, Kushal Tirumala, Hassan Shapourian, Paolo Glorioso, and
+  Daniel~A. Roberts.
+\newblock The unreasonable ineffectiveness of the deeper layers.
+\newblock \emph{arXiv preprint arXiv:2403.17887}, 2024.
+
+\bibitem[Huang et~al.(2017)Huang, Liu, Van Der~Maaten, and
+  Weinberger]{huang2017densely}
+Gao Huang, Zhuang Liu, Laurens Van Der~Maaten, and Kilian~Q. Weinberger.
+\newblock Densely connected convolutional networks.
+\newblock In \emph{CVPR}, 2017.
+
+\bibitem[Kim et~al.(2024)Kim, Pertsch, Karamcheti, Xiao, Balakrishna, Nair,
+  Rafailov, Foster, Lam, Vosshall, et~al.]{kim2024openvla}
+Moo~Jin Kim, Karl Pertsch, Siddharth Karamcheti, Ted Xiao, Ashwin Balakrishna,
+  Suraj Nair, Rafael Rafailov, Ethan Foster, Grace Lam, Maja Vosshall, et~al.
+\newblock Openvla: An open-source vision-language-action model.
+\newblock \emph{arXiv preprint arXiv:2406.09246}, 2024.
+
+\bibitem[Men et~al.(2024)Men, Xu, Zhang, Wang, Lin, Lu, Han, and
+  Chen]{men2024shortgpt}
+Xin Men, Mingyu Xu, Qingyu Zhang, Bingning Wang, Hongyu Lin, Yaojie Lu, Xianpei
+  Han, and Weipeng Chen.
+\newblock Shortgpt: Layers in large language models are more redundant than you
+  expect.
+\newblock \emph{arXiv preprint arXiv:2403.03853}, 2024.
+
+\bibitem[{Octo Model Team}(2024)]{team2024octo}
+{Octo Model Team}.
+\newblock Octo: An open-source generalist robot policy.
+\newblock \emph{arXiv preprint arXiv:2405.12213}, 2024.
+
+\bibitem[Paperno et~al.(2016)Paperno, Kruszewski, Lazaridou, Pham, Bernardi,
+  Pezzelle, Baroni, Boleda, and Fern\'{a}ndez]{paperno2016lambada}
+Denis Paperno, Germ\'{a}n Kruszewski, Angeliki Lazaridou, Quan~Ngoc Pham,
+  Raffaella Bernardi, Sandro Pezzelle, Marco Baroni, Gemma Boleda, and Raquel
+  Fern\'{a}ndez.
+\newblock The {LAMBADA} dataset: Word prediction requiring a broad discourse
+  context.
+\newblock In \emph{ACL}, 2016.
+
+\bibitem[Penedo et~al.(2024)Penedo, Kydl\'{i}\v{c}ek, Allal, Lozhkov, Mitchell,
+  Raffel, Von~Werra, and Wolf]{penedo2024fineweb}
+Guilherme Penedo, Hynek Kydl\'{i}\v{c}ek, Loubna~Ben Allal, Anton Lozhkov,
+  Margaret Mitchell, Colin Raffel, Leandro Von~Werra, and Thomas Wolf.
+\newblock The {FineWeb} datasets: Decanting the web for the finest text data at
+  scale.
+\newblock \emph{NeurIPS Datasets and Benchmarks}, 2024.
+
+\bibitem[Raghu et~al.(2021)Raghu, Unterthiner, Kornblith, Zhang, and
+  Dosovitskiy]{raghu2021vision}
+Maithra Raghu, Thomas Unterthiner, Simon Kornblith, Chiyuan Zhang, and Alexey
+  Dosovitskiy.
+\newblock Do vision transformers see like convolutional neural networks?
+\newblock \emph{NeurIPS}, 2021.
+
+\bibitem[Raposo et~al.(2024)Raposo, Ritter, Richards, Lillicrap, Humphreys, and
+  Santoro]{raposo2024mixture}
+David Raposo, Sam Ritter, Blake Richards, Timothy Lillicrap, Peter~Conway
+  Humphreys, and Adam Santoro.
+\newblock Mixture-of-depths: Dynamically allocating compute in
+  transformer-based language models.
+\newblock \emph{arXiv preprint arXiv:2404.02258}, 2024.
+
+\bibitem[Schuster et~al.(2022)Schuster, Fisch, Gupta, Dehghani, Bahri, Tran,
+  Tay, and Metzler]{schuster2022confident}
+Tal Schuster, Adam Fisch, Jai Gupta, Mostafa Dehghani, Dara Bahri, Vinh Tran,
+  Yi~Tay, and Donald Metzler.
+\newblock Confident adaptive language modeling.
+\newblock In \emph{NeurIPS}, 2022.
+
+\bibitem[Srivastava et~al.(2015)Srivastava, Greff, and
+  Schmidhuber]{srivastava2015highway}
+Rupesh~Kumar Srivastava, Klaus Greff, and J{\"u}rgen Schmidhuber.
+\newblock Highway networks.
+\newblock In \emph{ICML Deep Learning Workshop}, 2015.
+
+\bibitem[Zellers et~al.(2019)Zellers, Holtzman, Bisk, Farhadi, and
+  Choi]{zellers2019hellaswag}
+Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi.
+\newblock {HellaSwag}: Can a machine really finish your sentence?
+\newblock In \emph{ACL}, 2019.
+
+\bibitem[Zhao et~al.(2023)Zhao, Kumar, Levine, and Finn]{zhao2023learning}
+Tony~Z. Zhao, Vikash Kumar, Sergey Levine, and Chelsea Finn.
+\newblock Learning fine-grained bimanual manipulation with low-cost hardware.
+\newblock In \emph{RSS}, 2023.
+
+\end{thebibliography}

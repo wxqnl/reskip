@@ -31,7 +31,7 @@ folder_name=$(echo "$your_ckpt" | awk -F'/' '{print $(NF-2)"_"$(NF-1)"_"$NF}')
 LOG_DIR="logs/$(date +"%Y%m%d_%H%M%S")_${folder_name}_${task_suite_name}"
 mkdir -p ${LOG_DIR}
 
-video_out_path="results/${task_suite_name}/${folder_name}"
+video_out_path="${LIBERO_VIDEO_OUT_ROOT:-/tmp/libero_videos}/${task_suite_name}/${folder_name}"
 mkdir -p "${video_out_path}"
 
 SKIP_ARGS=""
@@ -48,5 +48,6 @@ ${LIBERO_Python} ./examples/LIBERO/eval_files/eval_libero.py \
     --args.port "${base_port}" \
     --args.task-suite-name "${task_suite_name}" \
     --args.num-trials-per-task "${num_trials_per_task}" \
+    --args.seed "${SEED:-7}" \
     --args.video-out-path "${video_out_path}" \
     ${SKIP_ARGS} 2>&1 | tee ${LOG_DIR}/eval.log

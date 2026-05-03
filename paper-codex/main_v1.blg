@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main_v1.aux
+The style file: plainnat.bst
+Illegal, another \bibstyle command---line 126 of file main_v1.aux
+ : \bibstyle
+ :          {plainnat}
+I'm skipping whatever remains of this command
+Database file #1: references.bib
+Warning--empty journal in elbayad2020depth
+You've used 21 entries,
+            2773 wiz_defined-function locations,
+            685 strings with 8974 characters,
+and the built_in function-call counts, 11638 in all, are:
+= -- 875
+> -- 1125
+< -- 3
++ -- 378
+- -- 357
+* -- 1027
+:= -- 1918
+add.period$ -- 64
+call.type$ -- 21
+change.case$ -- 177
+chr.to.int$ -- 21
+cite$ -- 43
+duplicate$ -- 441
+empty$ -- 721
+format.name$ -- 379
+if$ -- 2325
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 20
+newline$ -- 114
+num.names$ -- 84
+pop$ -- 389
+preamble$ -- 1
+purify$ -- 156
+quote$ -- 0
+skip$ -- 373
+stack$ -- 0
+substring$ -- 42
+swap$ -- 27
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 231
+warning$ -- 1
+while$ -- 63
+width$ -- 0
+write$ -- 260
+(There was 1 error message)

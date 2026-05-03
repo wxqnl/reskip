@@ -51,15 +51,19 @@ def main():
                     help="torch.compile mode: default, reduce-overhead, max-autotune")
     ap.add_argument("--state-path", default=DEFAULT_STATE_PATH,
                     help="retrofit_attnres_state.pt path (defaults to H_r256_5k 14-block)")
+    ap.add_argument("--model-path", default=MODEL_PATH,
+                    help="HF model path (default Qwen3-VL-2B)")
     args = ap.parse_args()
     device = f"cuda:{args.gpu}"
     dtype = torch.bfloat16
+    model_path = args.model_path
 
     print(f"[compile-bench] loading models on {device} (mode={args.compile_mode})")
+    print(f"[compile-bench] model: {model_path}")
     print(f"[compile-bench] state: {args.state_path}")
 
-    true_base = AutoModelForImageTextToText.from_pretrained(MODEL_PATH, dtype=dtype).to(device).eval()
-    vlm_base = AutoModelForImageTextToText.from_pretrained(MODEL_PATH, dtype=dtype).to(device).eval()
+    true_base = AutoModelForImageTextToText.from_pretrained(model_path, dtype=dtype).to(device).eval()
+    vlm_base = AutoModelForImageTextToText.from_pretrained(model_path, dtype=dtype).to(device).eval()
     ck = torch.load(args.state_path, map_location="cpu")
     cfg = ck.get("config", {})
     kw = dict(num_blocks=cfg.get("num_blocks", 14))

@@ -29,10 +29,11 @@ from qwen3vl_attnres_retrofit import Qwen3VLAttnResRetrofit
 MODEL_PATH = "/home/user01/Minko/models/Qwen3-VL-2B"
 
 
-def load_trained(state_path, device, num_blocks=14):
+def load_trained(state_path, device, num_blocks=14, model_path=None):
     dtype = torch.bfloat16
-    tok = AutoTokenizer.from_pretrained(MODEL_PATH)
-    base = AutoModelForImageTextToText.from_pretrained(MODEL_PATH, dtype=dtype).to(device)
+    mp = model_path or MODEL_PATH
+    tok = AutoTokenizer.from_pretrained(mp)
+    base = AutoModelForImageTextToText.from_pretrained(mp, dtype=dtype).to(device)
     ck = torch.load(state_path, map_location="cpu")
     cfg = ck.get("config", {})
     kwargs = dict(num_blocks=cfg.get("num_blocks", num_blocks))
@@ -119,6 +120,8 @@ def eval_dynamic_lambada(model, tok, device, eligible, thresholds, max_skips, n=
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--state-path", required=True)
+    p.add_argument("--model-path", default=None,
+                   help="HF model path; defaults to MODEL_PATH constant (2B)")
     p.add_argument("--num-blocks", type=int, default=14)
     p.add_argument("--calib-n", type=int, default=32)
     p.add_argument("--lambada-n", type=int, default=500)
@@ -130,7 +133,7 @@ def main():
     args = p.parse_args()
     device = f"cuda:{args.gpu}"
 
-    model, tok = load_trained(args.state_path, device, args.num_blocks)
+    model, tok = load_trained(args.state_path, device, args.num_blocks, args.model_path)
     eligible = None
     if args.eligible:
         eligible = [int(x) for x in args.eligible.split(",")]

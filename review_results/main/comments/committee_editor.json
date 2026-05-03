@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Abstract and conclusion claims need explicit evidence traceability",
+    "quote": "A 340M controlled study shows that the dynamic routing rule outperforms static or random schedules at matched skip rates, and LIBERO experiments provide supporting evidence that the same routed-depth signal remains usable for calibrated action-stream skipping.",
+    "explanation": "At least one headline claim was detected. Deep review should check whether experiments and conclusion language trace back to the same bounded evidence base.",
+    "comment_type": "claim_accuracy",
+    "severity": "major",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "abstract",
+    "related_sections": [
+      "abstract",
+      "results",
+      "conclusion"
+    ],
+    "root_cause_key": "abstract-and-conclusion-claims-need-explicit-evidence-traceability",
+    "review_lane": "committee_editor",
+    "gate_blocker": false,
+    "quote_verified": false
+  },
+  {
+    "title": "Cross-section numeric consistency should be reconciled",
+    "quote": "We introduce AR-RETROFIT, an identity- preserving gated residual injection that adds an ATTNRES-style routing path to a frozen backbone with well under 1% new parameters.",
+    "explanation": "Multiple sections contain numeric claims. Confirm that the same quantities reconcile across main text, tables, and appendix material.",
+    "comment_type": "presentation",
+    "severity": "moderate",
+    "confidence": "medium",
+    "source_kind": "llm",
+    "source_section": "abstract",
+    "related_sections": [
+      "abstract",
+      "introduction",
+      "related"
+    ],
+    "root_cause_key": "cross-section-numeric-consistency-should-be-reconciled",
+    "review_lane": "committee_editor",
+    "gate_blocker": false,
+    "quote_verified": false
+  },
+  {
+    "title": "Novelty claim should be grounded against the closest prior work",
+    "quote": "",
+    "explanation": "The paper positions itself against prior work, but the current wording should make the closest comparator and the real novelty delta explicit instead of relying on broad superiority language.",
+    "comment_type": "claim_accuracy",
+    "severity": "moderate",
+    "confidence": "low",
+    "source_kind": "llm",
+    "source_section": "related_work",
+    "related_sections": [
+      "related_work",
+      "results"
+    ],
+    "root_cause_key": "novelty-claim-should-be-grounded-against-the-closest-prior-work",
+    "review_lane": "committee_editor",
+    "gate_blocker": false,
+    "quote_verified": false
+  }
+]
