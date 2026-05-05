@@ -46,6 +46,11 @@ class WebsocketPolicyServer:
             self._port,
             compression=None,
             max_size=None,
+            # Local VLA evaluations may spend more than the default 20s inside a
+            # policy/simulator step. Keepalive pings can time out while the event
+            # loop is busy, so disable them for robustness.
+            ping_interval=None,
+            ping_timeout=None,
         ) as server:
             if self._idle_timeout > 0:
                 await self._idle_watchdog(server)

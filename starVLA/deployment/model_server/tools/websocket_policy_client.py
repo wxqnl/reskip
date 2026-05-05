@@ -49,8 +49,11 @@ class WebsocketClientPolicy:
                     max_size=None,
                     additional_headers=headers,
                     open_timeout=150,
-                    ping_interval=20,
-                    ping_timeout=20,
+                    # LIBERO rollouts can block a single request for >20s during
+                    # slow simulator/policy steps. Disable websocket keepalive
+                    # timeouts for local evaluation to avoid false disconnects.
+                    ping_interval=None,
+                    ping_timeout=None,
                 )
                 metadata = msgpack_numpy.unpackb(conn.recv())
                 return conn, metadata
@@ -72,6 +75,5 @@ class WebsocketClientPolicy:
         if isinstance(response, str):
             raise RuntimeError(f"Error in inference server:\n{response}")
         return msgpack_numpy.unpackb(response)
-
 
 
