@@ -1,0 +1,59 @@
+{
+  "checkpoint_config": {
+    "adapter_rank": 256,
+    "kl_weight": 1.0,
+    "no_adapter": false,
+    "num_blocks": 7,
+    "p_multimodal": 0.5,
+    "steps": 10000
+  },
+  "created_at": "2026-05-05 05:05:49 EDT",
+  "dataset": "lmms-lab/MMBench_EN",
+  "decode_tokens_per_sample": 8,
+  "difficulty_bins": 2,
+  "dynamic_config": {
+    "eligible_blocks": [
+      2
+    ],
+    "max_skips": 1,
+    "notes": "difficulty-aligned diagnostic point selected from routing/margin scan",
+    "strategy": "recent_weight_gt",
+    "thresholds": {
+      "2": 0.512
+    }
+  },
+  "margin_bin_thresholds": [
+    3.0
+  ],
+  "margin_condition_rate": 0.8328125,
+  "mean_margin_delta": 3.898291015625,
+  "mean_skipped_blocks_per_forward": 0.10078125,
+  "mean_two_epsilon": 1.39306640625,
+  "median_margin_delta": 3.0,
+  "median_two_epsilon": 0.0,
+  "model_path": "/home/user01/Minko/models/Qwen3-VL-2B",
+  "n_samples": 160,
+  "n_tokens": 1280,
+  "prediction_preserved_rate": 0.96171875,
+  "probe_type": "token_level_decode",
+  "spearman_uncertainty_skip": -0.14206227374384314,
+  "state_path": "/home/user01/Minko/reskip2/reskip/retrofit/outputs/block_v3/2B_L4_v3_10k/retrofit_attnres_state.pt",
+  "task": "mmbench",
+  "top_k_for_epsilon": 10,
+  "uncertainty_bins": [
+    {
+      "label": "Low\n(easy)",
+      "mean_margin": 6.739451892744479,
+      "mean_skips": 0.13722397476340695,
+      "n": 634,
+      "sem_skips": 0.013676097130497797
+    },
+    {
+      "label": "High\n(hard)",
+      "mean_margin": 1.109907120743034,
+      "mean_skips": 0.06501547987616099,
+      "n": 646,
+      "sem_skips": 0.009708021717270605
+    }
+  ]
+}
