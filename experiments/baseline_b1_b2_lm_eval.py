@@ -48,6 +48,83 @@ def install_random_skip_hook(model, choices: list[list[bool]], seed: int = 0):
     print(f"[random-hook] installed; {len(choices)} possible masks; seed={seed}")
 
 
+def install_skip_stats_hook(model, *, trace_examples: int = 3):
+    """Collect actual skip decisions made by lm-eval forwards.
+
+    The hook asks the model to return routing_info and aggregates the execution
+    trace from the same calls used for scoring, so a zero skip-rate cannot be
+    mistaken for a valid dynamic-skip benchmark.
+    """
+    stats = {
+        "total_forwards": 0,
+        "forwards_with_trace": 0,
+        "total_positions": 0,
+        "skip_events": 0,
+        "executed_blocks_sum": 0.0,
+        "per_position_skips": [],
+        "per_position_total": [],
+        "trace_examples": [],
+    }
+    orig_forward = model.forward
+
+    def ensure_position(position: int) -> None:
+        while len(stats["per_position_skips"]) <= position:
+            stats["per_position_skips"].append(0)
+            stats["per_position_total"].append(0)
+
+    def patched_forward(*args, **kwargs):
+        kwargs["return_routing_info"] = True
+        out = orig_forward(*args, **kwargs)
+        stats["total_forwards"] += 1
+        routing_info = getattr(out, "routing_info", None)
+        trace = routing_info.get("execution_trace", []) if routing_info else []
+        if trace:
+            stats["forwards_with_trace"] += 1
+            stats["total_positions"] += len(trace)
+            stats["executed_blocks_sum"] += float(routing_info.get("num_blocks_executed", 0.0))
+            for entry in trace:
+                pos = int(entry["position"])
+                ensure_position(pos)
+                stats["per_position_total"][pos] += 1
+                if entry.get("status") == "skipped":
+                    stats["per_position_skips"][pos] += 1
+                    stats["skip_events"] += 1
+            if len(stats["trace_examples"]) < trace_examples:
+                stats["trace_examples"].append(
+                    [
+                        {
+                            "position": int(entry["position"]),
+                            "status": entry.get("status"),
+                            "avg_phase1_recent_weight": entry.get("avg_phase1_recent_weight"),
+                            "avg_phase1_embed_weight": entry.get("avg_phase1_embed_weight"),
+                            "avg_phase1_entropy": entry.get("avg_phase1_entropy"),
+                        }
+                        for entry in trace
+                    ]
+                )
+        return out
+
+    model.forward = patched_forward
+    print("[skip-stats] installed; lm-eval forwards will return routing_info")
+    return stats
+
+
+def finalize_skip_stats(stats: dict) -> dict:
+    total_positions = max(int(stats.get("total_positions", 0)), 1)
+    forwards_with_trace = max(int(stats.get("forwards_with_trace", 0)), 1)
+    per_position_total = stats.get("per_position_total", [])
+    per_position_skips = stats.get("per_position_skips", [])
+    return {
+        **stats,
+        "skip_rate_block_level": float(stats.get("skip_events", 0)) / total_positions,
+        "avg_blocks_executed": float(stats.get("executed_blocks_sum", 0.0)) / forwards_with_trace,
+        "per_position_skip_rate": [
+            (float(skips) / total if total else 0.0)
+            for skips, total in zip(per_position_skips, per_position_total)
+        ],
+    }
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--model_path", required=True)
@@ -63,6 +140,8 @@ def main():
                         "(e.g. '1,1,1,0,1,1,1,1;1,1,1,1,1,0,1,1' for skip-P3-or-skip-P5).")
     p.add_argument("--random_seed", type=int, default=0)
     p.add_argument("--limit", type=int, default=None)
+    p.add_argument("--collect_skip_stats", action="store_true")
+    p.add_argument("--skip_stats_trace_examples", type=int, default=3)
     args = p.parse_args()
 
     os.makedirs(args.output, exist_ok=True)
@@ -80,6 +159,10 @@ def main():
         decoder.clear_dynamic_skip_policy()
         decoder.clear_skip_keep_mask()
         install_random_skip_hook(model, choices, seed=args.random_seed)
+
+    skip_stats = None
+    if args.collect_skip_stats:
+        skip_stats = install_skip_stats_hook(model, trace_examples=args.skip_stats_trace_examples)
 
     from lm_eval.models.huggingface import HFLM
     import lm_eval
@@ -110,6 +193,15 @@ def main():
         "runtime_mode": args.runtime_mode,
         "random_choices": args.random_choices if args.runtime_mode == "random" else None,
         "limit": args.limit,
+        "policy": {
+            "enable_skip_inference": getattr(model.config, "enable_skip_inference", None),
+            "skip_keep_mask": getattr(model.config, "skip_keep_mask", None),
+            "dynamic_skip_strategy": getattr(model.config, "dynamic_skip_strategy", None),
+            "dynamic_skip_probe_mode": getattr(model.config, "dynamic_skip_probe_mode", None),
+            "dynamic_skip_position_thresholds": getattr(model.config, "dynamic_skip_position_thresholds", None),
+            "dynamic_skip_max_skips": getattr(model.config, "dynamic_skip_max_skips", None),
+        },
+        "skip_stats": finalize_skip_stats(skip_stats) if skip_stats is not None else None,
         "results": results.get("results", {}) if isinstance(results, dict) else None,
     }
     out_path = Path(args.output) / "summary.json"

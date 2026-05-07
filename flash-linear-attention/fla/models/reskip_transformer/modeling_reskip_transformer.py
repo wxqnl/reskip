@@ -964,11 +964,14 @@ class ReSkipTransformerModel(ReSkipTransformerPreTrainedModel):
         self,
         *,
         strategy: str,
+        granularity: str | None = None,
         probe_mode: str | None = None,
         threshold: float | None = None,
         position_thresholds: list[float] | torch.Tensor | None = None,
         max_skips: int | None = None,
     ) -> None:
+        if granularity is not None and granularity != "block":
+            raise ValueError("`reskip_transformer` only supports block-level dynamic skip.")
         normalized_thresholds = self._normalize_dynamic_skip_position_thresholds(position_thresholds, "block")
         self.config.dynamic_skip_strategy = strategy
         self.config.dynamic_skip_probe_mode = probe_mode if probe_mode is not None else "all"

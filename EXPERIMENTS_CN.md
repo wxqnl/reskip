@@ -82,21 +82,46 @@
 - 新训练生成的 checkpoint 可以正常用于离线检查、HF 导出、`lm-eval`
 - 旧的异常 checkpoint 不再作为正式结果依据
 
-### 2.4 当前 ReSkip analysis 结论（2026-04-16 更新）
+### 2.4 当前 ReSkip analysis 结论（2026-05-03 复核）
 
-当前最佳动态 skip 方案：`recent_weight_gt + attn_only probe + positions {3,5} + q=0.85 + max_skips=2`
+2026-05-03 复核发现，2026-04-16 记录的
+`recent_weight_gt + attn_only probe + positions {3,5} + q=0.85 + max_skips=2`
+在真实 `lm-eval` forward 上没有触发 skip：
 
-- 四任务 benchmark 与 full-depth **完全一致**
-- Wall-clock 加速约 **1.19x**（seq_len=8192）
+- 四任务 benchmark 与 full-depth 完全一致的原因是 `skip_events=0`
+- 该配置只能说明 FineWeb-Edu 长上下文测速里会触发，不能作为 LLM benchmark 的有效 dynamic-skip 分数
+- 新的 rerun 结果保存在 [lm_eval_reskip_340M_rerun_20260503](/home/user01/Minko/reskip2/reskip/outputs/lm_eval_reskip_340M_rerun_20260503)
+
+重新校准的 q=0.5 方案在真实 benchmark forward 上会触发 skip：
+
+- `recent_weight_gt_q050_M1`：`skip_events=839 / 7304 forwards`，`avg_blocks=7.885`
+- `recent_minus_embed_gt_q050_M1`：`skip_events=1973 / 7304 forwards`，`avg_blocks=7.730`
+- 补跑 `PIQA / MMLU / OpenBookQA` 后，q085 仍为 `skip_events=0 / 2423 forwards`
+- 七任务合计：`recent_weight_gt_q050_M1` 为 `2230 / 9727 forwards, avg_blocks=7.771`；`recent_minus_embed_gt_q050_M1` 为 `3750 / 9727 forwards, avg_blocks=7.614`
+- 质量有可见下降，因此不能再写成“零退化 ReSkip”
+
+随后按完整流程重跑：先在 `lm-eval` benchmark context 上做 full-depth trace 校准，再导出候选并做 sanity，最后跑 7 个正式 benchmark。
+
+- 校准分析：[benchmark_context_analysis.json](/home/user01/Minko/reskip2/reskip/outputs/reskip_benchmark_context_analysis_340M_20260503/benchmark_context_analysis.json)
+- 最终汇总：[final_summary.json](/home/user01/Minko/reskip2/reskip/outputs/lm_eval_reskip_340M_benchmark_context_20260503/final_summary.json)
+- 附录集中记录：[APPENDIX_RESKIP_340M_BENCHMARK_CONTEXT.md](/home/user01/Minko/reskip2/reskip/APPENDIX_RESKIP_340M_BENCHMARK_CONTEXT.md)
+- 选用策略：`recent_weight_gt + attn_only + pos5 + q=0.80 + max_skips=1`，pos5 threshold `0.409505`
+- 七任务合计：`skip_events=706 / 9727 forwards`，block-level skip rate `0.0091`，`avg_blocks=7.927`
+- 指标变化：LAMBADA / HellaSwag / OpenBookQA 基本不变，PIQA `-0.0022`，MMLU `-0.0120`
+- 复跑验证：[final_summary.json](/home/user01/Minko/reskip2/reskip/outputs/lm_eval_reskip_340M_benchmark_context_rerun_20260503_113945/final_summary.json)，完整 eval 指标和 skip stats 与上一轮一致
+
+结论：benchmark-context 校准后 skip 能真实触发，但当前 340M 的动态 skip 省算幅度仍小，且 MMLU 有约 1.2 个点下降；这版结果适合作为有效复核记录，不适合作为“显著加速且零退化”的最终主结果。
+
+仍然保留的结构性观察：
 - 核心发现：**ablation-informed 位置选择**比单纯的 AttnRes importance 选位更有效
   - Block 3（importance 最高 0.561）的 static removal PPL impact 实际最低（1.31x）
   - Block 5（importance 最低 0.400）skip 触发频率最高
-  - 两者组合 + max_skips=2 实现了提速与保质的最佳平衡
+  - 但 LLM benchmark 需要按 eval distribution 复核实际触发率
 
 部署/评测路径：
 1. 用 `flame_analyze_reskip.py` 做分析（自动搜索含 ablation-informed 的位置组合）
 2. 导出带动态 skip 配置的 HF 模型（skip 策略保存在 `config.json` 中）
-3. 直接对导出模型跑 `lm-eval`
+3. 对导出模型跑 `lm-eval` 时必须同时记录 `skip_stats`，避免 0-trigger 结果混入正式表
 
 已淘汰的方案（代码已清理）：
 - MLP-level skip（routing 信号不适用于 MLP 级别）
@@ -352,7 +377,7 @@ CUDA_VISIBLE_DEVICES=6 python experiments/flame_analyze_reskip.py \
 
 导出目录的 `config.json` 会自带 `dynamic_skip_strategy`、`dynamic_skip_position_thresholds`、`dynamic_skip_max_skips`，后续直接拿来跑分即可。
 
-当前 340M 最佳配置为 `attn_only + {3,5} + q=0.85 + max_skips=2`，已导出至：
+旧的 340M q=0.85 配置在 LLM benchmark 上已判定为 0-trigger，不再作为正式 benchmark 结果：
 - [reskip_340M_combined_35_skip2_q085](/home/user01/Minko/reskip2/reskip/outputs/reskip_340M_combined_35_skip2_q085)
 
 ### 8.5 动态 skip 直接跑分

@@ -672,6 +672,102 @@ CUDA_VISIBLE_DEVICES=7 python experiments/flame_lm_eval.py \
 
 四任务与 full-depth **完全一致**。
 
+> 2026-05-03 复核：这组结果不能作为有效 ReSkip benchmark。用带
+> `skip_stats` 的真实 `lm-eval` forward 重新检查后，`q=0.85 combined`
+> 的 `skip_events=0 / 7304 forwards`、`avg_blocks=8.0`，四任务完全一致
+> 是因为 skip 没有触发，而不是因为动态跳层零退化。复核输出见
+> [lm_eval_reskip_340M_rerun_20260503](/home/user01/Minko/reskip2/reskip/outputs/lm_eval_reskip_340M_rerun_20260503)。
+
+### 2026-05-03：340M LLM benchmark 复核与重跑
+
+问题定位：
+
+- 旧 `q=0.85 combined {3,5}/skip2` 阈值来自 FineWeb-Edu 长上下文分布。
+- `lm-eval` 的短 prompt / multiple-choice scoring 分布下，phase-1 statistic 明显偏移，阈值没有跨过。
+- 因此旧四任务结果与 full-depth bit-level 等同，属于 0-trigger 实验。
+
+本次使用 GPU 0-3 重跑四任务（`lambada_openai,hellaswag,arc_easy,arc_challenge`），并在真实 scoring forward 上记录 skip：
+
+| 配置 | skip_events / forwards | avg_blocks | LAMBADA acc | LAMBADA ppl | HellaSwag acc_norm | ARC-E acc_norm | ARC-C acc_norm |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| full-depth | 0 / 7304 | 8.000 | 0.4054 | 20.2018 | 0.4606 | 0.5450 | 0.3012 |
+| q085 combined {3,5}/skip2 | 0 / 7304 | 8.000 | 0.4054 | 20.2018 | 0.4606 | 0.5450 | 0.3012 |
+| recent_weight_gt q050 M1 | 839 / 7304 | 7.885 | 0.4027 | 20.6065 | 0.4542 | 0.5396 | 0.2961 |
+| recent_minus_embed_gt q050 M1 | 1973 / 7304 | 7.730 | 0.3497 | 31.0679 | 0.4458 | 0.5345 | 0.2969 |
+
+补跑 `PIQA / MMLU / OpenBookQA`（同样使用 GPU 0-3 和真实 forward skip tracing）：
+
+| 配置 | skip_events / forwards | avg_blocks | PIQA acc_norm | MMLU acc | OpenBookQA acc_norm |
+|---|---:|---:|---:|---:|---:|
+| full-depth | 0 / 2423 | 8.000 | 0.6893 | 0.2554 | 0.358 |
+| q085 combined {3,5}/skip2 | 0 / 2423 | 8.000 | 0.6893 | 0.2554 | 0.358 |
+| recent_weight_gt q050 M1 | 1391 / 2423 | 7.426 | 0.6866 | 0.2354 | 0.356 |
+| recent_minus_embed_gt q050 M1 | 1777 / 2423 | 7.267 | 0.6763 | 0.2302 | 0.356 |
+
+七任务合计触发统计：
+
+| 配置 | skip_events / forwards | avg_blocks | skip_rate |
+|---|---:|---:|---:|
+| full-depth | 0 / 9727 | 8.000 | 0.000 |
+| q085 combined {3,5}/skip2 | 0 / 9727 | 8.000 | 0.000 |
+| recent_weight_gt q050 M1 | 2230 / 9727 | 7.771 | 0.0287 |
+| recent_minus_embed_gt q050 M1 | 3750 / 9727 | 7.614 | 0.0482 |
+
+结论：
+
+- 旧 q085 结果作废为 0-trigger 结果。
+- q050 复跑能触发 skip，但不是零退化；正式论文表应报告触发率并把质量下降纳入结论。
+- 后续搜索需要直接在目标 benchmark context 分布上做 trigger-rate validation，不能只依赖 FineWeb-Edu calibration。
+
+### 2026-05-03：benchmark-context calibration 完整重跑
+
+按用户要求重新走完整流程：
+
+1. 用 FineWeb-Edu 先跑标准 analysis，确认 `ablation3 q0.45` 等早层策略虽然能触发但在 benchmark sanity 上明显掉分，后层 low1/low2 又是 0-trigger。
+2. 新增 [benchmark_context_reskip_calibrate.py](/home/user01/Minko/reskip2/reskip/experiments/benchmark_context_reskip_calibrate.py)，在真实 `lm-eval` request context 上用 full-depth forward 收集 dynamic probe metric。
+3. 使用 `recent_weight_gt + attn_only + pos5 + max_skips=1`，导出 q50/q55/q60/q65/q70/q75/q80 候选；q 的范围从旧的 q85+ 收到 q50-q80。
+4. 对 q50/q60/q70/q80 做 256-limit sanity，最后选 q80 做正式 full benchmark。
+
+校准文件：[benchmark_context_analysis.json](/home/user01/Minko/reskip2/reskip/outputs/reskip_benchmark_context_analysis_340M_20260503/benchmark_context_analysis.json)
+
+附录集中记录：[APPENDIX_RESKIP_340M_BENCHMARK_CONTEXT.md](/home/user01/Minko/reskip2/reskip/APPENDIX_RESKIP_340M_BENCHMARK_CONTEXT.md)
+
+选中模型：[pos5_q080_M1](/home/user01/Minko/reskip2/reskip/outputs/reskip_340M_benchmark_context_20260503/pos5_q080_M1)
+
+最终汇总：[final_summary.json](/home/user01/Minko/reskip2/reskip/outputs/lm_eval_reskip_340M_benchmark_context_20260503/final_summary.json)
+
+校准分布（position 5）：
+
+| count | mean | p50 | p75 | p80 | p90 | max |
+|---:|---:|---:|---:|---:|---:|---:|
+| 2665 | 0.3943 | 0.3971 | 0.4069 | 0.4095 | 0.4141 | 0.4264 |
+
+256-limit sanity：
+
+| 配置 | skip_events / positions | avg_blocks | LAMBADA acc | HellaSwag acc_norm | PIQA acc_norm | MMLU acc |
+|---|---:|---:|---:|---:|---:|---:|
+| full-depth | 0 / 14888 | 8.000 | 0.3828 | 0.4922 | 0.7031 | 0.2573 |
+| pos5 q50 | 1114 / 14888 | 7.401 | 0.3125 | 0.4844 | 0.6836 | 0.2339 |
+| pos5 q60 | 865 / 14888 | 7.535 | 0.3438 | 0.4766 | 0.7031 | 0.2365 |
+| pos5 q70 | 656 / 14888 | 7.648 | 0.3711 | 0.4922 | 0.7031 | 0.2389 |
+| pos5 q80 | 380 / 14888 | 7.796 | 0.3789 | 0.4922 | 0.6953 | 0.2461 |
+
+正式 7-task full benchmark：
+
+| 配置 | skip_events / forwards | avg_blocks | LAMBADA acc | LAMBADA ppl | HellaSwag acc_norm | ARC-E acc_norm | ARC-C acc_norm | PIQA acc_norm | MMLU acc | OBQA acc_norm |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| full-depth | 0 / 9727 | 8.000 | 0.4054 | 20.2018 | 0.4606 | 0.5450 | 0.3012 | 0.6893 | 0.2554 | 0.358 |
+| pos5 q80 | 706 / 9727 | 7.927 | 0.4054 | 20.2018 | 0.4607 | 0.5446 | 0.3003 | 0.6872 | 0.2434 | 0.358 |
+
+复跑验证（2026-05-03 11:39 启动，GPU 0-3）：[final_summary.json](/home/user01/Minko/reskip2/reskip/outputs/lm_eval_reskip_340M_benchmark_context_rerun_20260503_113945/final_summary.json)。Full 与 pos5 q80 的正式 7-task 指标、`skip_events=706 / 9727 forwards`、`avg_blocks=7.927` 与上一轮汇总一致。
+
+结论：
+
+- 这次不再是 0-trigger：skip 全部发生在 position 5。
+- benchmark-context 校准后的阈值量级约 `0.397-0.410`，明显低于 FineWeb low1 的 `0.435` 左右，解释了旧阈值在 benchmark 上不触发的原因。
+- q80 是当前 sanity 中最稳的点，但整体省算只有 `avg_blocks 8.000 -> 7.927`，且 MMLU 下降约 `1.2` 个点。
+- 当前 340M 结果只能作为“有效触发但收益不足”的复核记录；不应写成显著加速或零退化。
+
 ### 同批次 wall-clock 测速
 
 设置：`seq_len=8192`, `num_batches=48`, `warmup=4`, GPU6 串行跑所有配置。
@@ -689,10 +785,11 @@ CUDA_VISIBLE_DEVICES=7 python experiments/flame_lm_eval.py \
 
 1. **Block 3 是隐藏的最佳 skip 目标**：AttnRes importance 最高（0.561）但 static removal impact 最低（1.31x PPL ratio）。"被引用频率高"≠"不可替代"——block 3 的信息可被其他 block 补偿。
 
-2. **组合 {3,5} + max_skips=2 同时提速和保质**：
+2. **组合 {3,5} + max_skips=2 在长上下文测速中提速，但旧 benchmark 记录已作废**：
    - Block 5 提供高 skip 触发率（低 importance → routing 信号频繁触发）
    - Block 3 提供安全 skip 空间（低 ablation impact → 跳过不损质量）
-   - 两者互补，达到 0.88 skips/batch，speedup ~1.19x，benchmark 零退化
+   - 两者互补，长上下文测速达到 0.88 skips/batch，speedup ~1.19x
+   - 2026-05-03 复核表明旧 lm-eval “零退化”来自 0-trigger，不能作为有效 benchmark 结论
 
 3. **Ablation-informed 选位 vs AttnRes importance 选位**：两种信号互补而非替代。importance 低的 block（如 5）skip 触发频率高；ablation impact 低的 block（如 3）skip 安全性高。组合使用效果最佳。
 

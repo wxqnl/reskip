@@ -45,10 +45,11 @@ def main():
                 continue
             d = json.loads(line)
             ws = d.get("w_recents") or []
-            for b, w in enumerate(ws):
+            items = ws.items() if isinstance(ws, dict) else enumerate(ws)
+            for b, w in items:
                 if w is None or (isinstance(w, float) and w != w):
                     continue
-                per_block.setdefault(b, []).append(float(w))
+                per_block.setdefault(int(b), []).append(float(w))
             n_forwards += 1
 
     if not per_block:
@@ -71,7 +72,7 @@ def main():
         "max_skips": args.max_skips,
         "strategy": "recent_weight_gt",
         "quantile": args.quantile,
-        "notes": args.notes or "sim-trajectory calibration (retrofit Part-1 protocol)",
+        "notes": args.notes or "routing-dump calibration (retrofit ReSkip protocol)",
         "source_dump": str(Path(args.dump).resolve()),
         "n_forwards": n_forwards,
     }

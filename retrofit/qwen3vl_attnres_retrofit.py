@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import math
+import json
+import os
 import types
+import random
 from dataclasses import dataclass
 from typing import Iterable
 
@@ -156,10 +159,40 @@ class Qwen3VLAttnResRetrofit(nn.Module):
         self._fwd_entropy: torch.Tensor | None = None
         self._active_skip_blocks: set[int] = set()
         self._dynamic_skip_config: dict | None = None
+        self._random_skip_config: dict | None = None
+        self._skip_stats = None
+        self._routing_dump_path = os.environ.get("ROUTING_DUMP_PATH")
+        self._routing_dump_limit = int(os.environ.get("ROUTING_DUMP_LIMIT", "0") or "0")
+        self._routing_dump_count = 0
         self._collect_block_states = False
         self._return_alpha_flag = False
 
         self._install_retrofit_forward()
+
+    def reset_skip_stats(self):
+        self._skip_stats = {
+            "forwards": 0,
+            "total_positions": 0,
+            "skip_events": 0,
+            "dynamic_skip_requests": 0,
+            "static_skip_requests": 0,
+            "random_skip_requests": 0,
+            "per_block_skips": [0 for _ in range(self.num_blocks)],
+            "per_block_dynamic_requests": [0 for _ in range(self.num_blocks)],
+            "per_block_static_requests": [0 for _ in range(self.num_blocks)],
+            "per_block_random_requests": [0 for _ in range(self.num_blocks)],
+        }
+
+    def get_skip_stats(self):
+        if self._skip_stats is None:
+            return None
+        stats = dict(self._skip_stats)
+        forwards = max(int(stats["forwards"]), 1)
+        total_positions = max(int(stats["total_positions"]), 1)
+        stats["avg_skips_per_forward"] = stats["skip_events"] / forwards
+        stats["block_skip_rate"] = stats["skip_events"] / total_positions
+        stats["forward_skip_rate_upper_bound"] = stats["skip_events"] / forwards
+        return stats
 
     @property
     def text_layers(self):
@@ -300,6 +333,8 @@ class Qwen3VLAttnResRetrofit(nn.Module):
             or self._collect_block_states
             or self.training
             or (self._dynamic_skip_config is not None)
+            or (self._random_skip_config is not None)
+            or bool(self._routing_dump_path)
         )
         compute_entropy_flag = self.training
 
@@ -316,10 +351,22 @@ class Qwen3VLAttnResRetrofit(nn.Module):
 
         dynamic_cfg = self._dynamic_skip_config  # None or dict
         dyn_skipped_count = 0
+        random_cfg = self._random_skip_config
+        random_skipped_count = 0
+        if self._skip_stats is not None:
+            self._skip_stats["forwards"] += 1
+            self._skip_stats["total_positions"] += self.num_blocks
         # Precompute Python-side dyn-skip config once per forward.
         dyn_thr_map = (dynamic_cfg or {}).get("thresholds", {}) or {}
         dyn_eligible = (dynamic_cfg or {}).get("eligible_blocks")
         dyn_max_skips = (dynamic_cfg or {}).get("max_skips")
+        rnd_eligible = (random_cfg or {}).get("eligible_blocks")
+        rnd_p = float((random_cfg or {}).get("p", 0.0) or 0.0)
+        rnd_max_skips = (random_cfg or {}).get("max_skips")
+        rnd_rng = (random_cfg or {}).get("rng")
+        if random_cfg is not None and rnd_rng is None:
+            rnd_rng = random.Random(int((random_cfg or {}).get("seed", 1234)))
+            random_cfg["rng"] = rnd_rng
         for block_idx in range(self.num_blocks):
             # alpha is needed only for trace or dyn-skip; routed+corrected
             # always needed for the forward math.
@@ -353,15 +400,39 @@ class Qwen3VLAttnResRetrofit(nn.Module):
                 ):
                     if bool((alpha[..., -1].mean().float() > float(thr)).item()):
                         dynamic_skip_requested = True
+            random_skip_requested = False
+            if (
+                random_cfg is not None
+                and (rnd_eligible is None or block_idx in rnd_eligible)
+                and (rnd_max_skips is None or random_skipped_count < rnd_max_skips)
+                and rnd_rng is not None
+                and rnd_rng.random() < rnd_p
+            ):
+                random_skip_requested = True
 
             deepstack_sensitive = self._block_contains_deepstack_layers(block_idx, deepstack_visual_embeds)
             should_skip = (
-                (skip_requested or dynamic_skip_requested)
+                (skip_requested or dynamic_skip_requested or random_skip_requested)
                 and block_idx in self.skippable_block_set
                 and not deepstack_sensitive
             )
             if dynamic_skip_requested and should_skip:
                 dyn_skipped_count += 1
+            if random_skip_requested and should_skip:
+                random_skipped_count += 1
+            if self._skip_stats is not None:
+                if skip_requested:
+                    self._skip_stats["static_skip_requests"] += 1
+                    self._skip_stats["per_block_static_requests"][block_idx] += 1
+                if dynamic_skip_requested:
+                    self._skip_stats["dynamic_skip_requests"] += 1
+                    self._skip_stats["per_block_dynamic_requests"][block_idx] += 1
+                if random_skip_requested:
+                    self._skip_stats["random_skip_requests"] += 1
+                    self._skip_stats["per_block_random_requests"][block_idx] += 1
+                if should_skip:
+                    self._skip_stats["skip_events"] += 1
+                    self._skip_stats["per_block_skips"][block_idx] += 1
 
             if block_input is None:
                 block_input = prev_block
@@ -447,6 +518,7 @@ class Qwen3VLAttnResRetrofit(nn.Module):
                         "skipped": should_skip,
                         "skip_requested": skip_requested,
                         "dynamic_skip_requested": dynamic_skip_requested,
+                        "random_skip_requested": random_skip_requested,
                         "w_recent": w_recent_val,
                         "deepstack_sensitive": deepstack_sensitive,
                         "gamma": gamma_cpu[block_idx],
@@ -457,6 +529,27 @@ class Qwen3VLAttnResRetrofit(nn.Module):
         hidden_states = text_model.norm(completed[-1])
         self._fwd_alpha_list = alpha_list if collect_trace else None
         self._fwd_skip_trace = skip_trace if collect_trace else None
+        if self._routing_dump_path and skip_trace:
+            if self._routing_dump_limit <= 0 or self._routing_dump_count < self._routing_dump_limit:
+                record = {
+                    "idx": self._routing_dump_count,
+                    "seq_len": int(hidden_states.shape[1]) if hidden_states.ndim >= 2 else None,
+                    "w_recents": {
+                        str(item["block_idx"]): item.get("w_recent")
+                        for item in skip_trace
+                        if item.get("w_recent") is not None
+                    },
+                    "skipped": [item["block_idx"] for item in skip_trace if item.get("skipped")],
+                    "dynamic_skip_requested": [
+                        item["block_idx"] for item in skip_trace if item.get("dynamic_skip_requested")
+                    ],
+                    "random_skip_requested": [
+                        item["block_idx"] for item in skip_trace if item.get("random_skip_requested")
+                    ],
+                }
+                with open(self._routing_dump_path, "a") as f:
+                    f.write(json.dumps(record, sort_keys=True) + "\n")
+                self._routing_dump_count += 1
         self._fwd_block_inputs = block_inputs if self._collect_block_states else None
         self._fwd_block_outputs = block_outputs if self._collect_block_states else None
         self._fwd_surrogate_outputs = surrogate_outputs if self._collect_block_states else None
@@ -502,6 +595,7 @@ class Qwen3VLAttnResRetrofit(nn.Module):
         self._fwd_entropy = None
         self._active_skip_blocks = set(int(x) for x in (skip_block_indices or []))
         self._dynamic_skip_config = dynamic_skip_config
+        self._random_skip_config = None
         self._collect_block_states = return_block_states
         self._return_alpha_flag = return_alpha
 

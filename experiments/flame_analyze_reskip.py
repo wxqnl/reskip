@@ -794,6 +794,7 @@ def main() -> None:
         decoder.set_dynamic_skip_policy(
             strategy=args.dynamic_skip_strategy,
             granularity=args.dynamic_skip_granularity,
+            probe_mode=best_dynamic_deploy.get("probe_mode", "all"),
             position_thresholds=best_dynamic_deploy["position_thresholds"],
             max_skips=best_dynamic_deploy["max_skips"],
         )
