@@ -20,7 +20,7 @@ AttnRes~\citep{chen2026attnres} 提供了一个自然切入点。它用对 previ
 
 本文有一个主贡献和两个支持性 claim。
 
-- **AR-Retrofit 将内生深度路由安装进预训练模型**（\S\ref{sec:retrofit}）。一个 `\gamma`-gated residual injection 通过短程 fine-tune 向冻结 Transformer 添加 AttnRes-style routing path，使用约 `0.7%` 新参数，并具有 identity-preserving initialization。
+- **AR-Retrofit 将内生深度路由安装进预训练模型**（\S\ref{sec:retrofit}）。一个 `\gamma`-gated residual injection 通过短程 fine-tune 向冻结 Transformer 添加 AttnRes-style routing path；Qwen3-VL-2B 新增/训练约 `7.4M` 参数（`<0.4%`），Qwen3-VL-4B 约 `11.8M`（`<0.3%`），并具有 identity-preserving initialization。
 - **ReSkip 使用已安装信号进行 pre-execution dynamic depth**（\S\ref{sec:reskip}, \S\ref{sec:controlled_340m}, \S\ref{sec:exp_reskip_tradeoff}）。Skip decision 在当前 block 运行前做出；一个 340M controlled study 验证了 speed-quality motivation；eligible blocks 通过 ablation 或 action-drift 选择，因为 routing weight 是有用信号，但不是 safety certificate。
 - **VLM 与 VLA 实验验证 retrofit pathway**（\S\ref{sec:experiments}, \S\ref{sec:vla}）。Retrofit 在 near-base full-depth runtime 下保持或提升预训练 VLM 能力；dynamic ReSkip 在不同 `q` 设置下给出 calibrated adaptive-depth behavior；LIBERO 提供支持性的 transfer evidence。
 
@@ -60,7 +60,7 @@ x_n = h_{n-1} + \gamma_n\,A_n(r_n - h_{n-1}), \qquad
 h_n = \mathrm{Block}_n(x_n).
 ```
 
-`\mathrm{Block}_n` 是原样保留的 pretrained block group；AttnRes 作为 correction 进入 **block 之间**。在 2B 上，当 `r=256` 时，retrofit 参数 `\{\mathbf{w}_n, \gamma_n, A_n\}` 约为 15M（约 base 的 `0.7%`）；整个 base，包括 embeddings、vision tower、decoder layers、LM head，都被冻结。
+`\mathrm{Block}_n` 是原样保留的 pretrained block group；AttnRes 作为 correction 进入 **block 之间**。在 canonical `r=256, L=4` 下，2B retrofit 参数 `\{\mathbf{w}_n, \gamma_n, A_n\}` 约为 `7.4M`（`<0.4%`），4B 约为 `11.8M`（`<0.3%`）；整个 base，包括 embeddings、vision tower、decoder layers、LM head，都被冻结。
 
 当 `\gamma_n=0` 时，有 `x_n = h_{n-1}`，因此 step `0` 的 forward 与预训练模型 bit-identical。Adapter up-projection 用小随机值 `\mathcal{N}(0,0.02^2)` 初始化，使得初始化时 `\partial\mathcal{L}/\partial\gamma_n \ne 0`，避免梯度死锁。然后我们通过 linear curriculum 在训练前 `30%--50%` 中将 `\gamma_n` 从 `0` ramp 到 `1`。当 `\gamma_n=1` 时，AttnRes-routed correction 完全激活，但模型仍是 Eq.~\ref{eq:gamma_gate} 定义的 pretrained stream 上的 residual correction。Appendix~\ref{app:route_ablations} 比较了 observer-only、interpolation 和 informed-initialisation controls。
 
@@ -124,7 +124,7 @@ I(n)=\max_{l>n}\,\E[\alpha_{n\to l}]
 
 ### 4.1 VLM adaptation: quality against the base
 
-我们将 **Qwen3-VL-2B**~\citep{bai2025qwen3vl}（`L=28, d=2048`）以 `L=4` 的 block 大小 retrofit 成 `N=7` 个 block；将 **Qwen3-VL-4B**（`L=36, d=2560`）以 `L=4` retrofit 成 `N=9` 个 block。所有 base 参数冻结；在 `r=256` 下，约 15M（2B）/ 约 23.7M（4B）retrofit parameters 通过 Eq.~\ref{eq:retrofit_loss} 训练。最终 SFT mixture 包含 `60%` LLaVA-OneVision-Data~\citep{li2024llavaonevision}、`20%` UltraChat~\citep{ding2023ultrachat}、`10%` NuminaMath-CoT~\citep{aimo2024numinamath} 和 `10%` OpenThoughts-114k~\citep{guha2025openthoughts}，训练 `10k` steps；Appendix~\ref{app:data_mix} 给出具体 mixture。Evaluation 使用 LAMBADA~\citep{paperno2016lambada}/HellaSwag~\citep{zellers2019hellaswag} 作为 text benchmark，并使用六个 `lmms-eval` VLM benchmark（MMBench~\citep{liu2023mmbench}, MMMU~\citep{yue2024mmmu}, MMStar~\citep{chen2024mmstar}, AI2D~\citep{kembhavi2016ai2d}, OCRBench~\citep{liu2024ocrbench}, RealWorldQA~\citep{grok2024realworldqa}）。训练前验证 identity-at-init（`\gamma=0` 复现 base；bf16 下 max `|\Delta\text{logits}|=0.375`，`100%` argmax agreement；Appendix~\ref{app:identity}）。
+我们将 **Qwen3-VL-2B**~\citep{bai2025qwen3vl}（`L=28, d=2048`）以 `L=4` 的 block 大小 retrofit 成 `N=7` 个 block；将 **Qwen3-VL-4B**（`L=36, d=2560`）以 `L=4` retrofit 成 `N=9` 个 block。所有 base 参数冻结；在 `r=256` 下，约 `7.4M`（2B）/ 约 `11.8M`（4B）retrofit parameters 通过 Eq.~\ref{eq:retrofit_loss} 训练。最终 SFT mixture 包含 `60%` LLaVA-OneVision-Data~\citep{li2024llavaonevision}、`20%` UltraChat~\citep{ding2023ultrachat}、`10%` NuminaMath-CoT~\citep{aimo2024numinamath} 和 `10%` OpenThoughts-114k~\citep{guha2025openthoughts}，训练 `10k` steps；Appendix~\ref{app:data_mix} 给出具体 mixture。Evaluation 使用 LAMBADA~\citep{paperno2016lambada}/HellaSwag~\citep{zellers2019hellaswag} 作为 text benchmark，并使用六个 `lmms-eval` VLM benchmark（MMBench~\citep{liu2023mmbench}, MMMU~\citep{yue2024mmmu}, MMStar~\citep{chen2024mmstar}, AI2D~\citep{kembhavi2016ai2d}, OCRBench~\citep{liu2024ocrbench}, RealWorldQA~\citep{grok2024realworldqa}）。训练前验证 identity-at-init（`\gamma=0` 复现 base；bf16 下 max `|\Delta\text{logits}|=0.375`，`100%` argmax agreement；Appendix~\ref{app:identity}）。
 
 **Table: AR-Retrofit on Qwen3-VL-2B/4B at the canonical `L=4` recipe.** VLM 使用 `lmms-eval` full splits，LAMBADA/HellaSwag 使用 `n=2000`。Retrofit 在两个规模上都在 `5/6` 个 VLM benchmark 上改善 base，并提升 LAMBADA text。MMStar overall 持平；math sub-category（Appendix~\ref{app:mmstar_subcat}）在 2B 上提升 `+7.9`pp，在 4B 上提升 `+3.9`pp，这与提升 deliberate-reasoning paths 的 router 一致。Auxiliary parameter-matched LoRA controls 未表现出相同 text-gain pattern（Appendix~\ref{app:lora_baselines}）。
 
@@ -192,19 +192,19 @@ Path B 在 2B 上达到 `97.15%`，在 4B 上达到 `96.70%`。增益集中在 S
 
 | q (sim-calibrated) | Spatial | Object | Goal | Long-10 | Avg |
 |---|---:|---:|---:|---:|---:|
-| **Qwen3-VL-2B Path B, `P={1,4}`, `M=2`, no-skip ref `96.25`** ||||| |
+| **Qwen3-VL-2B, `P={1,4}`, `M=2`, no-skip/full ref `97.2`** ||||| |
 | 0.30 | 4.7 | --- | --- | --- | (sharp drop) |
 | 0.85 | 80.0 | 98.0 | 87.3* | 67.2 | 83.1 |
 | 0.95 | 95.0 | 99.4 | 97.6 | 86.8 | 94.7 |
-| **0.99** | **97.6** | **99.2** | **99.0** | **93.6** | **97.35** |
-| no-skip (ref) | 97.4 | 98.6 | 98.0 | 91.0 | 96.25 |
-| **Qwen3-VL-4B Path B, `P={1,2}`, `M=2`, no-skip ref `96.25`** ||||| |
+| **0.99** | **97.6** | **99.2** | **99.0** | **93.6** | **97.4** |
+| no-skip/full (ref) | 97.8 | 99.6 | 98.6 | 92.6 | 97.2 |
+| **Qwen3-VL-4B, `P={1,2}`, `M=2`, no-skip/full ref `96.7`** ||||| |
 | 0.30 | 89.6 | 95.4 | 96.4 | 86.0 | 91.85 |
 | 0.50 | 91.2 | 98.0 | 98.2 | 89.6 | 94.25 |
 | 0.85 | 93.6 | 99.2 | 97.6 | 93.2 | 95.90 |
 | 0.95 | 95.6 | 98.0 | 98.0 | 93.0 | 96.15 |
-| **0.99** | **96.4** | **98.2** | **98.4** | **92.8** | **96.45** |
-| no-skip (ref) | 97.4 | 98.2 | 98.0 | 91.4 | 96.25 |
+| **0.99** | **96.4** | **98.2** | **98.4** | **92.8** | **96.5** |
+| no-skip/full (ref) | 94.6 | 99.8 | 98.2 | 94.2 | 96.7 |
 
 `*` Partial eval（332/500 trials）：driver schedule 提前结束；报告 completed trials 上的 rate。
 
@@ -222,8 +222,8 @@ ReSkip 的主要旋钮是 eligible set `\mathcal{P}`、skip budget `M_{\max}` �
 | 340M AttnRes | ReSkip | 2 | 0.85 | LAMBADA 0.4054 / ppl 20.20 | 1.19x, 0.88 avg skips |
 | 2B VLM retrofit | full-depth | 0 | -- | LAMBADA 0.5700 / ppl 4.526 | 22.43 ms compiled |
 | 2B VLM retrofit | ReSkip | 2 | 0.85 | LAMBADA 0.5600 / ppl 5.258 | 0.19 avg skips |
-| 2B VLA Path B | ReSkip | 2 | 0.99 | LIBERO avg 97.35% | conservative action-stream skipping |
-| 4B VLA Path B | ReSkip | 2 | 0.99 | LIBERO avg 96.45% | conservative action-stream skipping |
+| 2B VLA Path B | ReSkip | 2 | 0.99 | LIBERO avg 97.4% | conservative action-stream skipping |
+| 4B VLA Path B | ReSkip | 2 | 0.99 | LIBERO avg 96.5% | conservative action-stream skipping |
 
 Routing signal 的作用不只是选择 skip locations。在同一个 340M 模型上、匹配 skip budget 时，基于 phase-1 routing 的 input-dependent rule 比 static 或 random schedules 保留显著更多质量（Table~\ref{tab:decision_main}）。在这个更激进的 calibration point 上，dynamic rule 并不总是 lossless，但它明显优于无条件跳过相同 positions。
 

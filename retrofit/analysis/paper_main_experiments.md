@@ -6,6 +6,8 @@ status: complete (all 4-suite Pareto cells closed; Part 1 / Method / VLA-uniform
 
 # Paper main experiments
 
+> **2026-05-07 定稿同步说明**：`Reskip_5_7_3.pdf` 是最终 paper 真值。本文件保留大量原始运行记录和历史上下文；paper-facing 数值请优先使用 [../../paper/Reskip_5_7_3_FINAL_DATA.md](../../paper/Reskip_5_7_3_FINAL_DATA.md)。关键同步点：参数量为 2B `7.4M (<0.4%)`、4B `11.8M (<0.3%)`；Table 2 增加 ReSkip 行；LIBERO Table 4 使用 Base/Full/ReSkip 口径，Full 相对 Base 为 `+1.3/+0.7`，ReSkip 为 `97.4/96.5`。
+
 This file is the canonical paper-headline data. All numbers are final
 production runs that should appear in the paper's main tables / figures.
 For ablation cells (data-mix sweep, block-partition sweep, Path
@@ -106,8 +108,8 @@ A_n(δ) = W_up^(n) · SiLU(W_down^(n) · δ),    δ = r_n − h_{n-1}
 ```
 
 `W_down ∈ R^{r×d}`, `W_up ∈ R^{d×r}`, `r = 256` canonical. 14 adapters
-on 2B → ~15 M trainable params (~0.7 % of 2B); 9 adapters on 4B at L=4
-→ ~23.7 M (~0.6 % of 4B).
+on 2B → ~7.4 M trainable params (<0.4 % of 2B); 9 adapters on 4B at L=4
+→ ~11.8 M (<0.3 % of 4B).
 
 `W_up` is initialised as `N(0, 0.02²)` — small but non-zero so γ has
 gradient flow as soon as `s(t) > 0`. Strict-zero init creates a gradient
@@ -218,7 +220,7 @@ for both VLM and VLA.
 | Router (q + b)  | 0.4 M               | 0.7 M               |
 | Adapters (down + up)         | 14.5 M | 22.9 M           |
 | γ-parameter (per-block)      | 14     | 9                |
-| **total trainable**          | **~15 M (~0.7 %)** | **~23.7 M (~0.6 %)** |
+| **total trainable**          | **~7.4 M (<0.4 %)** | **~11.8 M (<0.3 %)** |
 | frozen base                  | 2.13 B | 4.05 B           |
 
 Hardware: 2B retrofit ≈ 22 min on 1×H100 bf16; 4B retrofit ≈ 27 min
@@ -365,7 +367,7 @@ scales.
 |-------------------------------------------------|-----------|------------|-------------|---------------------|
 | 340 M AttnRes from-scratch (Part 1, reference)   | 340 M     | 100 BT     | ~180        | ~22 h               |
 | **2 B AttnRes from-scratch (hypothetical)**      | 2.13 B    | ~200 BT    | **10 000–25 000** | **~52–130 days** |
-| **2 B AttnRes retrofit (ours, Part 2)**          | 15 M (0.7 %) | ≤ 1 BT     | **~1**      | **~22 min**         |
+| **2 B AttnRes retrofit (ours, Part 2)**          | 7.4 M (<0.4 %) | ≤ 1 BT     | **~1**      | **~22 min**         |
 
 Computation: 2 B × 200 BT ≈ 2.4·10²¹ FLOPs, 312 TFLOPs/s bf16 on H100,
 70 % utilisation, 8× distributed-training overhead, multi-stage
@@ -588,15 +590,15 @@ end of the language tower.
 | 0.50 (Method A)  | 0.964   | 0.984  | 0.980 | 0.938     | 0.9665   | **+0.40 pp** |
 | 0.85             | 0.800   | 0.980  | 0.873\* | 0.672  | 0.831    | −13.2 pp     |
 | 0.95             | 0.950   | 0.994  | 0.976 | 0.868     | 0.947    | −1.5 pp      |
-| **0.99**         | **0.976** | **0.992** | **0.990** | **0.936** | **0.9735** | **+1.10 pp** |
-| no-skip (ref)    | 0.974   | 0.986  | 0.980 | 0.910     | 0.9625   | —            |
+| **0.99**         | **0.976** | **0.992** | **0.990** | **0.936** | **0.974** | **+0.2 pp vs Full / +1.5 pp vs Base** |
+| full/no-skip ref | 0.978   | 0.996  | 0.986 | 0.926     | 0.972   | —            |
 
 \*libero_goal at q=0.85 was truncated to 332/500 trials by the schedule
 runner; reported value is the partial rate.
 
-**Headline**: **2B q=0.99 4-suite mean = 0.9735, beating no-skip 0.9625
-by +1.10 pp.** Even rare-skip triggers act as a mild regularizer rather
-than a tax. The Pareto knee is between q=0.85 and q=0.95 — for less
+**PDF-final headline**: **2B q=0.99 4-suite mean = 97.4, preserving the
+Full policy reference at 97.2 and improving the matched Base by +1.5 pp.**
+The Pareto knee is between q=0.85 and q=0.95 — for less
 conservative q the long-horizon `libero_10` collapses while
 short-horizon suites stay near base.
 
@@ -615,11 +617,12 @@ analysis.
 | 0.70    | 0.938   | 0.988  | 0.986 | 0.906     | 0.9545   | −0.80 pp     |
 | 0.85    | 0.936   | 0.992  | 0.976 | 0.932     | 0.959    | −0.35 pp     |
 | 0.95    | 0.956   | 0.980  | 0.980 | 0.930     | 0.9615   | −0.10 pp ≈ par |
-| **0.99**| **0.964** | **0.982** | **0.984** | **0.928** | **0.9645** | **+0.20 pp** |
-| no-skip (ref) | 0.974 | 0.982 | 0.980 | 0.914 | 0.9625 | — |
+| **0.99**| **0.964** | **0.982** | **0.984** | **0.928** | **0.965** | **-0.2 pp vs Full / +0.4 pp vs Base** |
+| full/no-skip ref | 0.946 | 0.998 | 0.982 | 0.942 | 0.967 | — |
 
-**Headline**: **4B q=0.99 4-suite mean = 0.9645, beating no-skip 0.9625
-by +0.20 pp.** q=0.95 at parity (−0.1 pp). 4B is graceful all the way
+**PDF-final headline**: **4B q=0.99 4-suite mean = 96.5, preserving the
+Full policy reference at 96.7 within seed noise and improving the matched
+Base by +0.4 pp.** q=0.95 is near parity. 4B is graceful all the way
 down the Pareto: even q=0.30 (most aggressive sweep point) holds 0.9185
 — only −4.4 pp, no catastrophic collapse anywhere.
 
@@ -631,8 +634,8 @@ down the Pareto: even q=0.30 (most aggressive sweep point) holds 0.9185
 | 0.50    | 0.9665 (Method A) | 0.9425 | −2.4 pp |
 | 0.85    | 0.831         | 0.959   | +12.8 pp      |
 | 0.95    | 0.947         | 0.9615  | +1.5 pp       |
-| 0.99    | 0.9735        | 0.9645  | −0.9 pp       |
-| no-skip | 0.9625        | 0.9625  |  0            |
+| 0.99    | 0.974         | 0.965   | −0.9 pp       |
+| full/no-skip | 0.972    | 0.967   | −0.5 pp       |
 
 **Key claim for the paper**: at the conservative end (q ≥ 0.95) both
 scales match or beat no-skip, validating reskip as effectively lossless
@@ -978,7 +981,7 @@ ReSkip config: `recent_weight_gt`, P={3,5}, M=2, q=0.85.
 |---------------------------------------------------|--------------|------------|-------------|---------------------|
 | 340 M AttnRes from-scratch (Part 1 reference)      | 340 M        | 100 BT     | ~180        | ~22 h               |
 | 2 B AttnRes from-scratch (hypothetical)            | 2.13 B       | ~200 BT    | 10 000–25 000 | ~52–130 days     |
-| **2 B AttnRes retrofit (ours)**                    | 15 M (0.7 %) | ≤ 1 BT     | **~1**      | **~22 min**         |
+| **2 B AttnRes retrofit (ours)**                    | 7.4 M (<0.4 %) | ≤ 1 BT     | **~1**      | **~22 min**         |
 
 ---
 

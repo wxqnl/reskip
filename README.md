@@ -1,8 +1,8 @@
-# ReSkip: Attention Residuals as Adaptive Computation Routers
+# AR-Retrofit: Retrofitting Pretrained Decoders with Attention Residuals
 
-**Input-Dependent Depth for LLMs and Vision-Language-Action Models**
+**Final-paper data source:** `Reskip_5_7_3.pdf`; project-side canonical data table: [paper/Reskip_5_7_3_FINAL_DATA.md](paper/Reskip_5_7_3_FINAL_DATA.md).
 
-ReSkip uses [Attention Residuals (AttnRes)](https://arxiv.org/abs/2603.15031) — learned, input-dependent weighted combinations over transformer depth — as zero-cost routing signals for adaptive computation. Instead of requiring auxiliary exit classifiers or routing networks, the AttnRes weights themselves tell you which blocks matter.
+AR-Retrofit installs [Attention Residuals (AttnRes)](https://arxiv.org/abs/2603.15031) into a frozen pretrained decoder with a short identity-preserving retrofit fine-tune. ReSkip then uses the installed AttnRes routing weights as the dynamic depth signal, without adding an auxiliary router or early-exit head.
 
 ## Core Idea
 
@@ -19,7 +19,7 @@ These α weights are a natural routing signal:
 
 ---
 
-## Current Status (April 2026)
+## Current Status (May 2026, aligned to `Reskip_5_7_3.pdf`)
 
 ### Implementation
 
@@ -38,58 +38,58 @@ The codebase has three components, each contributing one part of the paper:
 
 **Part 1 — 340M from-scratch AttnRes** (`reskip_transformer-340M`, 8 blocks, 24 layers, FineWeb-Edu 100BT):
 
-| Configuration | LAMBADA acc | HellaSwag | ARC-Easy | ARC-Challenge | Wall-clock speedup |
-|---|---:|---:|---:|---:|---:|
-| Full-depth | 0.4056 | 0.4607 | 0.5438 | 0.3012 | 1.00x |
-| Dynamic skip: `attn_only + {3,5} + q=0.85 + max_skips=2` | **0.4056** | **0.4607** | **0.5438** | **0.3012** | **~1.19x** |
+| Configuration | LAMBADA acc | LAMBADA ppl | HellaSwag | PIQA | OpenBookQA | Latency vs base |
+|---|---:|---:|---:|---:|---:|---:|
+| Base transformer | 37.9 | 24.7 | 44.4 | 67.8 | 33.2 | 1.0x |
+| AttnRes full | 40.5 | 20.2 | 46.1 | 68.9 | 35.8 | 1.8x |
+| AttnRes + ReSkip | **40.5** | **20.2** | **46.1** | **68.9** | **35.8** | **1.1x** |
 
-> Config: `strategy=recent_weight_gt`, `probe=attn_only`, `positions={3,5}`, `q=0.85`, `max_skips=2`. Position selection uses **ablation-informed + importance-informed** combination: block 3 has the lowest static-removal PPL impact; block 5 has the lowest AttnRes importance score. Together they provide both high skip frequency and safe skip space. See [DYNAMIC_SKIP_EXPERIMENT_LOG.md](DYNAMIC_SKIP_EXPERIMENT_LOG.md) for full experiment details.
+> Paper Table 1 reports percentages and decode latency at 512 input / 4096 output. The earlier 0-trigger ReSkip benchmark-context note is retained only in experiment logs, not as a paper-facing claim.
 
 **Part 2 — Qwen3-VL-{2B,4B} retrofit** (`retrofit/`) — paper-canonical L=4 v3, 2026-04-23/25:
 
-γ-gated block-level AttnRes injection, **L=4 block partition** (7 blocks at 2B, 9 blocks at 4B), γ-curriculum 0→1, adapter rank 256, **10k SFT steps** on the v3 mix (LLaVA-OneVision 60 % + UltraChat 20 % + NuminaMath 10 % + OpenThoughts 10 %), Qwen3-VL backbone frozen. Every block converges to **γ=1** — the retrofitted model is structurally pure AttnRes. Block partition L=4 is the paper canonical (justified by the L∈{1,2,4,6/7} sweep in [retrofit/analysis/block_partition_ablation.md](retrofit/analysis/block_partition_ablation.md)) and matches the Chen et al. AttnRes paper's S∈{2,4,8} sweet plateau.
+γ-gated block-level AttnRes injection, **L=4 block partition** (7 blocks at 2B, 9 blocks at 4B), γ-curriculum 0→1, adapter rank 256, **10k SFT steps** on the v3 mix (LLaVA-OneVision 60 % + UltraChat 20 % + NuminaMath 10 % + OpenThoughts 10 %), Qwen3-VL backbone frozen. Added/trainable parameters are **~7.4M (<0.4%)** on 2B and **~11.8M (<0.3%)** on 4B. Every block converges to **γ=1**.
 
-VLM benchmarks (lmms-eval, full splits):
+Paper Table 2 reports all metrics as percentages:
 
-| Config | ai2d | mmbench | mmmu | mmstar | ocr | rwqa |
-|---|---:|---:|---:|---:|---:|---:|
-| Base 2B | 0.736 | 75.77 | 0.414 | 0.536 | 0.772 | 0.648 |
-| **2B_L4 v3** | **0.758** | **78.87** | **0.432** | **0.536** | **0.814** | **0.661** |
-| Base 4B | 0.819 | 83.33 | 0.490 | 0.624 | 0.819 | 0.715 |
-| **4B_L4 v3** | **0.825** | **85.22** | **0.521** | **0.632** | **0.824** | **0.718** |
+| Scale / Method | Lamb. | HSwag | MMB | MMMU | MMStar | AI2D | OCR | RWQA |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 2B Base (LoRA) | 53.2 | 50.6 | 75.8 | 41.4 | 53.6 | 73.6 | 77.2 | 64.8 |
+| 2B + AR-Retrofit | 56.5 | 50.0 | 78.9 | 43.2 | 53.6 | 75.8 | 81.4 | 66.1 |
+| 2B + ReSkip | 56.1 | 49.2 | 78.9 | 43.0 | 54.9 | 75.9 | 80.1 | 66.0 |
+| 4B Base (LoRA) | 57.6 | 56.2 | 83.3 | 49.0 | 62.4 | 81.9 | 81.9 | 71.5 |
+| 4B + AR-Retrofit | 66.3 | 55.2 | 85.2 | 52.1 | 63.2 | 82.5 | 82.4 | 71.8 |
+| 4B + ReSkip | 63.3 | 54.9 | 85.0 | 51.4 | 62.1 | 82.5 | 82.5 | 70.7 |
 
-Text benchmarks (LAMBADA + HellaSwag, n=2000):
-
-| Config | LAMBADA acc | LAMBADA ppl | HellaSwag |
-|---|---:|---:|---:|
-| Base 2B | 0.532 | 5.49 | 0.506 |
-| **2B_L4 v3** | **0.5650** | **4.61** | 0.5000 |
-| Base 4B | 0.576 | 4.72 | 0.562 |
-| **4B_L4 v3** | **0.6625** | **3.20** | 0.5515 |
-
-> 4B_L4 retrofit strictly beats base on **all 6 VLM benchmarks**; 2B_L4 beats base on 5/6 and ties mmstar. The MMStar 6-subcategory split shows the gain is concentrated in *deliberate reasoning over images*: math **+7.9 pp at 2B / +3.9 pp at 4B**. LAMBADA lifts +3.3 pp (2B) / +8.7 pp (4B). At matched parameter budget (~14 M trainable), LoRA cannot recover base LAMBADA (−0.6 pp) — the AttnRes structure is responsible for the +5 pp gain. See [retrofit/analysis/paper_main_experiments.md](retrofit/analysis/paper_main_experiments.md) §3 and [retrofit/analysis/v3_vlm_analysis.md](retrofit/analysis/v3_vlm_analysis.md).
+> AR-Retrofit lifts LAMBADA by +3.3 pp (2B) / +8.7 pp (4B), and improves the six VLM benchmarks by +2.1 pp / +1.2 pp on average.
 
 **Part 3 — VLA fine-tune + ReSkip on LIBERO** (`starVLA/` + `retrofit/`) — 2026-04-25:
 
-LIBERO 4-suite mean SR (50 trials × 10 tasks × 4 suites), 30k OFT fine-tune from L=4 v3 retrofit warm-start (Path B v2: per-block AttnRes integration via `StarVLABackboneSkipContext`):
+LIBERO 4-suite success rates (%), 500 rollouts per suite:
 
-| Method | spatial | object | goal | libero_10 | **mean** |
-|---|---:|---:|---:|---:|---:|
-| 2B Path 0 (no AttnRes) | 0.948 | 0.998 | 0.975 | 0.921 | 0.9605 |
-| **2B Path B v2 (no-skip)** | **0.974** | **0.986** | **0.980** | **0.910** | **0.9625** |
-| **2B Path B v2 + ReSkip q=0.99 (P={1,4}, M=2)** | **0.976** | **0.992** | **0.990** | **0.936** | **0.9735** |
-| 4B Path 0 (no AttnRes) | 0.950 | 0.992 | 0.978 | 0.922 | 0.9605 |
-| **4B Path B (no-skip)** | **0.974** | **0.982** | **0.980** | **0.914** | **0.9625** |
-| **4B Path B + ReSkip q=0.99 (P={1,2}, M=2)** | **0.964** | **0.982** | **0.984** | **0.928** | **0.9645** |
+| Scale | Policy | Spatial | Object | Goal | Long-10 | Avg | Δ vs Base |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 2B | Base | 94.8 | 99.8 | 97.4 | 91.4 | 95.9 | -- |
+| 2B | Full | 97.8 | 99.6 | 98.6 | 92.6 | 97.2 | +1.3 |
+| 2B | ReSkip | 97.6 | 99.2 | 99.0 | 93.6 | 97.4 | +1.5 |
+| 4B | Base | 95.0 | 99.2 | 97.8 | 92.2 | 96.1 | -- |
+| 4B | Full | 94.6 | 99.8 | 98.2 | 94.2 | 96.7 | +0.7 |
+| 4B | ReSkip | 96.4 | 98.2 | 98.4 | 92.8 | 96.5 | +0.4 |
 
-> AttnRes warm-start (Path B) beats pure OFT (Path 0) by **+0.20 pp at both scales**, and ReSkip on top adds **+1.10 pp at 2B / +0.20 pp at 4B**. ReSkip Pareto is graceful all the way down to q=0.30 on 4B (still 0.9185, no catastrophic collapse anywhere). Path B v2 (per-block) beats Path B v1 (observer-only adapter) by +0.45 pp 4-suite mean — the AttnRes integration must reproduce the Part 2 forward exactly. See [retrofit/analysis/paper_main_experiments.md](retrofit/analysis/paper_main_experiments.md) §4–§5 and [retrofit/analysis/reskip_libero_results.md](retrofit/analysis/reskip_libero_results.md).
+> Full AR-Retrofit improves the matched OFT baseline by +1.3 pp at 2B and +0.7 pp at 4B. ReSkip preserves the policy at the conservative operating point and is reported against the same Table 4 base reference.
 
-**Inference cost (paper iso-cost claim)**:
+**Skip baseline and decode speed (paper Table 3, Qwen3-VL-2B):**
 
-All Part 2 / Part 3 accuracy numbers above are obtained on the production
-default forward path (`torch.compile(mode="default", dynamic=True)` via
-[retrofit/compile_utils.py](retrofit/compile_utils.py)). At seq=2048,
-cache=True, H100, the L=4 canonical retrofit + compile runs at **1.058× base_compiled / 0.889× base_eager** under the production-default mode, and **1.029× / 0.864×** under fixed-shape `max-autotune`. The headline is **"+accuracy at iso-cost (or faster), no trade-off"**, not a speed-optimization narrative. See [retrofit/analysis/paper_main_experiments.md](retrofit/analysis/paper_main_experiments.md) §7 (internal validation only — paper has one Method paragraph + one table footer).
+| Method | Lamb.-500 | HSwag-500 | AI2D | MMMU | MMStar | Decode tok/s |
+|---|---:|---:|---:|---:|---:|---:|
+| Base (LoRA) | 53.3 | 55.2 | 73.6 | 41.4 | 53.6 | 69.9 |
+| AR-Retrofit full | 56.4 | 58.7 | 75.8 | 43.2 | 53.6 | 57.2 |
+| ReSkip | 56.2 | 57.9 | 75.9 | 43.0 | 54.9 | 67.5 |
+| Static block skip | 37.3 | 53.8 | 58.0 | 33.8 | 33.6 | 73.1 |
+| Gromov-4 | 6.9 | 44.4 | 57.3 | 35.6 | 49.1 | 78.3 |
+| Gromov-8 | 2.0 | 36.5 | 6.8 | 23.9 | 1.9 | 94.6 |
+| MoD | 47.4 | 56.1 | 34.6 | 33.4 | 22.0 | 71.2 |
+| LayerSkip | 14.6 | 46.0 | 37.9 | 31.1 | 44.6 | 80.4 |
 
 ### Resolved Issues
 

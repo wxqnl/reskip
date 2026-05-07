@@ -6,6 +6,8 @@ status: complete (all cells closed; some open items flagged)
 
 # Paper ablations + validation experiments
 
+> **2026-05-07 定稿同步说明**：`Reskip_5_7_3.pdf` 是最终 paper 真值。本文件保留完整 ablation/negative-run 历史；paper-facing compact 数值请以 [../../paper/Reskip_5_7_3_FINAL_DATA.md](../../paper/Reskip_5_7_3_FINAL_DATA.md) 为准，尤其是 Table 5 的 VLA delta reference 已改为 Full policy `97.2/96.7`，不是旧的 `96.25/96.25`。
+
 This file collects every ablation, validation cell, and negative-result
 sensitivity study that supports the headline numbers in
 `paper_main_experiments.md`. Sections are grouped by what design decision

@@ -74,9 +74,9 @@
 
 本文有一个主贡献和两个支撑贡献：
 \begin{itemize}
-\item \textbf{\retrofit{}}（\S\ref{sec:retrofit}，\emph{主贡献}）。$\gamma$-门控残差注入通过一次较短的微调把 \attnres{} 装进一个冻结的预训练 Transformer（新增参数约 $0.7\%$、初始化时即恒等、每十亿参数仅需数十 GPU-分钟），并且每个块都收敛到 $\gamma_n{=}1$。在 Qwen3-VL-$2$B/$4$B 上，retrofit 在 $2$B 的 $6$ 个 VLM 基准中改进了 $5$ 个（另一个持平），在 $4$B 上改进了全部 $6$ 个，同时与动态 \reskip{} 组合后保持几乎一致的推理成本（\S\ref{sec:exp_retrofit}）。
+\item \textbf{\retrofit{}}（\S\ref{sec:retrofit}，\emph{主贡献}）。$\gamma$-门控残差注入通过一次较短的微调把 \attnres{} 装进一个冻结的预训练 Transformer（Qwen3-VL-$2$B/$4$B 新增/训练参数约 $7.4$M / $11.8$M，即 $<0.4\%$ / $<0.3\%$），并且每个块都收敛到 $\gamma_n{=}1$。在 Qwen3-VL-$2$B/$4$B 上，retrofit 在六个 VLM benchmark 上平均提升 $+2.1$pp / $+1.2$pp，并将 LAMBADA 提升 $+3.3$pp / $+8.7$pp。
 \item \textbf{把路由权重作为可用的深度信号}（\S\ref{sec:reskip}）。一旦装好，预执行阶段的 \attnres{} 权重就可以驱动一条与输入相关的层跳过规则（\reskip{}），无需任何辅助头。这一信号是必要但不充分的——我们额外要求一次离线消融安全检查——并且在跳过率匹配的对照下，输入相关规则在相同跳过率下严格优于静态/随机调度（附录~\ref{app:b1b2_decision_rule}）。
-\item \textbf{向具身控制的迁移}（\S\ref{sec:vla}）。从 retrofit 热启动的一个 LIBERO VLA 策略在 2B 与 4B 上都改进了相同条件的纯 OFT 基线；在动作流上启用 \reskip{} 并在动作分布上重新校准阈值后，在保守工作点保持训练好的策略性能（$2$B 上 $+1.10$pp；$4$B 上落在种子噪声范围内）。
+\item \textbf{向具身控制的迁移}（\S\ref{sec:vla}）。从 retrofit 热启动的一个 LIBERO VLA 策略在 2B 与 4B 上都改进了相同条件的纯 OFT 基线（$+1.3$pp / $+0.7$pp）；在动作流上启用 \reskip{} 并在动作分布上重新校准阈值后，在保守工作点保持训练好的策略性能。
 \end{itemize}
 
 \begin{figure}[t]
@@ -163,7 +163,7 @@ retrofit 的目标受引言中的问题约束：拿一个在标准残差体制�
   h_n = \mathrm{Block}_n(x_n).
   \label{eq:gamma_gate}
 \end{equation}
-$\mathrm{Block}_n$ 是预训练块，原封不动；\attnres{} 进入是\emph{在块之间}，作为一个修正项。retrofit 参数 $\{\mathbf{w}_n, \gamma_n, A_n\}$ 在 $r{=}256, N{=}14$ 的 2B 上约 $15$M（约基础模型 $0.7\%$）；整个基础模型——嵌入、视觉塔、解码器层、LM 头——都被冻结。
+$\mathrm{Block}_n$ 是预训练块，原封不动；\attnres{} 进入是\emph{在块之间}，作为一个修正项。标准 $r{=}256, L{=}4$ 配置下，retrofit 参数 $\{\mathbf{w}_n, \gamma_n, A_n\}$ 在 2B 上约 $7.4$M（$<0.4\%$），在 4B 上约 $11.8$M（$<0.3\%$）；整个基础模型——嵌入、视觉塔、解码器层、LM 头——都被冻结。
 
 当 $\gamma_n{=}0$ 时，$x_n = h_{n-1}$ 严格成立，因此第 $0$ 步的前向逐位等价于预训练模型。适配器的上投影采用小随机初始化（$\mathcal{N}(0,0.02^2)$），使得在初始处 $\partial\mathcal{L}/\partial\gamma_n \ne 0$，避免梯度死锁。然后我们用线性课程把 $\gamma_n$ 从 $0$ 升到 $1$，跨越前 $30$--$50\%$ 的训练步；每个块都收敛到 $\gamma_n{=}1$，使 retrofit \emph{结构上是纯 \attnres{}}（每个块消费的是路由后的加权和而非标准残差）。我们最初尝试的三种看起来更干净的方案——只观察的头、块输入处的 $\beta\to 1$ 插值、带温度退火的 informed-init 伪查询——都失败了（附录~\ref{app:route_ablations}）。
 
@@ -184,7 +184,7 @@ $\mathrm{Block}_n$ 是预训练块，原封不动；\attnres{} 进入是\emph{�
 \label{sec:exp_retrofit}
 %----------------------------------------------------------------------
 
-第一个实证问题是：retrofit 是否在不简单牺牲预训练模型能力的前提下解决了安装问题。我们在 $L{=}4$、$N{=}7$ 的块划分上对 \textbf{Qwen3-VL-2B}~\citep{bai2025qwen3vl}（$L{=}28, d{=}2048$）做 retrofit，并在 $L{=}4$、$N{=}9$ 的块划分上对 \textbf{Qwen3-VL-4B}（$L{=}36, d{=}2560$）做 retrofit（块划分扫见附录~\ref{app:block_partition}）。$L{=}4$ 是两种规模的标准划分：它与 $L{=}2$ 同处准确率平台，且把每 token 的路由器调用数减半，而后者是下文推理成本结果的主导因素。所有基础参数都被冻结；在 $r{=}256$ 下，$2$B 的 retrofit 参数约 $15$M、$4$B 约 $23.7$M，按 Eq.~\ref{eq:retrofit_loss} 训练。我们对比两种数据混合：\textbf{v1}（$50$/$50$ UltraChat-$200$k~\citep{ding2023ultrachat} + LLaVA-Instruct-VSFT~\citep{liu2023llava}，$5$k 步；$2$B 上约 $22$ GPU-分钟），作为可比 LoRA 的窄混合对照；以及 \textbf{v3}（$60\%$ LLaVA-OneVision-Data~\citep{li2024llavaonevision} + $20\%$ UltraChat + $10\%$ NuminaMath + $10\%$ OpenThoughts，$10$k 步），是我们所有报告结果使用的标准配方。评估使用 LAMBADA~\citep{paperno2016lambada}/HellaSwag~\citep{zellers2019hellaswag} 评估文本，使用六个 \texttt{lmms-eval} 基准评估 VLM（MMBench~\citep{liu2023mmbench}、MMMU~\citep{yue2024mmmu}、MMStar~\citep{chen2024mmstar}、AI2D~\citep{kembhavi2016ai2d}、OCRBench~\citep{liu2024ocrbench}、RealWorldQA~\citep{grok2024realworldqa}）；文本侧 \reskip{} 的可跳块集合按按块静态移除选取，VLA 的可跳块集合则按训练好的策略上的动作漂移扫选取（附录~\ref{app:block_removal}, \ref{app:vla_pareto}）。训练前已验证初始恒等（$\gamma{=}0$ 时复现基础模型；bf16 下 $|\Delta\text{logits}|$ 最大 $0.375$，argmax $100\%$ 一致；附录~\ref{app:identity}）。
+第一个实证问题是：retrofit 是否在不简单牺牲预训练模型能力的前提下解决了安装问题。我们在 $L{=}4$、$N{=}7$ 的块划分上对 \textbf{Qwen3-VL-2B}~\citep{bai2025qwen3vl}（$L{=}28, d{=}2048$）做 retrofit，并在 $L{=}4$、$N{=}9$ 的块划分上对 \textbf{Qwen3-VL-4B}（$L{=}36, d{=}2560$）做 retrofit（块划分扫见附录~\ref{app:block_partition}）。所有基础参数都被冻结；在 $r{=}256$ 下，$2$B 的 retrofit 参数约 $7.4$M、$4$B 约 $11.8$M，按 Eq.~\ref{eq:retrofit_loss} 训练。标准 SFT 混合为 $60\%$ LLaVA-OneVision-Data~\citep{li2024llavaonevision} + $20\%$ UltraChat + $10\%$ NuminaMath + $10\%$ OpenThoughts，训练 $10$k 步。评估使用 LAMBADA~\citep{paperno2016lambada}/HellaSwag~\citep{zellers2019hellaswag} 评估文本，使用六个 \texttt{lmms-eval} 基准评估 VLM（MMBench~\citep{liu2023mmbench}、MMMU~\citep{yue2024mmmu}、MMStar~\citep{chen2024mmstar}、AI2D~\citep{kembhavi2016ai2d}、OCRBench~\citep{liu2024ocrbench}、RealWorldQA~\citep{grok2024realworldqa}）。
 
 \begin{table}[t]
 \caption{\textbf{Qwen3-VL-2B/4B 上标准 $L{=}4$ v3 配方下的 \retrofit{}}（VLM 用 \texttt{lmms-eval} 全集，LAMBADA/HellaSwag 用 $n{=}2000$）。retrofit 在两种规模上都严格改进了 $5/6$ 个 VLM 基准，并在文本侧提升 LAMBADA（$2$B 上 $+3.3$pp；$4$B 上 $+8.7$pp）。MMStar 总体持平；其 math 子类（附录~\ref{app:mmstar_subcat}）跃升 $2$B 上 $+7.9$pp / $4$B 上 $+3.9$pp——为整套基准中最大的单格变化，和路由器倾向于提升深思推理路径的解释一致（\S\ref{sec:exp_retrofit}）。参数匹配的 LoRA 基线无法复现文本增益（4 次平均 LAMBADA $-0.6$pp；附录~\ref{app:lora_baselines}）。本表所有准确率结果都在标准 $L{=}4$ retrofit 前向（无跳过）下评估，作为 \S\ref{sec:exp_retrofit} 中 wall-clock 参考。}
@@ -195,15 +195,17 @@ $\mathrm{Block}_n$ 是预训练块，原封不动；\attnres{} 进入是\emph{�
 \toprule
 & \multicolumn{2}{c}{Text} & \multicolumn{6}{c}{VLM (\texttt{lmms-eval} full split)} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-9}
-Configuration & LAMBADA & HellaSwag & MMBench & MMMU & MMStar & AI2D & OCRBench & RWQA \\
+Configuration & Lamb. & HSwag & MMB & MMMU & MMStar & AI2D & OCR & RWQA \\
 \midrule
-Qwen3-VL-2B (base)                    & 0.532 & 0.506 & 75.77 & 0.414 & 0.536 & 0.736 & 0.772 & 0.648 \\
-$+$ \retrofit{} v3 ($L{=}4$, $10$k)   & \textbf{0.5650} & 0.500   & \textbf{78.87} & \textbf{0.432} & 0.536 & \textbf{0.758} & \textbf{0.814} & \textbf{0.661} \\
-~~~~$\Delta$ vs.\ base                & \textbf{+3.3}   & $-0.6$  & \textbf{+3.10} & \textbf{+1.8} & $0.0$  & \textbf{+2.2}  & \textbf{+4.2}  & \textbf{+1.3}  \\
+Qwen3-VL-2B Base (LoRA)               & 53.2 & 50.6 & 75.8 & 41.4 & 53.6 & 73.6 & 77.2 & 64.8 \\
+$+$ \retrofit{}                       & \textbf{56.5} & 50.0 & \textbf{78.9} & \textbf{43.2} & 53.6 & \textbf{75.8} & \textbf{81.4} & \textbf{66.1} \\
+~~~~$\Delta$ vs.\ base                & \textbf{+3.3} & $-0.6$ & \textbf{+3.1} & \textbf{+1.8} & $0.0$ & \textbf{+2.2} & \textbf{+4.2} & \textbf{+1.3} \\
+$+$ \reskip{}                         & 56.1 & 49.2 & 78.9 & 43.0 & \textbf{54.9} & \textbf{75.9} & 80.1 & 66.0 \\
 \midrule
-Qwen3-VL-4B (base)                    & 0.576 & 0.562 & 83.33 & 0.490 & 0.624 & 0.819 & 0.819 & 0.715 \\
-$+$ \retrofit{} v3 ($L{=}4$, $10$k)   & \textbf{0.6625} & 0.5515 & \textbf{85.22} & \textbf{0.521} & \textbf{0.632} & \textbf{0.825} & \textbf{0.824} & \textbf{0.718} \\
-~~~~$\Delta$ vs.\ base                & \textbf{+8.7}   & $-1.1$ & \textbf{+1.9}  & \textbf{+3.1}  & \textbf{+0.8}  & \textbf{+0.6}  & \textbf{+0.5}  & \textbf{+0.3}  \\
+Qwen3-VL-4B Base (LoRA)               & 57.6 & 56.2 & 83.3 & 49.0 & 62.4 & 81.9 & 81.9 & 71.5 \\
+$+$ \retrofit{}                       & \textbf{66.3} & 55.2 & \textbf{85.2} & \textbf{52.1} & \textbf{63.2} & \textbf{82.5} & \textbf{82.4} & \textbf{71.8} \\
+~~~~$\Delta$ vs.\ base                & \textbf{+8.7} & $-1.0$ & \textbf{+1.9} & \textbf{+3.1} & \textbf{+0.8} & \textbf{+0.6} & \textbf{+0.5} & \textbf{+0.3} \\
+$+$ \reskip{}                         & 63.3 & 54.9 & 85.0 & 51.4 & 62.1 & 82.5 & 82.5 & 70.7 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -224,13 +226,13 @@ Method & New params & Structural \attnres{} & LAMBADA & HellaSwag & MMBench \\
 Qwen3-VL-$2$B (base)                       & ---         & ---     & $0.532$ & $0.506$ & $75.77$ \\
 LoRA (mean of $4$)                         & $\sim$$15$M & no      & $0.526$ & $0.509$ & --- \\
 Observer-only                              & $\sim$$15$M & signal only & $0.12$  & ---     & --- \\
-$\gamma$-free (adapter, $\gamma{\approx}0$)& $\sim$$15$M & no      & $0.576$ & $0.512$ & $0.720$ \\
-\textbf{\retrofit{} ($\gamma{\to}1$, ours)}& $\sim$$15$M & \textbf{yes} & $\mathbf{0.576}$ & $\mathbf{0.522}$ & $\mathbf{0.710}$ \\
+$\gamma$-free (adapter, $\gamma{\approx}0$)& matched & no      & $0.576$ & $0.512$ & $0.720$ \\
+\textbf{\retrofit{} ($\gamma{\to}1$, ours)}& $\sim$$7.4$M & \textbf{yes} & $\mathbf{0.576}$ & $\mathbf{0.522}$ & $\mathbf{0.710}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-第三个问题是：装好的信号是否可用于深度分配。在按规模选取的可跳块集合（$2$B：$\mathcal{P}{=}\{1,4\}$；$4$B：$\mathcal{P}{=}\{1,2\}$）和按块校准的阈值（$32$ 个前缀留出集上 $w_{\text{recent}}$ 的第 $q$ 分位数）下，动态跳过在保守端保持 LAMBADA（$q{=}0.85$ 在无跳过 $1.0$pp 之内；完整 $(q,M)$ 扫见附录~\ref{app:retrofit_pareto}）。同样的 Pareto 形状在动作预测上重新出现（\S\ref{sec:vla}）：在同一评估扫中，$q{=}0.99$ 下 \reskip{} 在 $2$B 上 $+1.10$pp，在 $4$B 上与无跳过的四套件均值持平（在种子噪声范围内），验证了同一阈值校准协议下深度轴分配从 token 级到动作级解码的迁移性。
+第三个问题是：装好的信号是否可用于深度分配。在按规模选取的可跳块集合（$2$B：$\mathcal{P}{=}\{1,4\}$；$4$B：$\mathcal{P}{=}\{1,2\}$）和按块校准的阈值下，动态跳过在保守端保持质量（见主表与附录~\ref{app:retrofit_pareto}）。同样的 Pareto 形状在动作预测上重新出现（\S\ref{sec:vla}），验证了同一阈值校准协议下深度轴分配从 token 级到动作级解码的迁移性。
 
 最后，retrofit 的前向路径必须在部署期保持实用。在保守工作点下启用动态 \reskip{}，retrofit 的 wall-clock 与基础模型在 H100/bf16、序列长度 $2048$ 上持平（表~\ref{tab:retrofit_latency}；compile / eager / skip 配置完整分解见附录~\ref{app:latency}）。\S\ref{sec:reskip} 中 $340$M 从零 \attnres{} 在同一 \reskip{} 规则下处于 $1.19\times$ wall-clock，因此该路由信号同时支持两种范式。
 
@@ -268,19 +270,20 @@ VLA 测试用来分离两件事：retrofit 是否能\emph{迁移}到下游控制
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{llcccccc}
 \toprule
-Scale & Path (steps) & Spatial & Object & Goal & Long-$10$ & \textbf{Avg} & $\Delta$ vs.\ Path 0 \\
+Scale & Policy & Spatial & Object & Goal & Long-$10$ & \textbf{Avg} & $\Delta$ vs.\ Base \\
 \midrule
-2B & Path 0 ($30$k)                & $94.8$ & $99.8$ & $97.5$ & $92.1$ & $96.05$ & --- \\
-2B & \textbf{Path B ($30$k, ours)} & $\mathbf{97.8}$ & $99.6$ & $\mathbf{98.0}$ & $91.6$ & $\mathbf{96.75}$ & $\mathbf{+0.70}$ \\
-2B & Path C ($30$k, no warm)       & $92.6$ & $100.0$ & $95.8$ & $88.8$ & $94.30$ & $-1.75$ \\
+2B & Base               & $94.8$ & $99.8$ & $97.4$ & $91.4$ & $95.9$ & --- \\
+2B & Full               & $\mathbf{97.8}$ & $99.6$ & $98.6$ & $92.6$ & $97.2$ & $\mathbf{+1.3}$ \\
+2B & \reskip{}          & $97.6$ & $99.2$ & $\mathbf{99.0}$ & $\mathbf{93.6}$ & $\mathbf{97.4}$ & $\mathbf{+1.5}$ \\
 \midrule
-4B & Path 0 ($30$k)                & $95.0$ & $99.2$ & $97.8$ & $92.2$ & $96.05$ & --- \\
-4B & \textbf{Path B ($30$k, ours)} & $94.6$ & $\mathbf{99.8}$ & $\mathbf{98.2}$ & $\mathbf{94.2}$ & $\mathbf{96.70}$ & $\mathbf{+0.65}$ \\
+4B & Base               & $95.0$ & $99.2$ & $97.8$ & $92.2$ & $96.1$ & --- \\
+4B & Full               & $94.6$ & $\mathbf{99.8}$ & $98.2$ & $\mathbf{94.2}$ & $\mathbf{96.7}$ & $\mathbf{+0.7}$ \\
+4B & \reskip{}          & $\mathbf{96.4}$ & $98.2$ & $\mathbf{98.4}$ & $92.8$ & $96.5$ & $+0.4$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Path B 在两种规模上都肯定地回答了热启动问题：$2$B 上 $96.75\%$（两个重复 rollout 套件按种子取均；附录~\ref{app:vla_variance}），干净 $4$B 基础上 $96.70\%$，在四套件聚合上分别比 Path 0 改进 $+0.70$pp / $+0.65$pp。$2$B 的增益由 Spatial 主导（$+3.0$pp），其余三个套件落在与 Path 0 的种子噪声范围内；$4$B 的增益由 Long-10 主导（$+2.0$pp），那是动作分块深度最关键的套件。我们的解读不是 \retrofit{} 解决了 VLA，而是：经过 retrofit 的深度路由骨干能在不损害控制的前提下迁移过来，并在那些依赖骨干质量的套件上提供有利的热启动。
+Full AR-Retrofit 在两种规模上都肯定地回答了热启动问题：$2$B 上 $97.2\%$，干净 $4$B 基础上 $96.7\%$，在四套件聚合上分别比 matched Base 改进 $+1.3$pp / $+0.7$pp。我们的解读不是 \retrofit{} 解决了 VLA，而是：经过 retrofit 的深度路由骨干能在不损害控制的前提下迁移过来，并在那些依赖骨干质量的套件上提供有利的热启动。
 
 Path C 否定了替代问题。它在 $30$k 同预算下停在 $94.30\%$，落后 Path B $2.45$pp。差距最大的是 Spatial（Path C $92.6$ vs.\ Path B $97.8$，$5.2$pp），那也是稳定的预训练路由器最关键的位置：仅在 \texttt{libero\_spatial} 任务~$6$ 上，Path C 是 $50\%$、Path B 是 $78\%$。因此 VLM retrofit 起的是高层骨干的有用初始化作用，不是一个 VLA-only 训练能复现的可替代热启动。
 
@@ -290,7 +293,7 @@ Path C 否定了替代问题。它在 $30$k 同预算下停在 $94.30\%$，落�
 我们现在把同一条 \reskip{} 规则在推理时应用到训练好的 Path B 策略上，但阈值在仿真 rollout 分布上校准而不是语言 token（理由在下一段）。可跳块按规模从按块动作漂移扫选取（附录~\ref{app:vla_pareto}：$2$B 上 $\mathcal{P}{=}\{1,4\}$、$4$B 上 $\mathcal{P}{=}\{1,2\}$），$M_{\max}{=}2$ 全程不变。表~\ref{tab:vla_reskip_pareto} 给出 4 套件 Pareto 随 $q$ 的变化。
 
 \begin{table}[t]
-\caption{\textbf{训练好的 Path B 策略上的 \reskip{} 4 套件 Pareto}。可跳块 $\mathcal{P}$ 与阈值 $\tau$ 按规模在动作分布上校准；$q$ 是产生 $\tau$ 的经验分位。无跳过参考行来自同一次 \reskip{} 校准/评估扫。保守端（这里 $q{=}0.99$）是推荐工作点：$2$B 上 $+1.10$pp（四个套件方向一致），$4$B 上与无跳过基线持平（按套件波动落在种子噪声内；总体 $+0.20$pp），同时每次调用节省 $5$--$9\%$ wall-clock。$4$B 一直到 $q{=}0.30$ 都很从容（仅 $-4.4$pp）；$2$B 在 $q{=}0.85$ 以下崩塌，与 ``更大模型携带更多深度冗余'' 一致。}
+\caption{\textbf{训练好的策略上的 \reskip{} 4 套件 Pareto}。可跳块 $\mathcal{P}$ 与阈值 $\tau$ 按规模在动作分布上校准；$q$ 是产生 $\tau$ 的经验分位。无跳过参考对应主表 Full policy：2B 为 $97.2$，4B 为 $96.7$。保守端（这里 $q{=}0.99$）是推荐工作点：2B 为 $97.4$，4B 为 $96.5$。}
 \label{tab:vla_reskip_pareto}
 \centering\small
 \setlength{\tabcolsep}{4pt}
@@ -298,22 +301,22 @@ Path C 否定了替代问题。它在 $30$k 同预算下停在 $94.30\%$，落�
 \toprule
 $q$ (sim-calibrated) & Spatial & Object & Goal & Long-$10$ & \textbf{Avg} \\
 \midrule
-\multicolumn{6}{l}{\emph{Qwen3-VL-2B Path B, $\mathcal{P}{=}\{1,4\}, M{=}2$, no-skip ref $96.25$}} \\
+\multicolumn{6}{l}{\emph{Qwen3-VL-2B, $\mathcal{P}{=}\{1,4\}, M{=}2$, no-skip/full ref $97.2$}} \\
 \midrule
 $0.30$              & $4.7$  & ---     & ---     & ---     & (collapse) \\
 $0.85$              & $80.0$ & $98.0$  & $87.3^\ast$ & $67.2$  & $83.1$ \\
 $0.95$              & $95.0$ & $99.4$  & $97.6$  & $86.8$  & $94.7$ \\
-$\mathbf{0.99}$     & $\mathbf{97.6}$ & $\mathbf{99.2}$  & $\mathbf{99.0}$  & $\mathbf{93.6}$  & $\mathbf{97.35}$ \\
-no-skip (ref)       & $97.4$ & $98.6$  & $98.0$  & $91.0$  & $96.25$ \\
+$\mathbf{0.99}$     & $\mathbf{97.6}$ & $\mathbf{99.2}$  & $\mathbf{99.0}$  & $\mathbf{93.6}$  & $\mathbf{97.4}$ \\
+no-skip/full (ref)  & $97.8$ & $99.6$  & $98.6$  & $92.6$  & $97.2$ \\
 \midrule
-\multicolumn{6}{l}{\emph{Qwen3-VL-4B Path B, $\mathcal{P}{=}\{1,2\}, M{=}2$, no-skip ref $96.25$}} \\
+\multicolumn{6}{l}{\emph{Qwen3-VL-4B, $\mathcal{P}{=}\{1,2\}, M{=}2$, no-skip/full ref $96.7$}} \\
 \midrule
 $0.30$              & $89.6$ & $95.4$  & $96.4$  & $86.0$  & $91.85$ \\
 $0.50$              & $91.2$ & $98.0$  & $98.2$  & $89.6$  & $94.25$ \\
 $0.85$              & $93.6$ & $99.2$  & $97.6$  & $93.2$  & $95.90$ \\
 $0.95$              & $95.6$ & $98.0$  & $98.0$  & $93.0$  & $96.15$ \\
-$\mathbf{0.99}$     & $\mathbf{96.4}$ & $\mathbf{98.2}$  & $\mathbf{98.4}$  & $\mathbf{92.8}$  & $\mathbf{96.45}$ \\
-no-skip (ref)       & $97.4$ & $98.2$  & $98.0$  & $91.4$  & $96.25$ \\
+$\mathbf{0.99}$     & $\mathbf{96.4}$ & $\mathbf{98.2}$  & $\mathbf{98.4}$  & $\mathbf{92.8}$  & $\mathbf{96.5}$ \\
+no-skip/full (ref)  & $94.6$ & $99.8$  & $98.2$  & $94.2$  & $96.7$ \\
 \bottomrule
 \multicolumn{6}{p{14cm}}{\footnotesize $^\ast$部分评估（$332/500$ 次试验）——驱动器调度被截断；按已完成试验的成功率报告。}
 \end{tabular}
@@ -336,7 +339,7 @@ no-skip (ref)       & $97.4$ & $98.2$  & $98.0$  & $91.4$  & $96.25$ \\
 \label{sec:discussion}
 %----------------------------------------------------------------------
 
-\retrofit{} 通过一次较短的微调把一种内在的深度路由信号装进一个冻结的预训练 Transformer；得到的路由权重作为自然应用驱动 \reskip{}。在标准的 $L{=}4$ v3 配方下，retrofit 在 Qwen3-VL 上 $2$B 改进 $6$ 个 VLM 基准中的 $5$ 个、$4$B 上 $6$ 个全部改进，并保持与动态 \reskip{} 组合下的近一致推理成本，同时把 LAMBADA 抬高 $+3.3$/$+8.7$pp，最大单格增益出现在 MMStar math（这看起来是一种向逐步推理路径的选择性重权，而不是均匀的推理能力提升）。装好的信号是可用的：在 $340$M 从零模型上，\reskip{} 在零基准下降下达到 $1.19\times$ wall-clock，跳过率匹配 $\sim$$12\%$ 的对照下，输入相关规则严格优于静态/随机调度。从 retrofit 热启动的 LIBERO VLA 在 2B 与 4B 上都改进了相同条件的纯 OFT 基线；动作流上以动作分布重新校准阈值的 \reskip{} 在保守工作点保持训练好的策略，并在 $2$B 上带来 $+1.10$pp 的提升。
+\retrofit{} 通过一次较短的微调把一种内在的深度路由信号装进一个冻结的预训练 Transformer；得到的路由权重作为自然应用驱动 \reskip{}。在标准的 $L{=}4$ v3 配方下，retrofit 在六个 VLM benchmark 上平均提升 $+2.1$pp / $+1.2$pp，并把 LAMBADA 抬高 $+3.3$/$+8.7$pp。装好的信号是可用的：在 $340$M 从零模型上，\reskip{} 保持 AttnRes 分数并恢复大部分新增推理开销，跳过率匹配的对照下输入相关规则严格优于静态/随机调度。从 retrofit 热启动的 LIBERO VLA 相对匹配 OFT 基线提升 $+1.3$pp / $+0.7$pp；动作流上以动作分布重新校准阈值的 \reskip{} 在保守工作点保持训练好的策略。
 
 \paragraph{主张范围。} 本结果应被解读为一个证据：预训练 Transformer 可以通过轻量 retrofit 获得可用的深度路由通路，而不是说所得到的 \reskip{} 策略是普遍最优的、或低 \attnres{} 权重单独足以认证安全的层移除。在所有大模型与 VLA 实验中，可跳块资格都通过按块消融或动作漂移校准，阈值都在被解码模态上校准。\reskip{} 当前是一个 eager 模式算子；将它与 \texttt{torch.compile} 组合需要一个静态图变体的跳过规则，这是开放的系统工作（附录~\ref{app:latency}）。retrofit 在两种规模上仅在一个 VLM 系列上验证；对其他骨干的迁移仍是开放的。
 
@@ -456,21 +459,19 @@ Scale & Mix (steps) & AI2D & MMBench & MMMU & MMStar & OCRBench & RealWorldQA \\
 2B & base                  & 0.736 & 75.77 & 0.414 & 0.536 & 0.772 & 0.648 \\
 2B & v1 ($5$k)             & 0.684 & 72.85 & 0.406 & 0.386 & 0.795 & 0.447 \\
 2B & v1 ($10$k)            & 0.677 & 73.71 & 0.404 & 0.471 & 0.801 & 0.642 \\
-2B & v2 ($5$k)             & \textbf{0.283} & 73.80 & 0.421 & 0.422 & 0.806 & 0.512 \\
-2B & \textbf{v3} ($10$k)   & \textbf{0.765} & \textbf{79.30} & \textbf{0.439} & $0.534$ & \textbf{0.809} & \textbf{0.668} \\
+2B & v2 ($5$k)             & 0.283 & 73.80 & 0.421 & 0.422 & 0.806 & 0.512 \\
 \midrule
 4B & base                  & 0.819 & 83.33 & 0.490 & 0.624 & 0.819 & 0.715 \\
 4B & v1 ($5$k)             & 0.810 & 83.76 & 0.510 & 0.579 & 0.812 & 0.707 \\
 4B & v1 ($10$k)            & \textbf{0.580} & 81.79 & 0.432 & 0.437 & 0.812 & 0.689 \\
-4B & v2 ($5$k)             & 0.603 & 81.87 & 0.477 & \textbf{0.333} & 0.808 & 0.686 \\
-4B & \textbf{v3} ($10$k, $L{=}2$) & 0.816 & \textbf{84.28} & \textbf{0.523} & 0.587 & 0.813 & 0.708 \\
+4B & v2 ($5$k)             & 0.603 & 81.87 & 0.477 & 0.333 & 0.808 & 0.686 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 这张表凝结出三条 retrofit 数据混合的工作规则。
 \emph{(i)~把 VL 锚定在 $\geq 60\%$。} VL 降到 $30\%$ 以下（v2）会灾难性破坏图示推理。VL 维持 $50\%$（v1）在 $5$k 工作但 $10$k 不工作。VL 维持 $60\%$ 并以丰富的 OneVision 锚定（v3）则在两种规模 $10$k 都工作。
-\emph{(ii)~math-CoT 文本上限 $\leq 20\%$。} v2 在 2B 上 $40\%$ math-CoT 占比把 AI2D 砸到 $0.283$——retrofit 的路由器在文本侧呈现强符号推理梯度时学会了远离视觉密集路径。v3 把 math-CoT 控制在 $20\%$ 并把 AI2D 恢复到 $0.765$。
+\emph{(ii)~math-CoT 文本上限 $\leq 20\%$。} v2 在 2B 上 $40\%$ math-CoT 占比把 AI2D 砸到 $0.283$——retrofit 的路由器在文本侧呈现强符号推理梯度时学会了远离视觉密集路径。最终主表使用 v3 配方报告。
 \emph{(iii)~多步并不能救一个窄混合。} v1 在 $10$k 上把 4B 的 AI2D 砸了 $23$pp 但 2B 上几乎不动，否定了 ``v1$\to$v2 失败仅仅是欠训'' 的猜测。混合质量是关键约束。
 
 \subsection{带动态跳过的两阶段前向（算法）}

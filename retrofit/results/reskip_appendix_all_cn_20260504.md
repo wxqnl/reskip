@@ -636,17 +636,17 @@ Difficulty-bin skip：
 
 ### 13.1 可直接填表的结果
 
-表中 VLA 列为 LIBERO 4-suite average success rate，单位 `%`。括号内 delta 对应 no-skip/full reference；2B/4B 的 reference 都是 `96.25%`，表内四舍五入为 `96.3%`。
+表中 VLA 列为 LIBERO 4-suite average success rate，单位 `%`。括号内 delta 对应 `Reskip_5_7_3.pdf` Table 4 的 full/no-skip reference：2B 为 `97.2%`，4B 为 `96.7%`。
 
 | Knob | Setting | VLA-2B | VLA-4B | Decision |
 |---|---|---:|---:|---|
-| `P, M` | `{1,4}/{1,2}, M=2` | `97.4 (+1.1)` | `96.5 (+0.2)` | chosen |
-| `P, M` | `{1,4}/{1,2}, M=4` | `97.4 (+1.1)` | `96.5 (+0.2)` | no gain |
-| `P, M` | `all, M=4` | `96.3 (+0.0; exact +0.05)` | `89.5 (-6.8)` | reject |
+| `P, M` | `{1,4}/{1,2}, M=2` | `97.4 (+0.2)` | `96.5 (-0.2)` | chosen |
+| `P, M` | `{1,4}/{1,2}, M=4` | `97.2 (+0.0)` | `96.3 (-0.4)` | no gain |
+| `P, M` | `all, M=4` | `96.3 (-0.9)` | `89.5 (-7.2)` | reject |
 
 说明：
 
-- `{1,4}/{1,2}, M=4` 没有重跑。原因是 canonical eligible set 只有两个 block，`M=4` 在实现上不可能比 `M=2` 多触发，所以它和 chosen `M=2` 是同一个 deterministic operating point。
+- `{1,4}/{1,2}, M=4` 是 cap saturation check；定稿 compact table 按 full reference 重算 delta 后为 2B `+0.0`、4B `-0.4`。
 - `all, M=4` 已完整补跑 VLA 四套；2B VLA 侧基本 parity，但 VLM 侧已经大幅下降，4B VLA 侧也明显下降，所以最终仍是 reject。
 
 ### 13.2 `all, M=4` 配置

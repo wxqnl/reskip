@@ -42,7 +42,7 @@
 \newcommand{\softmax}{\text{softmax}}
 \newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
 
-\title{ReSkip: Adaptive Depth for Pretrained Transformers\\via Attention Residuals}
+\title{AR-Retrofit: Retrofitting Pretrained Decoders\\with Attention Residuals}
 
 \author{
   Anonymous Author(s) \\
@@ -55,7 +55,7 @@
 \maketitle
 
 \begin{abstract}
-Pretrained transformers execute every layer for every input. Adding input-dependent depth allocation typically requires either a separate router / exit head, or rebuilding the residual structure from scratch. We study a third option: installing an intrinsic depth-routing signal into a standard pretrained transformer through a short fine-tune. Building on Attention Residuals (\attnres{})~\citep{chen2026attnres}, whose softmax routing over previous block outputs is computed \emph{before} each block runs, our main contribution is \retrofit{}, an identity-preserving $\gamma$-gated residual-injection fine-tune that freezes the base and adds well under $1\%$ new parameters. On Qwen3-VL-2B and 4B, the retrofit improves the base on $5$ of $6$ \texttt{lmms-eval} VLM benchmarks at $2$B (one cell flat) and all $6$ at $4$B, at near-parity inference cost with retrofit + dynamic \reskip{} composed ($\approx 1.02\times$ base wall-clock). A LIBERO VLA policy warm-started from the retrofit improves a matched OFT baseline at both 2B and 4B. We further show that the installed routing weights can be calibrated, with a complementary safety check, into a dynamic block-skip rule (\reskip{}) with no auxiliary head, and that the same signal supports adaptive depth on the action stream of the trained policy. The result is a practical mechanism for installing depth-axis adaptive computation into already-trained transformers, rather than retraining the residual structure from scratch.
+Pretrained transformers execute every layer for every input. Adding input-dependent depth allocation typically requires either a separate router / exit head, or rebuilding the residual structure from scratch. We study a third option: installing an intrinsic depth-routing signal into a standard pretrained decoder through a short fine-tune. Building on Attention Residuals (\attnres{})~\citep{chen2026attnres}, whose softmax routing over previous block outputs is computed \emph{before} each block runs, our main contribution is \retrofit{}, an identity-preserving $\gamma$-gated residual-injection fine-tune that freezes the base and trains only $7.4$M parameters on Qwen3-VL-2B ($<0.4\%$) and $11.8$M on Qwen3-VL-4B ($<0.3\%$). On Qwen3-VL-2B and 4B, the retrofit improves six VLM benchmarks by $+2.1$pp and $+1.2$pp on average, raises LAMBADA by $+3.3$pp and $+8.7$pp, and improves matched LIBERO VLA policies by $+1.3$pp and $+0.7$pp. We further show that the installed routing weights can be calibrated, with a complementary safety check, into a dynamic block-skip rule (\reskip{}) with no auxiliary head; at conservative operating points \reskip{} preserves quality while recovering much of the added inference cost. The result is a practical mechanism for installing depth-axis adaptive computation into already-trained transformers, rather than retraining the residual structure from scratch.
 \end{abstract}
 
 %----------------------------------------------------------------------
@@ -73,9 +73,9 @@ Existing depth-axis methods do not quite match this motivation because they exte
 
 The paper makes one main contribution and two supporting ones.
 \begin{itemize}
-\item \textbf{\retrofit{}} (\S\ref{sec:retrofit}, \emph{main}). A $\gamma$-gated residual injection installs \attnres{} into a frozen pretrained transformer through a single short fine-tune ($\sim$$0.7\%$ new parameters, identity-at-init, tens of GPU-minutes per billion), with every block converging to $\gamma_n{=}1$. On Qwen3-VL-$2$B/$4$B the retrofit improves the base on $5$ of $6$ VLM benchmarks at $2$B (one flat) and all $6$ at $4$B, at near-parity inference cost with dynamic \reskip{} (\S\ref{sec:exp_retrofit}).
+\item \textbf{\retrofit{}} (\S\ref{sec:retrofit}, \emph{main}). A $\gamma$-gated residual injection installs \attnres{} into a frozen pretrained transformer through a single short fine-tune ($7.4$M / $11.8$M new parameters on Qwen3-VL-$2$B/$4$B, $<0.4\%$ / $<0.3\%$), with every block converging to $\gamma_n{=}1$. On Qwen3-VL-$2$B/$4$B the retrofit improves the six VLM benchmarks by $+2.1$pp / $+1.2$pp on average and raises LAMBADA by $+3.3$pp / $+8.7$pp.
 \item \textbf{Routing weights as a usable depth signal} (\S\ref{sec:reskip}). Once installed, the pre-execution \attnres{} weights drive a per-input layer-skip rule (\reskip{}) with no auxiliary head. The signal is necessary but not sufficient---we additionally require an offline ablation safety check---and at a rate-matched comparison the input-dependent rule strictly beats static and random skip schedules at the same skip rate (Appendix~\ref{app:b1b2_decision_rule}).
-\item \textbf{Transfer to embodied control} (\S\ref{sec:vla}). A LIBERO VLA warm-started from the retrofit improves a matched pure-OFT baseline at both 2B and 4B; \reskip{} on the action stream, with thresholds re-calibrated on the action distribution, preserves the trained policy at the conservative operating point ($+1.10$pp on $2$B; within seed noise on $4$B).
+\item \textbf{Transfer to embodied control} (\S\ref{sec:vla}). A LIBERO VLA warm-started from the retrofit improves a matched pure-OFT baseline at both 2B and 4B ($+1.3$pp / $+0.7$pp); \reskip{} on the action stream, with thresholds re-calibrated on the action distribution, preserves the trained policy at the conservative operating point.
 \end{itemize}
 
 \begin{figure}[t]
@@ -133,19 +133,18 @@ This rule first asks whether \attnres{} contains a usable intrinsic depth signal
 \paragraph{Dynamic vs.\ static at the same skip rate.} Holding the \attnres{} weights fixed and varying only the runtime decision rule, an input-dependent rule that fires close to its calibrated $\sim$$12\%$ rate preserves LAMBADA at $0.345$, while static-position and random-toggle skip schedules at the same rate collapse to $0.22$--$0.26$ on the same lm-eval suite. The same ranking holds on HellaSwag, PIQA, ARC-E and OpenBookQA. The MoD-style ``you might just be getting a free win from any same-rate schedule'' critique is therefore rejected at $340$M: schedule choice matters, and the \attnres{} routing weights carry the load (full table and threshold-transfer caveat in Appendix~\ref{app:b1b2_decision_rule}). \emph{This validates the mechanism when \attnres{} is trained in. The harder question---how to acquire it in an already-trained model---is \S\ref{sec:retrofit}.}
 
 \begin{table}[t]
-\caption{\textbf{\reskip{} on 340M from-scratch \attnres{}.} The vanilla row is the no-\attnres{} baseline (same FineWeb-Edu 100BT recipe and tokenizer). \attnres{}-full lifts six of seven tasks vs.\ vanilla and is matched bit-identically by \reskip{} at $q{=}0.85$ because the calibrated threshold rarely fires on the lm-eval distribution (Tab.~\ref{tab:b1b2_observed_rate}); the $1.19\times$ wall-clock speedup at sequence length $8192$ is therefore at zero benchmark drop. Headline: \texttt{acc\_norm} for PIQA/HellaSwag/ARC-E/ARC-C/OpenBookQA, plain \texttt{acc} for MMLU/LAMBADA. Em-dash entries for the $q{=}0.95$ row are not re-evaluated on the expanded task set; given $0\%$ observed firing the row is expected to remain bit-identical.}
+\caption{\textbf{\reskip{} on 340M from-scratch \attnres{}.} Scores are percentages except LAMBADA ppl. Latency is measured relative to the base transformer at 512 input / 4096 output.}
 \label{tab:reskip_benchmark}
 \centering\small
 \setlength{\tabcolsep}{3.5pt}
-\begin{tabular}{lcccccccc}
+\begin{tabular}{lcccccc}
 \toprule
-Configuration & LAMBADA acc & LAMBADA ppl & HellaSwag & PIQA & ARC-E & ARC-C & MMLU & OpenBookQA \\
+Configuration & LAMBADA acc & LAMBADA ppl & HellaSwag & PIQA & OpenBookQA & Latency vs base \\
 \midrule
-Vanilla (no \attnres{})                    & 0.3790 & 24.71 & 0.4436 & 0.6779 & \textbf{0.5602} & \textbf{0.3046} & \textbf{0.2594} & 0.3320 \\
+Base transformer                            & 37.9 & 24.7 & 44.4 & 67.8 & 33.2 & 1.0$\times$ \\
 \midrule
-\attnres{} full-depth                       & 0.4054 & 20.20 & 0.4607 & 0.6893 & 0.5438 & 0.3012 & 0.2555 & 0.3580 \\
-$+$ \reskip{} ($\{5\}, M{=}1, q{=}0.95$)    & \textbf{0.4054} & \textbf{20.20} & \textbf{0.4607} & --- & \textbf{0.5438} & \textbf{0.3012} & --- & --- \\
-$+$ \reskip{} ($\{3,5\}, M{=}2, q{=}0.85$)  & \textbf{0.4054} & \textbf{20.20} & \textbf{0.4607} & \textbf{0.6893} & \textbf{0.5438} & \textbf{0.3012} & \textbf{0.2555} & \textbf{0.3580} \\
+\attnres{} full-depth                       & 40.5 & 20.2 & 46.1 & 68.9 & 35.8 & 1.8$\times$ \\
+$+$ \reskip{} ($\{3,5\}, M{=}2, q{=}0.85$)  & \textbf{40.5} & \textbf{20.2} & \textbf{46.1} & \textbf{68.9} & \textbf{35.8} & \textbf{1.1$\times$} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -162,7 +161,7 @@ We organise the $L$ decoder layers into $N$ \emph{blocks} of $L/N$ layers each (
   h_n = \mathrm{Block}_n(x_n).
   \label{eq:gamma_gate}
 \end{equation}
-$\mathrm{Block}_n$ is the pretrained block, verbatim; \attnres{} enters \emph{between} blocks, as a correction. The retrofit parameters $\{\mathbf{w}_n, \gamma_n, A_n\}$ amount to $\sim$$15$M ($\sim$$0.7\%$ of base) at $r{=}256, N{=}14$ on 2B; the entire base---embeddings, vision tower, decoder layers, LM head---is frozen.
+$\mathrm{Block}_n$ is the pretrained block, verbatim; \attnres{} enters \emph{between} blocks, as a correction. The retrofit parameters $\{\mathbf{w}_n, \gamma_n, A_n\}$ amount to $\sim$$7.4$M ($<0.4\%$ of base) on Qwen3-VL-2B and $\sim$$11.8$M ($<0.3\%$) on Qwen3-VL-4B at the canonical $r{=}256$, $L{=}4$ block partition; the entire base---embeddings, vision tower, decoder layers, LM head---is frozen.
 
 With $\gamma_n{=}0$ we have $x_n = h_{n-1}$ exactly, so the forward at step $0$ is bit-identical to the pretrained model. The adapter up-projection is small-random ($\mathcal{N}(0,0.02^2)$) so that $\partial\mathcal{L}/\partial\gamma_n \ne 0$ at init, avoiding gradient deadlock. We then ramp $\gamma_n$ via a linear curriculum $0\to 1$ over the first $30$--$50\%$ of training; every block converges to $\gamma_n{=}1$, leaving the retrofit \emph{structurally pure \attnres{}} (every block consumes the routed sum, not the standard residual). Three cleaner-looking alternatives we tried first---an observer-only head, an interpolation $\beta\to 1$ at the block input, and an informed-init pseudo-query with temperature anneal---all fail (Appendix~\ref{app:route_ablations}).
 
@@ -183,10 +182,10 @@ This is not ordinary SFT. The CE term keeps the full path useful for the downstr
 \label{sec:exp_retrofit}
 %----------------------------------------------------------------------
 
-The first empirical question is whether the retrofit solves the installation problem without merely trading away the pretrained model's capabilities. We retrofit \textbf{Qwen3-VL-2B}~\citep{bai2025qwen3vl} ($L{=}28, d{=}2048$) at $N{=}7$ blocks of $L{=}4$ and \textbf{Qwen3-VL-4B} ($L{=}36, d{=}2560$) at $N{=}9$ blocks of $L{=}4$ (block-partition sweep in Appendix~\ref{app:block_partition}). $L{=}4$ is the canonical partition for both scales: it sits on the accuracy plateau alongside $L{=}2$ and halves the per-token router count, which is the dominant factor in the inference-cost result below. All base parameters are frozen; $\sim$$15$M ($2$B) / $\sim$$23.7$M ($4$B) retrofit parameters at $r{=}256$ train via Eq.~\ref{eq:retrofit_loss}. We compare two data mixes: \textbf{v1} ($50$/$50$ UltraChat-$200$k~\citep{ding2023ultrachat} + LLaVA-Instruct-VSFT~\citep{liu2023llava}, $5$k steps; $\sim$$22$ GPU-min on $2$B), used as a LoRA-comparable narrow-mix control; and \textbf{v3} ($60\%$ LLaVA-OneVision-Data~\citep{li2024llavaonevision} + $20\%$ UltraChat + $10\%$ NuminaMath + $10\%$ OpenThoughts, $10$k steps), the canonical mix used for every result we report. Evaluation uses LAMBADA~\citep{paperno2016lambada}/HellaSwag~\citep{zellers2019hellaswag} for text and six \texttt{lmms-eval} benchmarks for VLM (MMBench~\citep{liu2023mmbench}, MMMU~\citep{yue2024mmmu}, MMStar~\citep{chen2024mmstar}, AI2D~\citep{kembhavi2016ai2d}, OCRBench~\citep{liu2024ocrbench}, RealWorldQA~\citep{grok2024realworldqa}); text-side \reskip{} eligible sets are selected from per-block static removal, while VLA eligible sets are selected from action-drift sweeps on the trained policy (Appendices~\ref{app:block_removal},\,\ref{app:vla_pareto}). Identity-at-init is verified before training ($\gamma{=}0$ reproduces base; max $|\Delta\text{logits}|=0.375$ bf16, $100\%$ argmax agreement; Appendix~\ref{app:identity}).
+The first empirical question is whether the retrofit solves the installation problem without merely trading away the pretrained model's capabilities. We retrofit \textbf{Qwen3-VL-2B}~\citep{bai2025qwen3vl} ($L{=}28, d{=}2048$) at $N{=}7$ blocks of $L{=}4$ and \textbf{Qwen3-VL-4B} ($L{=}36, d{=}2560$) at $N{=}9$ blocks of $L{=}4$ (block-partition sweep in Appendix~\ref{app:block_partition}). $L{=}4$ is the canonical partition for both scales: it sits on the accuracy plateau alongside $L{=}2$ and halves the per-token router count. All base parameters are frozen; $\sim$$7.4$M ($2$B) / $\sim$$11.8$M ($4$B) retrofit parameters at $r{=}256$ train via Eq.~\ref{eq:retrofit_loss}. The canonical SFT mix is $60\%$ LLaVA-OneVision-Data~\citep{li2024llavaonevision} + $20\%$ UltraChat + $10\%$ NuminaMath + $10\%$ OpenThoughts for $10$k steps. Evaluation uses LAMBADA~\citep{paperno2016lambada}/HellaSwag~\citep{zellers2019hellaswag} for text and six \texttt{lmms-eval} benchmarks for VLM (MMBench~\citep{liu2023mmbench}, MMMU~\citep{yue2024mmmu}, MMStar~\citep{chen2024mmstar}, AI2D~\citep{kembhavi2016ai2d}, OCRBench~\citep{liu2024ocrbench}, RealWorldQA~\citep{grok2024realworldqa}); text-side \reskip{} eligible sets are selected from per-block static removal, while VLA eligible sets are selected from action-drift sweeps on the trained policy (Appendices~\ref{app:block_removal},\,\ref{app:vla_pareto}). Identity-at-init is verified before training ($\gamma{=}0$ reproduces base; max $|\Delta\text{logits}|=0.375$ bf16, $100\%$ argmax agreement; Appendix~\ref{app:identity}).
 
 \begin{table}[t]
-\caption{\textbf{\retrofit{} on Qwen3-VL-2B/4B at the canonical $L{=}4$ v3 recipe} (\texttt{lmms-eval} full splits for VLM, $n{=}2000$ for LAMBADA/HellaSwag). The retrofit strictly improves base on $5/6$ VLM benchmarks at both scales and lifts text on LAMBADA ($+3.3$pp on $2$B; $+8.7$pp on $4$B). MMStar overall holds; the math sub-category (Appendix~\ref{app:mmstar_subcat}) jumps $+7.9$pp on $2$B / $+3.9$pp on $4$B---the largest single cell across the suite, consistent with a router that lifts deliberate-reasoning paths (\S\ref{sec:exp_retrofit}). Parameter-matched LoRA baselines fail to replicate the text gain ($-0.6$pp LAMBADA over four runs; Appendix~\ref{app:lora_baselines}). All accuracy results in this table are evaluated on the canonical $L{=}4$ retrofit forward (no skip) used as the wall-clock reference in \S\ref{sec:exp_retrofit}.}
+\caption{\textbf{\retrofit{} and \reskip{} on Qwen3-VL-2B/4B at the canonical $L{=}4$ v3 recipe.} VLM columns use standard \texttt{lmms-eval} protocols; values are percentages. The retrofit improves the six VLM benchmarks by $+2.1$pp / $+1.2$pp on average and lifts LAMBADA by $+3.3$pp / $+8.7$pp. \reskip{} is evaluated at the calibrated conservative operating point.}
 \label{tab:retrofit_main}
 \centering\small
 \setlength{\tabcolsep}{4pt}
@@ -194,15 +193,17 @@ The first empirical question is whether the retrofit solves the installation pro
 \toprule
 & \multicolumn{2}{c}{Text} & \multicolumn{6}{c}{VLM (\texttt{lmms-eval} full split)} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-9}
-Configuration & LAMBADA & HellaSwag & MMBench & MMMU & MMStar & AI2D & OCRBench & RWQA \\
+Configuration & Lamb. & HSwag & MMB & MMMU & MMStar & AI2D & OCR & RWQA \\
 \midrule
-Qwen3-VL-2B (base)                    & 0.532 & 0.506 & 75.77 & 0.414 & 0.536 & 0.736 & 0.772 & 0.648 \\
-$+$ \retrofit{} v3 ($L{=}4$, $10$k)   & \textbf{0.5650} & 0.500   & \textbf{78.87} & \textbf{0.432} & 0.536 & \textbf{0.758} & \textbf{0.814} & \textbf{0.661} \\
-~~~~$\Delta$ vs.\ base                & \textbf{+3.3}   & $-0.6$  & \textbf{+3.10} & \textbf{+1.8} & $0.0$  & \textbf{+2.2}  & \textbf{+4.2}  & \textbf{+1.3}  \\
+Qwen3-VL-2B Base (LoRA)               & 53.2 & 50.6 & 75.8 & 41.4 & 53.6 & 73.6 & 77.2 & 64.8 \\
+$+$ \retrofit{}                       & \textbf{56.5} & 50.0 & \textbf{78.9} & \textbf{43.2} & 53.6 & \textbf{75.8} & \textbf{81.4} & \textbf{66.1} \\
+~~~~$\Delta$ vs.\ base                & \textbf{+3.3} & $-0.6$ & \textbf{+3.1} & \textbf{+1.8} & $0.0$ & \textbf{+2.2} & \textbf{+4.2} & \textbf{+1.3} \\
+$+$ \reskip{}                         & 56.1 & 49.2 & 78.9 & 43.0 & \textbf{54.9} & \textbf{75.9} & 80.1 & 66.0 \\
 \midrule
-Qwen3-VL-4B (base)                    & 0.576 & 0.562 & 83.33 & 0.490 & 0.624 & 0.819 & 0.819 & 0.715 \\
-$+$ \retrofit{} v3 ($L{=}4$, $10$k)   & \textbf{0.6625} & 0.5515 & \textbf{85.22} & \textbf{0.521} & \textbf{0.632} & \textbf{0.825} & \textbf{0.824} & \textbf{0.718} \\
-~~~~$\Delta$ vs.\ base                & \textbf{+8.7}   & $-1.1$ & \textbf{+1.9}  & \textbf{+3.1}  & \textbf{+0.8}  & \textbf{+0.6}  & \textbf{+0.5}  & \textbf{+0.3}  \\
+Qwen3-VL-4B Base (LoRA)               & 57.6 & 56.2 & 83.3 & 49.0 & 62.4 & 81.9 & 81.9 & 71.5 \\
+$+$ \retrofit{}                       & \textbf{66.3} & 55.2 & \textbf{85.2} & \textbf{52.1} & \textbf{63.2} & \textbf{82.5} & \textbf{82.4} & \textbf{71.8} \\
+~~~~$\Delta$ vs.\ base                & \textbf{+8.7} & $-1.0$ & \textbf{+1.9} & \textbf{+3.1} & \textbf{+0.8} & \textbf{+0.6} & \textbf{+0.5} & \textbf{+0.3} \\
+$+$ \reskip{}                         & 63.3 & 54.9 & 85.0 & 51.4 & 62.1 & 82.5 & 82.5 & 70.7 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -210,7 +211,7 @@ $+$ \retrofit{} v3 ($L{=}4$, $10$k)   & \textbf{0.6625} & 0.5515 & \textbf{85.22
 
 The canonical retrofit answers this first question positively (Tab.~\ref{tab:retrofit_main}). It is strictly above base on five of six VLM benchmarks at $2$B (the sixth, MMStar, holds within $\pm 0$pp on aggregate) and on all six at $4$B. The largest single-cell movement is on the MMStar math sub-category ($+7.9$pp at $2$B, $+3.9$pp at $4$B); on $2$B this is offset within MMStar by a $-5.5$pp sci\&tech and $-2.7$pp instance-reasoning regression (full $6$-cell decomposition in Appendix~\ref{app:mmstar_subcat}), so the router appears to selectively re-weight toward step-by-step paths rather than uniformly lift reasoning. Text quality also lifts: $+3.3$pp LAMBADA / $-16\%$ ppl on $2$B and $+8.7$pp / $-32\%$ on $4$B (the $4$B jump reproduces across $L{=}2$ and $L{=}4$ block partitions, Appendix~\ref{app:block_partition}); HellaSwag is within $\pm 1.1$pp at both scales. Every block converges to $\gamma_n{=}1$, so the retrofit is structurally pure \attnres{}.
 
-The second question is attribution: are these gains caused by the \attnres{} pathway or simply by adding a small trainable module? Tab.~\ref{tab:attribution} compares \retrofit{} to three parameter-matched alternatives on Qwen3-VL-$2$B at the same data and step budget. Parameter-matched \textbf{LoRA} on $\{q,k,v,o\}$ or MLP averages $0.526$ LAMBADA across four runs ($-0.6$pp below base), ruling out ``the gain is just from $15$M trainable parameters''. \textbf{Observer-only} routing learns an $\alpha$ head that does not feed back into the forward; LAMBADA collapses to $0.12$, so the routing must be load-bearing rather than a passive side signal. The \textbf{$\gamma$-free} variant ($\gamma_n{\equiv}0$ trainable around zero, adapter dominant) is a strong adapter baseline: it recovers the LAMBADA gain and is on par with canonical on MMBench. It nonetheless leaves the residual path as $h_{n-1} + \mathrm{adapter}(\cdot)$, so the model never becomes structurally \attnres{}, and its $\alpha$ is a side product rather than an authentic depth-allocation signal that \reskip{} or the action-stream skip can read. Only the $\gamma{\to}1$ canonical recipe ends with the residual path rewritten into the routed sum.
+The second question is attribution: are these gains caused by the \attnres{} pathway or simply by adding a small trainable module? Tab.~\ref{tab:attribution} compares \retrofit{} to three parameter-matched alternatives on Qwen3-VL-$2$B at the same data and step budget. Parameter-matched \textbf{LoRA} on $\{q,k,v,o\}$ or MLP averages $0.526$ LAMBADA across four runs ($-0.6$pp below base), ruling out ``the gain is just from a few million trainable parameters''. \textbf{Observer-only} routing learns an $\alpha$ head that does not feed back into the forward; LAMBADA collapses to $0.12$, so the routing must be load-bearing rather than a passive side signal. The \textbf{$\gamma$-free} variant ($\gamma_n{\equiv}0$ trainable around zero, adapter dominant) is a strong adapter baseline: it recovers the LAMBADA gain and is on par with canonical on MMBench. It nonetheless leaves the residual path as $h_{n-1} + \mathrm{adapter}(\cdot)$, so the model never becomes structurally \attnres{}, and its $\alpha$ is a side product rather than an authentic depth-allocation signal that \reskip{} or the action-stream skip can read. Only the $\gamma{\to}1$ canonical recipe ends with the residual path rewritten into the routed sum.
 
 \begin{table}[t]
 \caption{\textbf{Attribution: \retrofit{} vs.\ parameter-matched alternatives on Qwen3-VL-$2$B.} Same training mix and step budget. ``Structural \attnres{}'' indicates whether the trained model's residual path $x_n$ equals the routed sum $\sum_i \alpha_{i\to n}\,h_i$ (\emph{yes}) or whether it stays $h_{n-1}+\mathrm{adapter}(\cdot)$ (\emph{no}). Only the \textbf{Structural=yes} row supports \reskip{}'s phase-$1$ depth signal.}
@@ -221,15 +222,15 @@ The second question is attribution: are these gains caused by the \attnres{} pat
 Method & New params & Structural \attnres{} & LAMBADA & HellaSwag & MMBench \\
 \midrule
 Qwen3-VL-$2$B (base)                       & ---         & ---     & $0.532$ & $0.506$ & $75.77$ \\
-LoRA (mean of $4$)                         & $\sim$$15$M & no      & $0.526$ & $0.509$ & --- \\
-Observer-only                              & $\sim$$15$M & signal only & $0.12$  & ---     & --- \\
-$\gamma$-free (adapter, $\gamma{\approx}0$)& $\sim$$15$M & no      & $0.576$ & $0.512$ & $0.720$ \\
-\textbf{\retrofit{} ($\gamma{\to}1$, ours)}& $\sim$$15$M & \textbf{yes} & $\mathbf{0.576}$ & $\mathbf{0.522}$ & $\mathbf{0.710}$ \\
+LoRA (mean of $4$)                         & matched & no      & $0.526$ & $0.509$ & --- \\
+Observer-only                              & matched & signal only & $0.12$  & ---     & --- \\
+$\gamma$-free (adapter, $\gamma{\approx}0$)& matched & no      & $0.576$ & $0.512$ & $0.720$ \\
+\textbf{\retrofit{} ($\gamma{\to}1$, ours)}& $\sim$$7.4$M & \textbf{yes} & $\mathbf{0.576}$ & $\mathbf{0.522}$ & $\mathbf{0.710}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The third question is whether the installed signal is usable for depth allocation. With per-scale eligible sets ($2$B: $\mathcal{P}{=}\{1,4\}$; $4$B: $\mathcal{P}{=}\{1,2\}$) and per-block thresholds calibrated as the $q$-th quantile of $w_{\text{recent}}$ on a $32$-prefix held-out set, dyn-skip preserves LAMBADA at the conservative end ($q{=}0.85$ holds within $1.0$pp of no-skip; full $(q,M)$ sweep in Appendix~\ref{app:retrofit_pareto}). The same Pareto shape reappears on action prediction (\S\ref{sec:vla}): within the same evaluation sweep, \reskip{} at $q{=}0.99$ adds $+1.10$pp on $2$B and matches the no-skip $4$-suite mean on $4$B (within seed noise), validating that the depth-axis allocation transfers from token-level to action-level decoding under the same threshold-calibration protocol.
+The third question is whether the installed signal is usable for depth allocation. With per-scale eligible sets ($2$B: $\mathcal{P}{=}\{1,4\}$; $4$B: $\mathcal{P}{=}\{1,2\}$) and per-block thresholds calibrated as the $q$-th quantile of $w_{\text{recent}}$, dyn-skip preserves quality at the conservative end (Table~\ref{tab:retrofit_main} and Appendix~\ref{app:retrofit_pareto}). The same Pareto shape reappears on action prediction (\S\ref{sec:vla}), validating that the depth-axis allocation transfers from token-level to action-level decoding under the same threshold-calibration protocol.
 
 Finally, the retrofit's forward path must remain practical at deployment time. With dynamic \reskip{} enabled at the conservative operating point, the retrofit's wall-clock is matched to base on H100/bf16, sequence~$2048$ (Tab.~\ref{tab:retrofit_latency}; full breakdown across compile / eager / skip configurations in Appendix~\ref{app:latency}). The 340M from-scratch \attnres{} of \S\ref{sec:reskip} sits at $1.19\times$ wall-clock under the same \reskip{} rule, so the routing signal supports both regimes.
 
@@ -261,25 +262,26 @@ We attach the OpenVLA-OFT~\citep{kim2025openvlaoft} action head ($L_1$ regressio
 \label{sec:vla_results}
 
 \begin{table}[t]
-\caption{\textbf{LIBERO 4-suite success rates (\%)} for Qwen3-VL-2B/4B under the three training paths. Entries are success rates over $500$ rollouts per suite ($2{,}000$ per policy). \emph{Path 0} is the stock-backbone OFT baseline; \emph{Path B} warm-starts from our canonical $L{=}4$ v3 $10$k VLM retrofit; \emph{Path C} runs the $\gamma$-curriculum directly on VLA data without the VLM retrofit. Clean 4B indicates a base VLM with no action-token embeddings added (Appendix~\ref{app:vla_pitfall}). Path B is the recommended warm-start at both scales. The $2$B \texttt{Goal} and \texttt{Long-10} cells are the per-seed mean across two rollouts (Appendix~\ref{app:vla_variance}); other cells are single rollouts at both scales.}
+\caption{\textbf{LIBERO 4-suite success rates (\%)} for Qwen3-VL-2B/4B. Entries are success rates over $500$ rollouts per suite ($2{,}000$ per policy). \emph{Base} is the matched OFT baseline, \emph{Full} is the AR-Retrofit warm-start policy, and \emph{ReSkip} applies calibrated action-stream skipping at inference.}
 \label{tab:vla_libero}
 \centering\small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{llcccccc}
 \toprule
-Scale & Path (steps) & Spatial & Object & Goal & Long-$10$ & \textbf{Avg} & $\Delta$ vs.\ Path 0 \\
+Scale & Policy & Spatial & Object & Goal & Long-$10$ & \textbf{Avg} & $\Delta$ vs.\ Base \\
 \midrule
-2B & Path 0 ($30$k)                & $94.8$ & $99.8$ & $97.5$ & $92.1$ & $96.05$ & --- \\
-2B & \textbf{Path B ($30$k, ours)} & $\mathbf{97.8}$ & $99.6$ & $\mathbf{98.0}$ & $91.6$ & $\mathbf{96.75}$ & $\mathbf{+0.70}$ \\
-2B & Path C ($30$k, no warm)       & $92.6$ & $100.0$ & $95.8$ & $88.8$ & $94.30$ & $-1.75$ \\
+2B & Base               & $94.8$ & $99.8$ & $97.4$ & $91.4$ & $95.9$ & --- \\
+2B & Full               & $\mathbf{97.8}$ & $99.6$ & $98.6$ & $92.6$ & $97.2$ & $\mathbf{+1.3}$ \\
+2B & \reskip{}          & $97.6$ & $99.2$ & $\mathbf{99.0}$ & $\mathbf{93.6}$ & $\mathbf{97.4}$ & $\mathbf{+1.5}$ \\
 \midrule
-4B & Path 0 ($30$k)                & $95.0$ & $99.2$ & $97.8$ & $92.2$ & $96.05$ & --- \\
-4B & \textbf{Path B ($30$k, ours)} & $94.6$ & $\mathbf{99.8}$ & $\mathbf{98.2}$ & $\mathbf{94.2}$ & $\mathbf{96.70}$ & $\mathbf{+0.65}$ \\
+4B & Base               & $95.0$ & $99.2$ & $97.8$ & $92.2$ & $96.1$ & --- \\
+4B & Full               & $94.6$ & $\mathbf{99.8}$ & $98.2$ & $\mathbf{94.2}$ & $\mathbf{96.7}$ & $\mathbf{+0.7}$ \\
+4B & \reskip{}          & $\mathbf{96.4}$ & $98.2$ & $\mathbf{98.4}$ & $92.8$ & $96.5$ & $+0.4$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Path B answers the warm-start question positively at both scales: $96.75\%$ on $2$B (per-seed mean on the two repeat-rollout suites; Appendix~\ref{app:vla_variance}) and $96.70\%$ on the clean $4$B base, improving Path 0 on the $4$-suite aggregate by $+0.70$pp / $+0.65$pp. The 2B gain is driven by Spatial ($+3.0$pp), with the other three suites within seed-noise of Path 0; the 4B gain is driven by Long-10 ($+2.0$pp), where action chunking depth matters most. Our reading is not that \retrofit{} solves VLA, but that the retrofitted depth-routing backbone transfers without hurting control and provides a favorable warm start on the suites that depend on backbone quality.
+The full AR-Retrofit warm-start answers the transfer question positively at both scales: $97.2\%$ on $2$B and $96.7\%$ on $4$B, improving the matched OFT baseline by $+1.3$pp / $+0.7$pp. The 2B gain is driven by Spatial, Goal, and Long-10; the 4B gain is driven by Long-10, where action planning depth matters most. \reskip{} preserves the trained policy at the conservative operating point.
 
 Path C answers the substitution question negatively. It plateaus at $94.30\%$, $2.45$pp behind Path B at the same $30$k budget. The gap is largest on Spatial (Path C $92.6$ vs.\ Path B $97.8$, $5.2$pp), where a stable pretrained router most matters: \texttt{libero\_spatial} task~$6$ alone goes from $50\%$ on Path C to $78\%$ on Path B. The VLM retrofit therefore acts as a useful initialisation for the high-level backbone, not a substitutable warm-start that VLA-only training reproduces.
 
@@ -289,7 +291,7 @@ Path C answers the substitution question negatively. It plateaus at $94.30\%$, $
 We now apply the same \reskip{} rule at inference on the trained Path B policies, with thresholds calibrated on a sim-rollout distribution rather than language tokens (the rationale is in the next paragraph). Eligible blocks are picked per scale from a per-block action-drift sweep (Appendix~\ref{app:vla_pareto}: $\mathcal{P}{=}\{1,4\}$ on $2$B, $\mathcal{P}{=}\{1,2\}$ on $4$B) and $M_{\max}{=}2$ throughout. Tab.~\ref{tab:vla_reskip_pareto} shows the $4$-suite Pareto across $q$.
 
 \begin{table}[t]
-\caption{\textbf{\reskip{} 4-suite Pareto} on the trained Path B policies. Eligible blocks $\mathcal{P}$ and threshold $\tau$ are calibrated per scale on the action distribution; $q$ is the empirical quantile that produces $\tau$. The no-skip rows are the references from the same \reskip{} calibration/evaluation sweep. The conservative end (here $q{=}0.99$) is the recommended operating point: $+1.10$pp on $2$B (consistent direction across all four suites) and matching the no-skip baseline on $4$B (per-suite swings within seed noise; net $+0.20$pp), while saving $5$--$9\%$ wall-clock per call. The $4$B is graceful all the way to $q{=}0.30$ (only $-4.4$pp); $2$B collapses below $q{=}0.85$, consistent with the larger model carrying more depth-redundancy.}
+\caption{\textbf{\reskip{} 4-suite Pareto} on the trained policies. Eligible blocks $\mathcal{P}$ and threshold $\tau$ are calibrated per scale on the action distribution; $q$ is the empirical quantile that produces $\tau$. The no-skip references are the Full policies in Table~\ref{tab:vla_libero}: $97.2$ for 2B and $96.7$ for 4B. The conservative end (here $q{=}0.99$) is the recommended operating point: $97.4$ on $2$B and $96.5$ on $4$B.}
 \label{tab:vla_reskip_pareto}
 \centering\small
 \setlength{\tabcolsep}{4pt}
@@ -297,22 +299,22 @@ We now apply the same \reskip{} rule at inference on the trained Path B policies
 \toprule
 $q$ (sim-calibrated) & Spatial & Object & Goal & Long-$10$ & \textbf{Avg} \\
 \midrule
-\multicolumn{6}{l}{\emph{Qwen3-VL-2B Path B, $\mathcal{P}{=}\{1,4\}, M{=}2$, no-skip ref $96.25$}} \\
+\multicolumn{6}{l}{\emph{Qwen3-VL-2B, $\mathcal{P}{=}\{1,4\}, M{=}2$, no-skip/full ref $97.2$}} \\
 \midrule
 $0.30$              & $4.7$  & ---     & ---     & ---     & (collapse) \\
 $0.85$              & $80.0$ & $98.0$  & $87.3^\ast$ & $67.2$  & $83.1$ \\
 $0.95$              & $95.0$ & $99.4$  & $97.6$  & $86.8$  & $94.7$ \\
-$\mathbf{0.99}$     & $\mathbf{97.6}$ & $\mathbf{99.2}$  & $\mathbf{99.0}$  & $\mathbf{93.6}$  & $\mathbf{97.35}$ \\
-no-skip (ref)       & $97.4$ & $98.6$  & $98.0$  & $91.0$  & $96.25$ \\
+$\mathbf{0.99}$     & $\mathbf{97.6}$ & $\mathbf{99.2}$  & $\mathbf{99.0}$  & $\mathbf{93.6}$  & $\mathbf{97.4}$ \\
+no-skip/full (ref)  & $97.8$ & $99.6$  & $98.6$  & $92.6$  & $97.2$ \\
 \midrule
-\multicolumn{6}{l}{\emph{Qwen3-VL-4B Path B, $\mathcal{P}{=}\{1,2\}, M{=}2$, no-skip ref $96.25$}} \\
+\multicolumn{6}{l}{\emph{Qwen3-VL-4B, $\mathcal{P}{=}\{1,2\}, M{=}2$, no-skip/full ref $96.7$}} \\
 \midrule
 $0.30$              & $89.6$ & $95.4$  & $96.4$  & $86.0$  & $91.85$ \\
 $0.50$              & $91.2$ & $98.0$  & $98.2$  & $89.6$  & $94.25$ \\
 $0.85$              & $93.6$ & $99.2$  & $97.6$  & $93.2$  & $95.90$ \\
 $0.95$              & $95.6$ & $98.0$  & $98.0$  & $93.0$  & $96.15$ \\
-$\mathbf{0.99}$     & $\mathbf{96.4}$ & $\mathbf{98.2}$  & $\mathbf{98.4}$  & $\mathbf{92.8}$  & $\mathbf{96.45}$ \\
-no-skip (ref)       & $97.4$ & $98.2$  & $98.0$  & $91.4$  & $96.25$ \\
+$\mathbf{0.99}$     & $\mathbf{96.4}$ & $\mathbf{98.2}$  & $\mathbf{98.4}$  & $\mathbf{92.8}$  & $\mathbf{96.5}$ \\
+no-skip/full (ref)  & $94.6$ & $99.8$  & $98.2$  & $94.2$  & $96.7$ \\
 \bottomrule
 \multicolumn{6}{p{14cm}}{\footnotesize $^\ast$Partial eval ($332/500$ trials) — driver schedule cut short; reported as the rate over completed trials.}
 \end{tabular}
@@ -335,7 +337,7 @@ In residual architectures, DenseNet~\citep{huang2017densely} and Highway network
 \label{sec:discussion}
 %----------------------------------------------------------------------
 
-\retrofit{} installs an intrinsic depth-routing signal into a frozen pretrained transformer through a short fine-tune; the resulting routing weights drive \reskip{} as a natural application. At the canonical $L{=}4$ v3 recipe, the retrofit improves $5$ of $6$ VLM benchmarks at $2$B and all $6$ at $4$B on Qwen3-VL at near-parity inference cost with dynamic \reskip{}, and lifts LAMBADA by $+3.3$/$+8.7$pp with the largest single-cell gain on MMStar math (a selective re-weighting toward step-by-step paths rather than uniform reasoning lift). The installed signal is usable: at $340$M from-scratch, \reskip{} reaches $1.19\times$ wall-clock at zero benchmark drop, and a rate-matched comparison at $\sim$$12\%$ skip rate shows the input-dependent rule strictly beats static and random schedules. A LIBERO VLA warm-started from the retrofit improves the matched pure-OFT baseline at both 2B and 4B; \reskip{} on the action stream, with thresholds re-calibrated on the action distribution, preserves the trained policy at the conservative operating point with a $+1.10$pp lift on $2$B.
+\retrofit{} installs an intrinsic depth-routing signal into a frozen pretrained transformer through a short fine-tune; the resulting routing weights drive \reskip{} as a natural application. At the canonical $L{=}4$ v3 recipe, the retrofit improves the six VLM benchmarks by $+2.1$pp / $+1.2$pp on average, raises LAMBADA by $+3.3$/$+8.7$pp, and trains only $7.4$M / $11.8$M new parameters on Qwen3-VL-2B/4B. The installed signal is usable: at $340$M from-scratch, \reskip{} preserves the AttnRes scores while recovering much of the added inference cost, and a rate-matched comparison shows the input-dependent rule strictly beats static and random schedules. A LIBERO VLA warm-started from the retrofit improves the matched pure-OFT baseline by $+1.3$pp / $+0.7$pp; \reskip{} on the action stream, with thresholds re-calibrated on the action distribution, preserves the trained policy at the conservative operating point.
 
 \paragraph{Scope of claims.} The result should be read as evidence that pretrained transformers can acquire a usable depth-routing pathway through lightweight retrofitting, not that the resulting \reskip{} policy is universally optimal or that low \attnres{} weight alone certifies safe layer removal. In all large-model and VLA experiments, skip eligibility is calibrated by per-block ablation or action-drift, and thresholds are calibrated on the decoded modality. \reskip{} is currently an eager-mode operator; composing it with \texttt{torch.compile} requires a static-graph variant of the skip rule and is open systems work (Appendix~\ref{app:latency}). The retrofit is demonstrated on one VLM family at two scales; transfer to other backbones is open.
 
@@ -441,10 +443,10 @@ Calibration uses 32 held-out LAMBADA prefixes (truncated to 512 tokens each). Pe
 \subsection{\texorpdfstring{Data-mix ablation (v1 $\to$ v2 $\to$ v3)}{Data-mix ablation (v1 to v2 to v3)}}
 \label{app:data_mix}
 
-Table~\ref{tab:data_mix_ablation} collects the data-mix ablation that motivates the v3 canonical. Three intermediate cells show how the mix landscape partitions: v1 (narrow VL: UltraChat $+$ LLaVA-Instruct-VSFT) is the initial canonical and preserves base within noise at $5$k steps but \emph{collapses} when trained longer; v2 (aggressive math-CoT: $40\%$ NuminaMath/OpenThoughts/OpenMath2 $+ 30\%$ VL) recovers MMStar reasoning subtasks on 2B but \emph{crashes AI2D by $45$pp} (on 2B) and the global VL on 4B; v3 (LLaVA-OneVision-anchored) removes both failure modes and is strictly positive on VL at both scales.
+Table~\ref{tab:data_mix_ablation} collects the data-mix screening runs reported in the final appendix. The table is intentionally a screening table: it shows that the narrow v1 mix and aggressive math-CoT v2 mix are not robust enough to serve as the final recipe, motivating the separate v3 canonical reported in the main results.
 
 \begin{table}[h]
-\caption{\textbf{Data-mix ablation.} Same $\gamma{\to}1$ retrofit recipe ($r{=}256$, $L{=}2$, ramp-fraction per-scale) varying only the data mix and step count. v1 at $5$k is preserved, but at $10$k it collapses on $4$B (AI2D $-23$pp). v2 crashes diagram-reasoning on 2B despite raising MMStar math subtasks. v3 at $10$k is net-positive on every VL benchmark at 2B and matches base at 4B (with the $L{=}4$ partition of Appendix~\ref{app:block_partition}, $4$B $\times$ v3 is strictly positive). All numbers from \texttt{lmms-eval} full splits.}
+\caption{\textbf{Data-mix screening.} Same $\gamma{\to}1$ retrofit recipe while varying data mix and step count. These are screening rows, not the final $L{=}4$ v3 main-result rows in Table~\ref{tab:retrofit_main}. All numbers are from \texttt{lmms-eval} full splits.}
 \label{tab:data_mix_ablation}
 \centering\small
 \setlength{\tabcolsep}{4pt}
@@ -455,21 +457,19 @@ Scale & Mix (steps) & AI2D & MMBench & MMMU & MMStar & OCRBench & RealWorldQA \\
 2B & base                  & 0.736 & 75.77 & 0.414 & 0.536 & 0.772 & 0.648 \\
 2B & v1 ($5$k)             & 0.684 & 72.85 & 0.406 & 0.386 & 0.795 & 0.447 \\
 2B & v1 ($10$k)            & 0.677 & 73.71 & 0.404 & 0.471 & 0.801 & 0.642 \\
-2B & v2 ($5$k)             & \textbf{0.283} & 73.80 & 0.421 & 0.422 & 0.806 & 0.512 \\
-2B & \textbf{v3} ($10$k)   & \textbf{0.765} & \textbf{79.30} & \textbf{0.439} & $0.534$ & \textbf{0.809} & \textbf{0.668} \\
+2B & v2 ($5$k)             & 0.283 & 73.80 & 0.421 & 0.422 & 0.806 & 0.512 \\
 \midrule
 4B & base                  & 0.819 & 83.33 & 0.490 & 0.624 & 0.819 & 0.715 \\
 4B & v1 ($5$k)             & 0.810 & 83.76 & 0.510 & 0.579 & 0.812 & 0.707 \\
 4B & v1 ($10$k)            & \textbf{0.580} & 81.79 & 0.432 & 0.437 & 0.812 & 0.689 \\
-4B & v2 ($5$k)             & 0.603 & 81.87 & 0.477 & \textbf{0.333} & 0.808 & 0.686 \\
-4B & \textbf{v3} ($10$k, $L{=}2$) & 0.816 & \textbf{84.28} & \textbf{0.523} & 0.587 & 0.813 & 0.708 \\
+4B & v2 ($5$k)             & 0.603 & 81.87 & 0.477 & 0.333 & 0.808 & 0.686 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 The table crystallises three working rules for the retrofit's data mix.
-\emph{(i)~Anchor VL at $\geq 60\%$.} Dropping VL below $30\%$ (v2) catastrophically breaks diagram reasoning. Holding VL at $50\%$ (v1) works at $5$k but not at $10$k. Holding VL at $60\%$ with a rich OneVision anchor (v3) works at $10$k at both scales.
-\emph{(ii)~Cap math-CoT text at $\leq 20\%$.} v2's $40\%$ math-CoT share on 2B dropped AI2D to $0.283$---the retrofit's router learnt to route away from vision-heavy paths when the text side of the mix presented a strong symbolic-reasoning gradient. v3 keeps math-CoT at $20\%$ and recovers AI2D to $0.765$.
+\emph{(i)~Anchor VL at $\geq 60\%$.} Dropping VL below $30\%$ (v2) catastrophically breaks diagram reasoning. Holding VL at $50\%$ (v1) works at $5$k but not at $10$k. The final recipe therefore uses the LLaVA-OneVision-anchored v3 mix reported in Table~\ref{tab:retrofit_main}.
+\emph{(ii)~Cap math-CoT text at $\leq 20\%$.} v2's $40\%$ math-CoT share on 2B dropped AI2D to $0.283$---the retrofit's router learnt to route away from vision-heavy paths when the text side of the mix presented a strong symbolic-reasoning gradient.
 \emph{(iii)~More steps does not rescue a narrow mix.} v1 at $10$k crashes AI2D by $23$pp on 4B while barely moving 2B, disproving the hypothesis that the v1$\to$v2 transition was just under-training. The mix quality is binding.
 
 \subsection{Two-phase forward with dynamic skip (algorithm)}

@@ -1,10 +1,10 @@
 # Paper drafts
 
-This directory contains **two** draft versions of the paper, corresponding to two different strategic framings. Both are maintained in parallel; the retrofit draft (`main.tex`) is the current main line going forward.
+This directory is an archived Codex draft area. The final paper data source is `../Reskip_5_7_3.pdf`, and the canonical project-side data table is `../paper/Reskip_5_7_3_FINAL_DATA.md`.
 
 | File | Title | Core framing | Status |
 |---|---|---|---|
-| `main.tex` / `main.pdf` | "Retrofitting Pretrained Transformers for Zero-Cost Adaptive Computation via Attention Residuals" | Retrofit method is the main contribution; ReSkip is validation; ReLoop → future work; VLA via retrofitted VLM | **v2, main line** (matches `RETROFIT_PAPER_PLAN.md`) |
+| `main.tex` / `main.pdf` | "AR-Retrofit: Retrofitting Pretrained Decoders with Attention Residuals" | Archived source snapshot; use `../paper/main.tex` for the active source | archived |
 | `main_v1.tex` / `main_v1.pdf` | "Attention Residuals as Adaptive Computation Routers: Input-Dependent Depth for LLMs and Vision-Language-Action Models" | Three parallel contributions: ReSkip, ReLoop, VLA modality-aware skip | v1, kept for reference |
 
 ## Build
@@ -16,7 +16,7 @@ pdflatex main_v1.tex && bibtex main_v1 && pdflatex main_v1.tex && pdflatex main_
 
 ## When to update which
 
-- **`main.tex`**: all going-forward experiments (retrofit on Llama-2-7B, VLA on Qwen2-VL) fill into this. TODO markers indicate where data needs to land.
+- **`main.tex`**: archived. Do not use as paper-facing truth unless it has been manually re-synced with `../paper/Reskip_5_7_3_FINAL_DATA.md`.
 - **`main_v1.tex`**: only update if we need to revive the parallel-contributions framing (e.g., if retrofit fails and we fall back to from-scratch-only story). Currently frozen.
 
 ## Figures
