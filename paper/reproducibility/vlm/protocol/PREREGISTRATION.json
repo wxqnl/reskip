@@ -1,0 +1,66 @@
+{
+  "experiment_id": "attnres_residual_strength_gate_2b_20260831",
+  "frozen_before_candidate_results": true,
+  "research_question": "Can one identity-initialized Full-path residual-strength gate slightly improve adapted AttnRes while producing a native token signal that is useful for later dynamic ReSkip?",
+  "positioning": {
+    "primary": "Full AttnRes adaptation enhancement",
+    "secondary": "post-hoc ReSkip relevance as a free byproduct",
+    "not_required": "ReSkip does not need to outperform Full AttnRes"
+  },
+  "candidate": {
+    "name": "S1_rsg_h1",
+    "formula": "g_b(t)=1+0.5*tanh((v_b^T RMSNorm(u_b(t))+c_b)/sqrt(d)); x_b(t)=h_b(t)+g_b(t)u_b(t)",
+    "gated_blocks": [1, 2, 3, 4, 5, 6],
+    "additional_parameters": 12294,
+    "initialization": "all gate weights and biases are zero; g_b(t)=1 exactly",
+    "fresh_start": "/data/Minko/models/Qwen3-VL-2B-Instruct",
+    "warm_start": false,
+    "training_steps": 3000,
+    "training_seed": 0,
+    "data_mix": "v3",
+    "objective": "task CE + 1.0 * Full teacher KL - 0.02 * native route entropy",
+    "skip_forwards": 0,
+    "skip_labels": false,
+    "compute_target": false,
+    "selector_or_controller": false,
+    "recovery_module": false,
+    "second_stage": false
+  },
+  "control": {
+    "name": "F0_reused_attnres_h1",
+    "source": "/data/Minko/experiments/attnres_functional_identity_2b_20260831/F0_attnres_h1/retrofit_attnres_state.pt",
+    "reason_for_reuse": "same seed, data mix, 3000 steps, adapter rank, gamma schedule, Full-only objective, and H=1 native AttnRes recipe; fi_weight was exactly zero"
+  },
+  "heldout": {
+    "seed": 259123,
+    "samples": 128,
+    "native_query_intervention_samples": 32,
+    "gate_ablation_samples": 32,
+    "posthoc_skip_risk_samples": 32,
+    "paired_bootstrap_replicates": 20000,
+    "micro_actions": {
+      "1": [1, 2, 3],
+      "2": [1],
+      "3": [0, 1],
+      "4": [1],
+      "5": [0, 3]
+    }
+  },
+  "primary_evidence": [
+    "paired held-out task CE delta versus original AttnRes",
+    "paired held-out teacher KL delta versus original AttnRes",
+    "identity-gate and cyclic-gate Full-path ablations"
+  ],
+  "secondary_evidence": [
+    "token/block distribution of learned gate factors",
+    "Spearman relation of gate factors and deviations to forced-skip KL and top-1 flip",
+    "comparison with w_recent and native correction ratio on the same tokens"
+  ],
+  "interpretation": {
+    "policy": "continuous evidence, not a mechanical multi-gate pass/fail rule",
+    "stop_if": "clear Full-path degradation, operationalized as CE delta greater than 0.005 or teacher-KL delta greater than 0.01 without compensating benchmark evidence",
+    "continue_if": "Full is neutral or slightly improved and the gate has nontrivial token variation or useful skip-risk association",
+    "retain_as_full_only_if": "Full improves consistently even if skip relevance is weak"
+  },
+  "anti_stacking_rule": "This arm is trained once from the pretrained base and does not continue from any prior candidate. No component may be added after observing this arm's screen result under the same experiment id."
+}

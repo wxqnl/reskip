@@ -1,0 +1,53 @@
+{
+  "amendment": 12,
+  "status": "frozen after Granite Vision 4.1 launch but before any benchmark result; clerical preflight correction only",
+  "date": "2026-09-01",
+  "purpose": "Correct the Amendment-011 sample-length evidence under the exact tokenizer setting used by all formal Granite Vision 4.1 paths. This amendment changes no model, optimization, data, sequence limit, evaluation task, or promotion gate.",
+  "cause": "The initial length probe preceded fix_mistral_regex=true. Re-running the same deterministic seed-0 stream with the frozen formal processor setting changes several text-token counts.",
+  "corrected_preflight_evidence": {
+    "processor": "unmodified Granite Vision 4.1 native dynamic-resolution processor",
+    "trust_remote_code": true,
+    "fix_mistral_regex": true,
+    "first_16_vlm_sample_sequence_lengths": [
+      1837,
+      1926,
+      1430,
+      2063,
+      1512,
+      1936,
+      1620,
+      1893,
+      1544,
+      564,
+      490,
+      807,
+      1053,
+      1419,
+      926,
+      802
+    ],
+    "samples_with_sequence_length_at_most_2048": "15/16",
+    "overlength_sample_count": 1,
+    "overlength_policy": "Reject the 2063-token example through the existing deterministic stream filter. Do not crop the image, reduce tiles, truncate supervision, or alter the model-native image grid.",
+    "accepted_sample_native_resolution_preserved": true
+  },
+  "unchanged_formal_protocol": {
+    "model": "ibm-granite/granite-vision-4.1-4b",
+    "max_sequence_length": 2048,
+    "num_blocks": 10,
+    "adapter_rank": 144,
+    "learning_rate": 0.001,
+    "route_entropy_weight": 0.0,
+    "steps": 5000,
+    "seed0_matrix": "Base GPU 6; Full AttnRes GPU 2; Full RSM-AttnRes GPU 3",
+    "benchmark_results_observed_at_freeze": false,
+    "promotion_gate_changed": false
+  },
+  "material_passport": {
+    "source_protocol": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/protocol/PROTOCOL_AMENDMENT_011.json",
+    "probe_software": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code/train_generic_vlm_attnres.py",
+    "model": "/data/Minko/models/granite-vision-4.1-4b",
+    "data": "/data/Minko/datasets, v3 stream, seed 0",
+    "hardware": "node42 CPU preprocessing; no benchmark score read"
+  }
+}

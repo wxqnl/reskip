@@ -1,0 +1,40 @@
+{
+  "amendment_id": "PROTOCOL_AMENDMENT_005",
+  "date": "2026-09-01",
+  "status": "frozen after the seed-1 development screen and before any seed-2 ReSkip run",
+  "seed1_screen_result": {
+    "delta_vs_full_pp": -0.016666666666658614,
+    "block_equivalents_per_token": 1.4560580204778157,
+    "decision": "quality passed but compute exceeded the pre-registered 0.75-1.15 interval; no seed-1 formal ReSkip"
+  },
+  "final_confirmatory_unit": "Qwen3-VL-4B Full RSM seed 2, whose ReSkip output has not been evaluated",
+  "policy": {
+    "controller": "none",
+    "token_level_feature": "w_recent",
+    "per_block_threshold_source": "seed-2 training-heldout calibration at target coverage 0.25",
+    "eligible_block_rule": "select exactly the three blocks with lowest validation mean forced-skip risk",
+    "risk_definition": "max micro-action KL within block plus 0.25 times any top-1 flip",
+    "noneligible_blocks": "always execute Full; they are never skipped",
+    "eligible_blocks": "each token is decided dynamically from the frozen native w_recent bound",
+    "new_trainable_parameters": false,
+    "gate_factor_used_for_skip": false,
+    "max_simultaneous_block_actions": 3
+  },
+  "why_three_blocks": "On the test-independent seed-1 development screen, the three lowest-heldout-risk blocks contributed 1.033 block-equivalents/token, matching the previously accepted approximately 1.0 target without another continuous-threshold adjustment.",
+  "screen_rule": {
+    "samples_per_official_task": 64,
+    "continue_if_delta_vs_full_pp_at_least": -0.30,
+    "continue_if_block_equivalents_per_token_between": [0.65, 1.15],
+    "single_candidate": true
+  },
+  "formal_rule": {
+    "run_once": true,
+    "quality_delta_vs_seed2_full_rsm_pp_at_least": -0.30,
+    "positive_block_reduction_required": true,
+    "runtime_only_after_pass": true,
+    "no_further_policy_attempt": true
+  },
+  "training_changed": false,
+  "new_training_data": false,
+  "seed2_formal_reskip_seen_at_freeze": false
+}

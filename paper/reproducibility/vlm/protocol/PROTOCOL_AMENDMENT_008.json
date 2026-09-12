@@ -1,0 +1,76 @@
+{
+  "amendment": 8,
+  "status": "frozen after the matched entropy-regularized InternVL lr=1e-3 pair and before any lr=5e-4 training or no-entropy benchmark result",
+  "date": "2026-09-01",
+  "purpose": "Test one bounded intermediate adaptation strength after lr=2e-4 showed under-specialization and lr=1e-3 caused an absolute quality overshoot on InternVL3.5-2B.",
+  "evidence_before_freeze": {
+    "frozen_base_macro": 67.577939162911,
+    "lr2e4_full_attnres_macro": 67.60907290734112,
+    "lr2e4_rsm_macro": 67.43353100847646,
+    "lr1e3_full_attnres_macro": 66.79594841411974,
+    "lr1e3_rsm_macro": 67.28361667458861,
+    "lr1e3_rsm_minus_full_pp": 0.48766826046887,
+    "lr1e3_rsm_minus_base_pp": -0.29432248832239,
+    "interpretation": "The native residual-strength module rescues much of the high-LR degradation, but lr=1e-3 is too aggressive for InternVL. A single midpoint is justified by the observed bracket; an open-ended learning-rate sweep is not."
+  },
+  "matrix": [
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "learning_rate": 0.0005,
+      "gpu": 6
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "learning_rate": 0.0005,
+      "gpu": 6,
+      "schedule": "starts after the matched Full AttnRes cell exits"
+    }
+  ],
+  "fixed_recipe": {
+    "fresh_pretrained_base_per_run": true,
+    "steps": 5000,
+    "data_mix": "v3",
+    "max_sequence_length": 1536,
+    "warmup_steps": 100,
+    "full_path_teacher_kl_weight": 1.0,
+    "route_entropy_weight": 0.02,
+    "gamma_ramp_fraction": 0.3,
+    "gate_scale": 0.5,
+    "skip_branch_during_training": false,
+    "skip_labels": false,
+    "compute_target": false,
+    "second_stage_training": false,
+    "warm_start": false
+  },
+  "evaluation": {
+    "tasks": [
+      "AI2D",
+      "MMBench",
+      "MMMU",
+      "MMStar",
+      "OCRBench",
+      "RealWorldQA"
+    ],
+    "metric": "unweighted six-task macro average",
+    "report_both_cells": true
+  },
+  "continuation_gate": {
+    "replicate_seeds_1_and_2_if": [
+      "RSM exceeds the matched lr=5e-4 Full AttnRes control by at least 0.15 percentage points",
+      "RSM exceeds Frozen Base",
+      "RSM exceeds the original lr=2e-4 Full AttnRes result"
+    ],
+    "failure_policy": "Stop InternVL recipe refinement and report model-dependent generalization; do not add another learning-rate point."
+  },
+  "material_passport": {
+    "model": "/data/Minko/models/InternVL3_5-2B-HF",
+    "training_data": "/data/Minko/datasets, v3 stream",
+    "evaluation_data": "local lmms-eval caches for the six formal VLM tasks",
+    "hardware": "node42 GPU 6 for training; GPUs 2-3 after matched evaluations for scoring",
+    "software": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code"
+  }
+}

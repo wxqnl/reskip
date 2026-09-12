@@ -1,0 +1,229 @@
+{
+  "updated_at": "2026-09-06T03:32:18+08:00",
+  "policies": [
+    {
+      "label": "2b_base",
+      "role": "primary",
+      "suites": [
+        {
+          "suite": "libero_spatial",
+          "episodes": 500,
+          "success_rate": 0.934,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/formal_fullpath_50x10_seed7/2b_base/suite_results.tsv"
+        },
+        {
+          "suite": "libero_object",
+          "episodes": 500,
+          "success_rate": 0.966,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_base/libero_object/result.json"
+        },
+        {
+          "suite": "libero_goal",
+          "episodes": 500,
+          "success_rate": 0.934,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_base/libero_goal/result.json"
+        },
+        {
+          "suite": "libero_10",
+          "episodes": 500,
+          "success_rate": 0.67,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_base/libero_10/result.json"
+        }
+      ],
+      "status": "complete",
+      "macro_success_rate": 0.876
+    },
+    {
+      "label": "2b_attnres",
+      "role": "primary",
+      "suites": [
+        {
+          "suite": "libero_spatial",
+          "episodes": 500,
+          "success_rate": 0.948,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/formal_fullpath_50x10_seed7/2b_attnres/suite_results.tsv"
+        },
+        {
+          "suite": "libero_object",
+          "episodes": 500,
+          "success_rate": 0.978,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_attnres/libero_object/result.json"
+        },
+        {
+          "suite": "libero_goal",
+          "episodes": 500,
+          "success_rate": 0.908,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_attnres/libero_goal/result.json"
+        },
+        {
+          "suite": "libero_10",
+          "episodes": 500,
+          "success_rate": 0.688,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_attnres/libero_10/result.json"
+        }
+      ],
+      "status": "complete",
+      "macro_success_rate": 0.8805000000000001
+    },
+    {
+      "label": "2b_rsm_v2",
+      "role": "primary",
+      "suites": [
+        {
+          "suite": "libero_spatial",
+          "episodes": 500,
+          "success_rate": 0.964,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/formal_fullpath_50x10_seed7/2b_rsm_v2/suite_results.tsv"
+        },
+        {
+          "suite": "libero_object",
+          "episodes": 500,
+          "success_rate": 0.98,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_rsm_v2/libero_object/result.json"
+        },
+        {
+          "suite": "libero_goal",
+          "episodes": 500,
+          "success_rate": 0.938,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_rsm_v2/libero_goal/result.json"
+        },
+        {
+          "suite": "libero_10",
+          "episodes": 500,
+          "success_rate": 0.56,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_rsm_v2/libero_10/result.json"
+        }
+      ],
+      "status": "complete",
+      "macro_success_rate": 0.8604999999999999
+    },
+    {
+      "label": "4b_base",
+      "role": "primary",
+      "suites": [
+        {
+          "suite": "libero_spatial",
+          "episodes": 500,
+          "success_rate": 0.954,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/formal_fullpath_50x10_seed7/4b_base/suite_results.tsv"
+        },
+        {
+          "suite": "libero_object",
+          "episodes": 500,
+          "success_rate": 0.978,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_base/libero_object/result.json"
+        },
+        {
+          "suite": "libero_goal",
+          "episodes": 500,
+          "success_rate": 0.98,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_base/libero_goal/result.json"
+        },
+        {
+          "suite": "libero_10",
+          "episodes": 500,
+          "success_rate": 0.658,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_base/libero_10/result.json"
+        }
+      ],
+      "status": "complete",
+      "macro_success_rate": 0.8925
+    },
+    {
+      "label": "4b_attnres",
+      "role": "primary",
+      "suites": [
+        {
+          "suite": "libero_spatial",
+          "episodes": 500,
+          "success_rate": 0.952,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/formal_fullpath_50x10_seed7/4b_attnres/suite_results.tsv"
+        },
+        {
+          "suite": "libero_object",
+          "episodes": 500,
+          "success_rate": 0.95,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_attnres/libero_object/result.json"
+        },
+        {
+          "suite": "libero_goal",
+          "episodes": 500,
+          "success_rate": 0.956,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_attnres/libero_goal/result.json"
+        },
+        {
+          "suite": "libero_10",
+          "episodes": 500,
+          "success_rate": 0.584,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_attnres/libero_10/result.json"
+        }
+      ],
+      "status": "complete",
+      "macro_success_rate": 0.8604999999999999
+    },
+    {
+      "label": "4b_rsm_v2",
+      "role": "primary",
+      "suites": [
+        {
+          "suite": "libero_spatial",
+          "episodes": 500,
+          "success_rate": 0.972,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/formal_fullpath_50x10_seed7/4b_rsm_v2/suite_results.tsv"
+        },
+        {
+          "suite": "libero_object",
+          "episodes": 500,
+          "success_rate": 0.994,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_rsm_v2/libero_object/result.json"
+        },
+        {
+          "suite": "libero_goal",
+          "episodes": 500,
+          "success_rate": 0.928,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_rsm_v2/libero_goal/result.json"
+        },
+        {
+          "suite": "libero_10",
+          "episodes": 500,
+          "success_rate": 0.712,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/4b_rsm_v2/libero_10/result.json"
+        }
+      ],
+      "status": "complete",
+      "macro_success_rate": 0.9015
+    },
+    {
+      "label": "2b_pathc_rsm_aux",
+      "role": "auxiliary",
+      "suites": [
+        {
+          "suite": "libero_spatial",
+          "episodes": 500,
+          "success_rate": 0.95,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/formal_fullpath_50x10_seed7/2b_pathc_rsm_aux/suite_results.tsv"
+        },
+        {
+          "suite": "libero_object",
+          "episodes": 500,
+          "success_rate": 1.0,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_pathc_rsm_aux/libero_object/result.json"
+        },
+        {
+          "suite": "libero_goal",
+          "episodes": 500,
+          "success_rate": 0.954,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_pathc_rsm_aux/libero_goal/result.json"
+        },
+        {
+          "suite": "libero_10",
+          "episodes": 500,
+          "success_rate": 0.742,
+          "source": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/2b_pathc_rsm_aux/libero_10/result.json"
+        }
+      ],
+      "status": "complete",
+      "macro_success_rate": 0.9115
+    }
+  ]
+}

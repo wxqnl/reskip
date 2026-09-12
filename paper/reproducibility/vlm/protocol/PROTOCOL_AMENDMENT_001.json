@@ -1,0 +1,28 @@
+{
+  "amendment_id": "PROTOCOL_AMENDMENT_001",
+  "time": "2026-08-31 before any formal quality evaluation",
+  "scope": [
+    "smolvlm2_2p2b_rsm_seed0",
+    "internvl3p5_2b_rsm_seed0"
+  ],
+  "change": {
+    "learning_rate": {
+      "from": 0.001,
+      "to": 0.0002
+    },
+    "steps": {
+      "from": 3000,
+      "to": 5000
+    }
+  },
+  "reason": "An audit performed while the first training matrix was still in its early steps found the archived, pre-existing cross-decoder transfer protocol. Both SmolVLM2 and InternVL3.5 used 0.0002 and 5000 steps as their established stable comparison recipe, whereas 0.001 and 3000 steps are the Qwen3-VL recipe. The amendment prevents optimizer mismatch from being confounded with method generalization.",
+  "selection_independence": {
+    "formal_rsm_evaluation_seen": false,
+    "benchmark_score_seen": false,
+    "chosen_from_prior_non_rsm_protocol": true
+  },
+  "handling_of_started_runs": "The two direct Qwen-recipe transfer processes are stopped before completion and retained under archive/aborted_direct_qwen_recipe. They are not formal results. All Qwen runs are unchanged.",
+  "method_change": false,
+  "data_change": false,
+  "quality_gate_change": false
+}

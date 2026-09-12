@@ -1,0 +1,17 @@
+{
+  "amendment": 14,
+  "date": "2026-09-01",
+  "title": "Pre-runtime harmonization of the Qwen3-VL-2B accepted anchor",
+  "status": "frozen_before_any_new_sensitivity_runtime_result",
+  "trigger": "The preserved 2B accepted fixed-64 artifact uses 12 MMStar requests, whereas the pre-registered sensitivity runner and the preserved 4B anchor use 12 requests per task over all six official tasks.",
+  "change": {
+    "new_policy_or_coverage": false,
+    "quality_rerun": false,
+    "policy_change": false,
+    "added_runtime_cell": "Qwen3-VL-2B target coverage 0.45, using the already frozen accepted policy",
+    "runtime_protocol": "AI2D, MMBench, MMMU, MMStar, OCRBench, RealWorldQA; 12 requests per task; fixed 64 generated tokens; repeat 3; paired end-to-end ratios; 10000 bootstrap resamples"
+  },
+  "reason": "All three 2B runtime-sensitivity points must share the same task mixture and sample count. The original MMStar-only result remains preserved as the main-paper historical artifact but is not placed on the six-task sensitivity curve.",
+  "selection_rule": "The accepted 2B operating point and all quality results remain unchanged regardless of this harmonized runtime measurement.",
+  "post_result_rule": "Do not substitute the historical MMStar-only number into the six-task sensitivity curve and do not add any further coverage level after observing runtime."
+}

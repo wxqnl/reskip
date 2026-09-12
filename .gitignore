@@ -6,21 +6,24 @@ __pycache__/
 venv/
 *.egg
 
-# Outputs (large checkpoints, generated plots)
+# Outputs and model state
 outputs/
 *.pt
 *.pth
+*.safetensors
+*.so
+checkpoints/
 
 # LaTeX build artifacts
-paper/*.aux
-paper/*.bbl
-paper/*.blg
-paper/*.log
-paper/*.out
-paper/*.synctex.gz
-paper/*.fls
-paper/*.fdb_latexmk
-paper/missfont.log
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+missfont.log
 
 # IDE
 .vscode/
@@ -36,6 +39,7 @@ Thumbs.db
 
 # Build / packaging artifacts
 build/
+dist/
 
 # Training logs and checkpoints (too large for git)
 logs/
@@ -46,8 +50,9 @@ starVLA/results/
 starVLA/playground/Datasets/
 starVLA/playground/Pretrained_models/
 rechange/outputs/
+experiments/rsm/**/logs/
+experiments/rsm/**/pids/
 
 # Local tool config
 .claude/
 .codex
-

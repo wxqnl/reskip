@@ -1,0 +1,456 @@
+{
+  "status": "complete",
+  "started_at": "2026-09-04T14:25:49+08:00",
+  "allowed_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "supervisor_pid": 748731,
+  "jobs": [
+    {
+      "label": "2b_base",
+      "suite": "libero_object",
+      "status": "complete",
+      "gpu": 0,
+      "port": 5900,
+      "pid": 764899,
+      "started_at": "2026-09-04T14:25:49+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_base",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_base_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_object",
+        "0",
+        "5900"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_base__libero_object.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T18:19:26+08:00"
+    },
+    {
+      "label": "2b_attnres",
+      "suite": "libero_object",
+      "status": "complete",
+      "gpu": 1,
+      "port": 5901,
+      "pid": 765777,
+      "started_at": "2026-09-04T14:25:49+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_attnres",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_attnres_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_object",
+        "1",
+        "5901"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_attnres__libero_object.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T18:06:05+08:00"
+    },
+    {
+      "label": "2b_rsm_v2",
+      "suite": "libero_object",
+      "status": "complete",
+      "gpu": 2,
+      "port": 5902,
+      "pid": 765788,
+      "started_at": "2026-09-04T14:25:49+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_rsm_v2",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train/2b_rsm_v2_identity_transfer_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_object",
+        "2",
+        "5902"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_rsm_v2__libero_object.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T18:09:20+08:00"
+    },
+    {
+      "label": "4b_rsm_v2",
+      "suite": "libero_object",
+      "status": "complete",
+      "gpu": 3,
+      "port": 5903,
+      "pid": 766879,
+      "started_at": "2026-09-04T14:25:49+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_rsm_v2",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train/4b_rsm_v2_identity_transfer_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_object",
+        "3",
+        "5903"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_rsm_v2__libero_object.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T18:03:10+08:00"
+    },
+    {
+      "label": "4b_base",
+      "suite": "libero_object",
+      "status": "complete",
+      "gpu": 3,
+      "port": 5903,
+      "pid": 3849487,
+      "started_at": "2026-09-04T18:03:10+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_base",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/4b_base_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_object",
+        "3",
+        "5903"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_base__libero_object.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T22:02:47+08:00"
+    },
+    {
+      "label": "4b_attnres",
+      "suite": "libero_object",
+      "status": "complete",
+      "gpu": 1,
+      "port": 5901,
+      "pid": 2216635,
+      "started_at": "2026-09-04T18:06:05+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_attnres",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/4b_attnres_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_object",
+        "1",
+        "5901"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_attnres__libero_object.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T22:11:37+08:00"
+    },
+    {
+      "label": "2b_base",
+      "suite": "libero_goal",
+      "status": "complete",
+      "gpu": 2,
+      "port": 5902,
+      "pid": 851338,
+      "started_at": "2026-09-04T18:09:20+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_base",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_base_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_goal",
+        "2",
+        "5902"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_base__libero_goal.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T22:52:25+08:00"
+    },
+    {
+      "label": "2b_attnres",
+      "suite": "libero_goal",
+      "status": "complete",
+      "gpu": 0,
+      "port": 5900,
+      "pid": 1277656,
+      "started_at": "2026-09-04T18:19:26+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_attnres",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_attnres_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_goal",
+        "0",
+        "5900"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_attnres__libero_goal.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-04T23:28:32+08:00"
+    },
+    {
+      "label": "2b_rsm_v2",
+      "suite": "libero_goal",
+      "status": "complete",
+      "gpu": 3,
+      "port": 5903,
+      "pid": 976064,
+      "started_at": "2026-09-04T22:02:47+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_rsm_v2",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train/2b_rsm_v2_identity_transfer_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_goal",
+        "3",
+        "5903"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_rsm_v2__libero_goal.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T02:50:57+08:00"
+    },
+    {
+      "label": "4b_base",
+      "suite": "libero_goal",
+      "status": "complete",
+      "gpu": 1,
+      "port": 5901,
+      "pid": 493501,
+      "started_at": "2026-09-04T22:11:38+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_base",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/4b_base_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_goal",
+        "1",
+        "5901"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_base__libero_goal.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T02:39:16+08:00"
+    },
+    {
+      "label": "4b_attnres",
+      "suite": "libero_goal",
+      "status": "complete",
+      "gpu": 2,
+      "port": 5902,
+      "pid": 3600282,
+      "started_at": "2026-09-04T22:52:25+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_attnres",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/4b_attnres_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_goal",
+        "2",
+        "5902"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_attnres__libero_goal.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T03:48:05+08:00"
+    },
+    {
+      "label": "4b_rsm_v2",
+      "suite": "libero_goal",
+      "status": "complete",
+      "gpu": 0,
+      "port": 5900,
+      "pid": 2851558,
+      "started_at": "2026-09-04T23:28:32+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_rsm_v2",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train/4b_rsm_v2_identity_transfer_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_goal",
+        "0",
+        "5900"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_rsm_v2__libero_goal.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T04:12:31+08:00"
+    },
+    {
+      "label": "2b_base",
+      "suite": "libero_10",
+      "status": "complete",
+      "gpu": 1,
+      "port": 5901,
+      "pid": 1553248,
+      "started_at": "2026-09-05T02:39:16+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_base",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_base_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_10",
+        "1",
+        "5901"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_base__libero_10.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T11:31:33+08:00"
+    },
+    {
+      "label": "2b_attnres",
+      "suite": "libero_10",
+      "status": "complete",
+      "gpu": 3,
+      "port": 5903,
+      "pid": 3768324,
+      "started_at": "2026-09-05T02:50:57+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_attnres",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_attnres_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_10",
+        "3",
+        "5903"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_attnres__libero_10.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T11:57:39+08:00"
+    },
+    {
+      "label": "2b_rsm_v2",
+      "suite": "libero_10",
+      "status": "complete",
+      "gpu": 2,
+      "port": 5902,
+      "pid": 2021237,
+      "started_at": "2026-09-05T03:48:05+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_rsm_v2",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train/2b_rsm_v2_identity_transfer_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_10",
+        "2",
+        "5902"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_rsm_v2__libero_10.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T14:27:38+08:00"
+    },
+    {
+      "label": "4b_base",
+      "suite": "libero_10",
+      "status": "complete",
+      "gpu": 0,
+      "port": 5900,
+      "pid": 3706039,
+      "started_at": "2026-09-05T04:12:31+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_base",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/4b_base_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_10",
+        "0",
+        "5900"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_base__libero_10.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T14:26:08+08:00"
+    },
+    {
+      "label": "4b_attnres",
+      "suite": "libero_10",
+      "status": "complete",
+      "gpu": 1,
+      "port": 5901,
+      "pid": 2378731,
+      "started_at": "2026-09-05T11:31:33+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_attnres",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/4b_attnres_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_10",
+        "1",
+        "5901"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_attnres__libero_10.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T22:30:58+08:00"
+    },
+    {
+      "label": "4b_rsm_v2",
+      "suite": "libero_10",
+      "status": "complete",
+      "gpu": 3,
+      "port": 5903,
+      "pid": 1677749,
+      "started_at": "2026-09-05T11:57:39+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "4b_rsm_v2",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train/4b_rsm_v2_identity_transfer_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_10",
+        "3",
+        "5903"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/4b_rsm_v2__libero_10.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T21:55:16+08:00"
+    },
+    {
+      "label": "2b_pathc_rsm_aux",
+      "suite": "libero_object",
+      "status": "complete",
+      "gpu": 0,
+      "port": 5900,
+      "pid": 1299160,
+      "started_at": "2026-09-05T14:26:08+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_pathc_rsm_aux",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_pathc_rsm_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_object",
+        "0",
+        "5900"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_pathc_rsm_aux__libero_object.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T18:46:27+08:00"
+    },
+    {
+      "label": "2b_pathc_rsm_aux",
+      "suite": "libero_goal",
+      "status": "complete",
+      "gpu": 2,
+      "port": 5902,
+      "pid": 2597122,
+      "started_at": "2026-09-05T14:27:39+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_pathc_rsm_aux",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_pathc_rsm_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_goal",
+        "2",
+        "5902"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_pathc_rsm_aux__libero_goal.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-05T19:20:28+08:00"
+    },
+    {
+      "label": "2b_pathc_rsm_aux",
+      "suite": "libero_10",
+      "status": "complete",
+      "gpu": 0,
+      "port": 5900,
+      "pid": 3306627,
+      "started_at": "2026-09-05T18:46:27+08:00",
+      "command": [
+        "bash",
+        "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/protocol/run_resumed_fullpath_suite.sh",
+        "2b_pathc_rsm_aux",
+        "/data/Minko/experiments/attnres_rsm_vla_paper_refresh_20260902/train/2b_pathc_rsm_seed42_30000steps/final_model/pytorch_model.pt",
+        "libero_10",
+        "0",
+        "5900"
+      ],
+      "log": "/data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/eval/resume_fullpath_gpu0_3_20260904/logs/2b_pathc_rsm_aux__libero_10.log",
+      "exit_code": 0,
+      "ended_at": "2026-09-06T03:32:13+08:00"
+    }
+  ],
+  "updated_at": "2026-09-06T03:32:18+08:00",
+  "ended_at": "2026-09-06T03:32:18+08:00"
+}

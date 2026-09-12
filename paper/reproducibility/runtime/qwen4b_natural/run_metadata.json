@@ -1,0 +1,126 @@
+{
+  "bootstrap": 10000,
+  "excluded": [
+    "dataset access",
+    "image/processor preprocessing",
+    "model loading",
+    "device graph construction",
+    "cache reset"
+  ],
+  "fixed_new_tokens": null,
+  "max_cache_len": 8192,
+  "population_requests": {
+    "ai2d": 3088,
+    "mmbench_en_dev_static": 4329,
+    "mmmu_val": 900,
+    "mmstar": 1500,
+    "ocrbench": 1000,
+    "realworldqa": 765
+  },
+  "repeat": 3,
+  "samples_per_task": 12,
+  "seed": 20260824,
+  "selected_doc_ids": {
+    "ai2d": [
+      128,
+      386,
+      643,
+      900,
+      1158,
+      1415,
+      1672,
+      1930,
+      2187,
+      2444,
+      2702,
+      2959
+    ],
+    "mmbench_en_dev_static": [
+      180,
+      541,
+      901,
+      1262,
+      1623,
+      1984,
+      2344,
+      2705,
+      3066,
+      3427,
+      3787,
+      4148
+    ],
+    "mmmu_val": [
+      37,
+      112,
+      187,
+      262,
+      337,
+      412,
+      487,
+      562,
+      637,
+      712,
+      787,
+      862
+    ],
+    "mmstar": [
+      62,
+      187,
+      312,
+      437,
+      562,
+      687,
+      812,
+      937,
+      1062,
+      1187,
+      1312,
+      1437
+    ],
+    "ocrbench": [
+      41,
+      125,
+      208,
+      291,
+      375,
+      458,
+      541,
+      625,
+      708,
+      791,
+      875,
+      958
+    ],
+    "realworldqa": [
+      31,
+      95,
+      159,
+      223,
+      286,
+      350,
+      414,
+      478,
+      541,
+      605,
+      669,
+      733
+    ]
+  },
+  "selection": "deterministic quantile-spaced positions over official lmms-eval requests",
+  "status": "completed",
+  "tasks": [
+    "ai2d",
+    "mmbench_en_dev_static",
+    "mmmu_val",
+    "mmstar",
+    "ocrbench",
+    "realworldqa"
+  ],
+  "timed_region": "vision encoding + language prefill + task-native natural decode",
+  "variants": [
+    "base",
+    "full_rsm",
+    "device_graph_full",
+    "rsm_reskip"
+  ]
+}

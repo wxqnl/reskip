@@ -1,0 +1,78 @@
+{
+  "experiment_id": "attnres_rsm_vla_paper_refresh_20260902",
+  "status": "frozen_before_formal_training",
+  "paper_scope": "Replace the original Qwen3-VL LIBERO VLA table with matched Base, original AttnRes, Full RSM-AttnRes, and inference-only native token-level ReSkip results.",
+  "hard_constraints": {
+    "reskip_granularity": "token-level",
+    "reskip_signal": "AttnRes-native routing and RSM consistency only",
+    "skip_specific_trainable_parameters": 0,
+    "skip_specific_training_stage": false,
+    "skip_supervision": false,
+    "extra_skip_data": false,
+    "rsm_positioning": "RSM is trained as part of Full AttnRes adaptation; ReSkip is an inference-only by-product of the same checkpoint."
+  },
+  "models": {
+    "2B": {
+      "base_model": "/data/Minko/models/Qwen3-VL-2B-Instruct",
+      "num_transformer_layers": 28,
+      "attnres_blocks": 7,
+      "original_attnres_init": "/data/Minko/experiments/attnres_functional_identity_2b_20260831/F0_attnres_h1/retrofit_attnres_state.pt",
+      "rsm_init": "/data/Minko/experiments/attnres_residual_strength_gate_2b_20260831/S1_rsg_h1/retrofit_attnres_state.pt"
+    },
+    "4B": {
+      "base_model": "/data/Minko/models/Qwen3-VL-4B-Instruct",
+      "num_transformer_layers": 36,
+      "attnres_blocks": 9,
+      "original_attnres_init": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/train/controls/qwen3vl_4b_full_attnres_seed2/retrofit_attnres_state.pt",
+      "rsm_init": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/train/qwen3vl_4b_rsm_seed2/retrofit_attnres_state.pt"
+    }
+  },
+  "training": {
+    "data": "IPEC-COMMUNITY LIBERO spatial/object/goal/10 no-noops LeRobot mixture",
+    "data_root": "/data/Minko/datasets/starvla_libero_lerobot_20260902",
+    "mixture": "libero_all with equal suite weights",
+    "seed": 42,
+    "steps": 30000,
+    "global_batch_size": 32,
+    "frozen_modules": [
+      "qwen_vl_interface.model.model.visual"
+    ],
+    "optimizer_and_lr": "unchanged StarVLA QwenOFT LIBERO recipe",
+    "action_head": "matched L1Regression head with eight-action horizon from the released StarVLA harness",
+    "skip_enabled_during_training": false,
+    "formal_arms_per_scale": [
+      "Base-OFT",
+      "Full-AttnRes-OFT",
+      "Full-RSM-AttnRes-OFT"
+    ],
+    "additional_2B_transfer_ablation": "Path-C-RSM: the same RSM-AttnRes architecture is randomly initialized and gamma is ramped from zero to one during VLA-only adaptation; it receives no VLM retrofit warm-start and no skip training."
+  },
+  "evaluation": {
+    "benchmark": "LIBERO",
+    "suites": [
+      "libero_spatial",
+      "libero_object",
+      "libero_goal",
+      "libero_10"
+    ],
+    "tasks_per_suite": 10,
+    "trials_per_task": 50,
+    "rollouts_per_suite": 500,
+    "rollouts_per_policy": 2000,
+    "primary_metric": "suite and four-suite mean success rate",
+    "compute_metrics": [
+      "block-equivalents removed per policy forward",
+      "policy-server latency",
+      "closed-loop wall-clock throughput"
+    ],
+    "quality_gate": "Choose the ReSkip operating point using a disjoint calibration rollout split, then evaluate once on the frozen formal seeds. No threshold selection on formal success results.",
+    "accuracy_tolerance": "Report the complete Pareto; designate a conservative operating point only if the four-suite loss versus Full RSM is no worse than 0.5 percentage points."
+  },
+  "resource_policy": {
+    "server": "New-H100-2 / node42",
+    "allowed_gpus": [0, 1, 2, 3, 4, 5, 6],
+    "forbidden_gpus": [7],
+    "allocation": "Use all currently free allowed GPUs. Never preempt unrelated jobs; enqueue remaining cells as cards are released."
+  },
+  "deviation_policy": "Any change after formal training begins must be recorded as a deviation and cannot silently replace a failed or unfavorable cell."
+}

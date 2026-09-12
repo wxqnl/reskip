@@ -1,0 +1,25 @@
+{
+  "amendment_id": "PROTOCOL_AMENDMENT_002",
+  "time": "2026-08-31 after RSM multi-seed evaluation began and before any new control result",
+  "scope": "Qwen3-VL matched Full AttnRes controls",
+  "change": "Add fresh-base Full AttnRes seed-1 and seed-2 controls for both Qwen3-VL-2B and Qwen3-VL-4B, using the exact model-size-matched RSM data trajectory and adaptation recipe with only the residual-strength component absent.",
+  "reason": "RSM was evaluated with three training seeds. A three-seed candidate mean must not be compared only with a single preserved control seed when making the paper claim that RSM improves Full AttnRes.",
+  "selection_independence": {
+    "candidate_hyperparameters_changed": false,
+    "candidate_checkpoint_selection_changed": false,
+    "control_recipe_fixed_from_preserved_seed0_run": true,
+    "control_results_seen_at_amendment_time": false
+  },
+  "control_constraints": {
+    "fresh_pretrained_base": true,
+    "steps": 3000,
+    "data_mix": "v3",
+    "learning_rate": 0.001,
+    "full_teacher_kl_weight": 1.0,
+    "route_entropy_weight": 0.02,
+    "gamma_ramp_fraction": 0.3,
+    "functional_identity_weight": 0.0,
+    "skip_training_forwards": 0,
+    "additional_residual_strength_parameters": 0
+  }
+}

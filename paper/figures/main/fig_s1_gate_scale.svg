@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<title id="title">RSM gate-scale sensitivity</title>
+<desc id="desc">Six-task macro score and residual-strength dispersion across the frozen gate-scale sweep.</desc>
+<style>
+text{font-family:Inter,Arial,sans-serif} .datum{transition:opacity .18s,transform .18s;transform-box:fill-box;transform-origin:center}.datum:hover{opacity:.72;transform:scale(1.035)}.hair{vector-effect:non-scaling-stroke}.label{paint-order:stroke;stroke:#F7F2EB;stroke-width:5px;stroke-linejoin:round}
+</style>
+<rect width="1200" height="760" rx="28" fill="#F7F2EB"/>
+<rect x="48.00" y="38.00" width="174.00" height="30.00" rx="15" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ></rect>
+<text x="135.00" y="59.00" font-size="12" font-weight="800" fill="#334EAC" text-anchor="middle" letter-spacing="1.6">FULL-PATH SENSITIVITY</text>
+<text x="1152.00" y="58.00" font-size="12" font-weight="800" fill="#526187" text-anchor="end" letter-spacing="1.4">FIG. S1</text>
+<text x="48.00" y="112.00" font-size="31" font-weight="800" fill="#081F5C" text-anchor="start" >Full-path quality under residual-strength scale</text>
+<text x="48.00" y="145.00" font-size="15" font-weight="500" fill="#526187" text-anchor="start" >Fresh 3k-step cells at 0.25 and 0.75; 0.0 and 0.5 are protocol-matched reused controls.</text>
+<line x1="90.00" y1="595.00" x2="90.00" y2="603.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="90.00" y="626.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.00</text>
+<line x1="323.33" y1="595.00" x2="323.33" y2="603.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="323.33" y="626.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.25</text>
+<line x1="556.67" y1="595.00" x2="556.67" y2="603.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="556.67" y="626.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.50</text>
+<line x1="790.00" y1="595.00" x2="790.00" y2="603.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="790.00" y="626.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.75</text>
+<line x1="90.00" y1="595.00" x2="790.00" y2="595.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="76.00" y="599.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >67.0</text>
+<line x1="90.00" y1="465.00" x2="790.00" y2="465.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="76.00" y="469.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >67.5</text>
+<line x1="90.00" y1="335.00" x2="790.00" y2="335.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="76.00" y="339.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >68.0</text>
+<line x1="90.00" y1="205.00" x2="790.00" y2="205.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="76.00" y="209.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >68.5</text>
+<line x1="90.00" y1="595.00" x2="790.00" y2="595.00" stroke="#9AA6C1" stroke-width="1.2" class="hair" />
+<text x="440.00" y="660.00" font-size="13" font-weight="700" fill="#526187" text-anchor="middle" >RSM residual-strength scale</text>
+<text x="30.00" y="400.00" font-size="12" font-weight="800" fill="#526187" text-anchor="middle" transform="rotate(-90 30 400.0)" letter-spacing="1.2">SIX-TASK MACRO ↑</text>
+<path d="M 90.00 502.05 L 323.33 435.08 L 556.67 342.74 L 790.00 362.99" fill="none" stroke="#334EAC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="hair" />
+<circle cx="90.00" cy="502.05" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>scale=0.00; macro=67.357</title></circle>
+<text x="90.00" y="485.05" font-size="14" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">67.357</text>
+<circle cx="323.33" cy="435.08" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>scale=0.25; macro=67.615</title></circle>
+<text x="323.33" y="418.08" font-size="14" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">67.615</text>
+<circle cx="556.67" cy="342.74" r="13.00" fill="none" stroke="#7096D1" stroke-width="3" class="datum" ></circle>
+<circle cx="556.67" cy="342.74" r="7.00" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>scale=0.50; macro=67.970</title></circle>
+<text x="556.67" y="325.74" font-size="14" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">67.970</text>
+<circle cx="790.00" cy="362.99" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>scale=0.75; macro=67.892</title></circle>
+<text x="790.00" y="345.99" font-size="14" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">67.892</text>
+<text x="820.00" y="218.00" font-size="12" font-weight="800" fill="#526187" text-anchor="start" letter-spacing="1.2">WHAT CHANGES INSIDE</text>
+<text x="820.00" y="251.00" font-size="13" font-weight="600" fill="#526187" text-anchor="start" >factor range</text>
+<text x="800.00" y="304.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="end" >s=0.00</text>
+<line x1="820.00" y1="300.00" x2="1120.00" y2="300.00" stroke="#E5EBF4" stroke-width="5" class="hair" />
+<line x1="976.52" y1="300.00" x2="976.52" y2="300.00" stroke="#7096D1" stroke-width="5" class="hair" />
+<circle cx="976.52" cy="300.00" r="6.00" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>mean factor 1.000; mean block SD 0.000</title></circle>
+<text x="1120.00" y="287.00" font-size="11" font-weight="700" fill="#526187" text-anchor="end" >SD 0.000</text>
+<text x="800.00" y="374.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="end" >s=0.25</text>
+<line x1="820.00" y1="370.00" x2="1120.00" y2="370.00" stroke="#E5EBF4" stroke-width="5" class="hair" />
+<line x1="924.35" y1="370.00" x2="1028.70" y2="370.00" stroke="#7096D1" stroke-width="5" class="hair" />
+<circle cx="944.41" cy="370.00" r="6.00" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>mean factor 0.846; mean block SD 0.115</title></circle>
+<text x="1120.00" y="357.00" font-size="11" font-weight="700" fill="#526187" text-anchor="end" >SD 0.115</text>
+<text x="800.00" y="444.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="end" >s=0.50</text>
+<line x1="820.00" y1="440.00" x2="1120.00" y2="440.00" stroke="#E5EBF4" stroke-width="5" class="hair" />
+<line x1="872.17" y1="440.00" x2="1080.87" y2="440.00" stroke="#7096D1" stroke-width="5" class="hair" />
+<circle cx="890.26" cy="440.00" r="6.00" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>mean factor 0.587; mean block SD 0.159</title></circle>
+<text x="1120.00" y="427.00" font-size="11" font-weight="700" fill="#526187" text-anchor="end" >SD 0.159</text>
+<text x="800.00" y="514.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="end" >s=0.75</text>
+<line x1="820.00" y1="510.00" x2="1120.00" y2="510.00" stroke="#E5EBF4" stroke-width="5" class="hair" />
+<line x1="820.00" y1="510.00" x2="1120.00" y2="510.00" stroke="#7096D1" stroke-width="5" class="hair" />
+<circle cx="829.64" cy="510.00" r="6.00" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>mean factor 0.296; mean block SD 0.105</title></circle>
+<text x="1120.00" y="497.00" font-size="11" font-weight="700" fill="#526187" text-anchor="end" >SD 0.105</text>
+<text x="820.00" y="601.00" font-size="12" font-weight="700" fill="#334EAC" text-anchor="start" >No skip branch · no skip labels · no compute target</text>
+<text x="820.00" y="628.00" font-size="12" font-weight="600" fill="#526187" text-anchor="start" >The registered operating point remains s = 0.50.</text>
+<text x="820.00" y="655.00" font-size="11" font-weight="600" fill="#9AA6C1" text-anchor="start" >At s = 0, the absent RSM factor is shown as identity g ≡ 1.</text>
+<text x="48.00" y="724.00" font-size="11" font-weight="700" fill="#9AA6C1" text-anchor="start" letter-spacing="1.25">HAIRLINE LINE · PORCELAIN · OFFICIAL SIX-TASK LMMS-EVAL</text>
+</svg>

@@ -1,0 +1,197 @@
+{
+  "protocol": "same-loaded-model host/device equivalence on six official benchmark requests with three repetitions",
+  "normalization": "Ignore device-only native_device_conditional_* diagnostics and trim trailing zeros from per-block vectors before exact comparison.",
+  "summary": {
+    "expected_pairs": 18,
+    "observed_pairs": 18,
+    "complete_pairs": 18,
+    "generated_token_ids_exact": 18,
+    "decoded_response_exact": 18,
+    "block_equivalents_exact": 18,
+    "skip_action_stats_exact": 18,
+    "passed": true
+  },
+  "comparisons": [
+    {
+      "task": "ai2d",
+      "doc_id": 1544,
+      "repetition": 0,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "ai2d",
+      "doc_id": 1544,
+      "repetition": 1,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "ai2d",
+      "doc_id": 1544,
+      "repetition": 2,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmbench_en_dev_static",
+      "doc_id": 2164,
+      "repetition": 0,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmbench_en_dev_static",
+      "doc_id": 2164,
+      "repetition": 1,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmbench_en_dev_static",
+      "doc_id": 2164,
+      "repetition": 2,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmmu_val",
+      "doc_id": 450,
+      "repetition": 0,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmmu_val",
+      "doc_id": 450,
+      "repetition": 1,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmmu_val",
+      "doc_id": 450,
+      "repetition": 2,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmstar",
+      "doc_id": 750,
+      "repetition": 0,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmstar",
+      "doc_id": 750,
+      "repetition": 1,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "mmstar",
+      "doc_id": 750,
+      "repetition": 2,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "ocrbench",
+      "doc_id": 500,
+      "repetition": 0,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "ocrbench",
+      "doc_id": 500,
+      "repetition": 1,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "ocrbench",
+      "doc_id": 500,
+      "repetition": 2,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "realworldqa",
+      "doc_id": 382,
+      "repetition": 0,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "realworldqa",
+      "doc_id": 382,
+      "repetition": 1,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    },
+    {
+      "task": "realworldqa",
+      "doc_id": 382,
+      "repetition": 2,
+      "pair_complete": true,
+      "generated_token_ids_exact": true,
+      "decoded_response_exact": true,
+      "block_equivalents_exact": true,
+      "skip_action_stats_exact": true
+    }
+  ],
+  "source": "experiments/attnres_rsm_vlm_scale_generalization_20260831/runtime/qwen3vl_4b_seed2_capped/host_device_equivalence_1_per_task_r3/raw_rows.jsonl"
+}

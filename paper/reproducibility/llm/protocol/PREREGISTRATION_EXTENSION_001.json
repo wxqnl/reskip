@@ -1,0 +1,42 @@
+{
+  "experiment": "reskip_llm_benchmark_20260911",
+  "extension": "001_internvl3p5_smolvlm2",
+  "frozen_before_launch": true,
+  "objective": "Extend the identical seven-task zero-shot text panel to the canonical InternVL3.5-2B and SmolVLM2-2.2B paper checkpoints.",
+  "protocol_inherited_from": "PREREGISTRATION.json",
+  "protocol": {
+    "tasks": [
+      "lambada_openai",
+      "hellaswag",
+      "piqa",
+      "arc_easy",
+      "arc_challenge",
+      "openbookqa",
+      "winogrande"
+    ],
+    "num_fewshot": 0,
+    "apply_chat_template": false,
+    "limit": null,
+    "dtype": "bfloat16",
+    "batch_size": 8,
+    "evaluation_seed": 1234,
+    "per_cell_hard_timeout_minutes": 30,
+    "automatic_retry": false
+  },
+  "rows": {
+    "InternVL3.5-2B": {
+      "Base": 1,
+      "Full AttnRes": [0],
+      "Full RSM-AttnRes": [0]
+    },
+    "SmolVLM2-2.2B": {
+      "Base": 1,
+      "Full AttnRes": [0, 1, 2],
+      "Full RSM-AttnRes": [0, 1, 2]
+    }
+  },
+  "aggregation": "Per-task arithmetic mean across matched training seeds; table Average is the unweighted seven-task macro mean, with sample SD across seed-level macro means when n=3.",
+  "exclusion": {
+    "ReSkip": "Generic hook implementations provide Full-path architecture-transfer evidence only and do not implement the Qwen device-side decode-only token skip runtime."
+  }
+}

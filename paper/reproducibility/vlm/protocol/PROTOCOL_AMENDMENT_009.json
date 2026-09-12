@@ -1,0 +1,91 @@
+{
+  "amendment": 9,
+  "status": "frozen after the SmolVLM2 seed-0 no-entropy result and before any seed-1/2 confirmation training",
+  "date": "2026-09-01",
+  "purpose": "Confirm that removing the uniform-routing reward yields a repeatable Full RSM-AttnRes improvement on SmolVLM2-2.2B rather than a favorable seed-0 fluctuation.",
+  "seed0_evidence_before_freeze": {
+    "frozen_base_macro": 55.558768328137226,
+    "entropy_regularized_rsm_macro": 55.57289535046149,
+    "no_entropy_full_attnres_macro": 55.50453187168566,
+    "no_entropy_rsm_macro": 55.819045189181175,
+    "no_entropy_rsm_minus_matched_full_pp": 0.3145133174955106,
+    "no_entropy_rsm_minus_base_pp": 0.2602768610439483,
+    "no_entropy_rsm_minus_entropy_regularized_rsm_pp": 0.2461498387196812,
+    "interpretation": "The seed-0 cell clears every frozen Amendment-007 continuation gate. The matched comparison isolates the interaction between native residual-strength modulation and unconstrained source specialization."
+  },
+  "confirmation_matrix": [
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "seed": 1,
+      "gpu": 0
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 1,
+      "gpu": 1
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "seed": 2,
+      "gpu": 4
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 2,
+      "gpu": 5
+    }
+  ],
+  "fixed_recipe": {
+    "fresh_pretrained_base_per_run": true,
+    "learning_rate": 0.001,
+    "steps": 5000,
+    "data_mix": "v3",
+    "max_sequence_length": 1536,
+    "warmup_steps": 100,
+    "full_path_teacher_kl_weight": 1.0,
+    "route_entropy_weight": 0.0,
+    "gamma_ramp_fraction": 0.3,
+    "gate_scale": 0.5,
+    "skip_branch_during_training": false,
+    "skip_labels": false,
+    "compute_target": false,
+    "second_stage_training": false,
+    "warm_start": false
+  },
+  "evaluation": {
+    "tasks": [
+      "AI2D",
+      "MMBench",
+      "MMMU",
+      "MMStar",
+      "OCRBench",
+      "RealWorldQA"
+    ],
+    "metric": "unweighted six-task macro average",
+    "paired_seeds": [
+      0,
+      1,
+      2
+    ],
+    "report_all_cells": true
+  },
+  "acceptance_gate": {
+    "requirements": [
+      "The three-seed mean RSM macro exceeds the three-seed mean matched Full AttnRes macro by at least 0.15 percentage points.",
+      "The three-seed mean RSM macro exceeds Frozen Base.",
+      "At least two of three paired seeds have positive RSM-minus-Full deltas."
+    ],
+    "failure_policy": "Retain seed-0 as exploratory evidence only; do not replace the paper result and do not tune another SmolVLM2 recipe."
+  },
+  "material_passport": {
+    "model": "/data/Minko/models/SmolVLM2-2.2B-Instruct",
+    "training_data": "/data/Minko/datasets, v3 stream",
+    "evaluation_data": "local lmms-eval caches for the six formal VLM tasks",
+    "hardware": "node42 GPUs 0, 1, 4, and 5; GPU 7 excluded",
+    "software": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code"
+  }
+}

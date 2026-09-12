@@ -1,0 +1,181 @@
+{
+  "experiment_id": "attnres_rsm_vlm_scale_generalization_20260831",
+  "status": "amended; see PROTOCOL_AMENDMENT_001.json and PROTOCOL_AMENDMENT_002.json",
+  "scope": "VLM scale and architecture generalization of Full-path RSM-AttnRes followed by token-level native ReSkip only after a quality gate",
+  "hard_constraints": {
+    "fresh_pretrained_base_per_run": true,
+    "warm_start_from_prior_experiment": false,
+    "skip_branch_during_training": false,
+    "skip_training_forwards": 0,
+    "skip_labels_or_counterfactual_layer_removal_targets": false,
+    "compute_or_coverage_target": false,
+    "second_stage_training": false,
+    "external_skip_controller": false,
+    "retrain_for_reskip": false
+  },
+  "method": {
+    "name": "Residual-Strength Modulated AttnRes (RSM-AttnRes)",
+    "equation": "g_b=1+0.5*tanh((v_b^T RMSNorm(u_b)+c_b)/sqrt(d)); x_b=h_b+g_b*u_b",
+    "new_component": "one zero-initialized scalar projection per target AttnRes block",
+    "primary_role": "token-conditioned calibration of the ordinary Full AttnRes residual correction",
+    "identity_at_initialization": true,
+    "training_objective": "assistant-token CE + 1.0 * Full-path teacher KL - 0.02 * native routing entropy"
+  },
+  "shared_training_recipe": {
+    "data_mix": "v3",
+    "data_root": "/data/Minko/datasets",
+    "steps_policy": "3000 for Qwen3-VL; 5000 for SmolVLM2 and InternVL3.5 to match the pre-existing cross-decoder adaptation protocol",
+    "max_sequence_length": 1536,
+    "max_image_pixels_for_qwen": 802816,
+    "learning_rate_policy": "0.001 for Qwen3-VL; 0.0002 for SmolVLM2 and InternVL3.5, fixed from archived pre-existing transfer evidence before observing RSM quality",
+    "warmup_steps": 100,
+    "optimizer": "AdamW(beta1=0.9,beta2=0.95,weight_decay=0)",
+    "gamma_schedule": "linear 0 to 1 over first 30% of steps, then fixed at 1; gamma excluded from optimizer",
+    "adapter_rank_policy": "hidden_size/8 rounded to the established model recipe",
+    "precision": "bfloat16",
+    "teacher": "fresh frozen copy of the same pretrained VLM"
+  },
+  "training_matrix": [
+    {
+      "id": "qwen3vl_4b_rsm_seed0",
+      "gpu": 0,
+      "model": "/data/Minko/models/Qwen3-VL-4B-Instruct",
+      "family": "Qwen3-VL",
+      "num_blocks": 9,
+      "layers_per_block": 4,
+      "adapter_rank": 256,
+      "seed": 0
+    },
+    {
+      "id": "qwen3vl_4b_rsm_seed1",
+      "gpu": 1,
+      "model": "/data/Minko/models/Qwen3-VL-4B-Instruct",
+      "family": "Qwen3-VL",
+      "num_blocks": 9,
+      "layers_per_block": 4,
+      "adapter_rank": 256,
+      "seed": 1
+    },
+    {
+      "id": "qwen3vl_4b_rsm_seed2",
+      "gpu": 2,
+      "model": "/data/Minko/models/Qwen3-VL-4B-Instruct",
+      "family": "Qwen3-VL",
+      "num_blocks": 9,
+      "layers_per_block": 4,
+      "adapter_rank": 256,
+      "seed": 2
+    },
+    {
+      "id": "smolvlm2_2p2b_rsm_seed0",
+      "gpu": 3,
+      "model": "/data/Minko/models/SmolVLM2-2.2B-Instruct",
+      "family": "SmolVLM2",
+      "num_blocks": 6,
+      "layers_per_block": 4,
+      "adapter_rank": 300,
+      "steps": 5000,
+      "learning_rate": 0.0002,
+      "seed": 0
+    },
+    {
+      "id": "internvl3p5_2b_rsm_seed0",
+      "gpu": 4,
+      "model": "/data/Minko/models/InternVL3_5-2B-HF",
+      "family": "InternVL3.5",
+      "num_blocks": 7,
+      "layers_per_block": 4,
+      "adapter_rank": 256,
+      "steps": 5000,
+      "learning_rate": 0.0002,
+      "seed": 0
+    },
+    {
+      "id": "qwen3vl_2b_rsm_seed1",
+      "gpu": 5,
+      "model": "/data/Minko/models/Qwen3-VL-2B-Instruct",
+      "family": "Qwen3-VL",
+      "num_blocks": 7,
+      "layers_per_block": 4,
+      "adapter_rank": 256,
+      "seed": 1
+    },
+    {
+      "id": "qwen3vl_2b_rsm_seed2",
+      "gpu": 6,
+      "model": "/data/Minko/models/Qwen3-VL-2B-Instruct",
+      "family": "Qwen3-VL",
+      "num_blocks": 7,
+      "layers_per_block": 4,
+      "adapter_rank": 256,
+      "seed": 2
+    }
+  ],
+  "formal_evaluation": {
+    "tasks": [
+      "AI2D",
+      "MMBench",
+      "MMMU",
+      "MMStar",
+      "OCRBench",
+      "RealWorldQA"
+    ],
+    "primary_metric": "unweighted macro-average of official lmms-eval task scores",
+    "qwen_seed_policy": "report each seed and mean plus sample standard deviation",
+    "cross_family_policy": "report each architecture separately; do not pool incomparable raw task metrics"
+  },
+  "quality_gates": {
+    "training_identity_max_absolute_logit_delta": 0.0001,
+    "all_training_metrics_must_be_finite": true,
+    "full_rsm_continuation_rule": "continue to ReSkip calibration only when Full RSM is non-inferior to the matched Full AttnRes control within 0.30 percentage points and remains above Base",
+    "reskip_accuracy_rule": "macro-average loss relative to Full RSM no greater than 0.30 percentage points",
+    "reskip_compute_rule": "positive token-level block-equivalent reduction",
+    "runtime_rule": "matched device-side benchmark throughput must exceed Base; host-selector wall time is not accepted as a speed result"
+  },
+  "gpu_policy": {
+    "host": "New-H100-2",
+    "available_and_used": [0, 1, 2, 3, 4, 5, 6],
+    "excluded": [7],
+    "exclusion_reason": "GPU 7 was occupied by an unrelated user process at freeze time"
+  },
+  "material_passport": {
+    "models": [
+      {
+        "name": "Qwen3-VL-2B-Instruct",
+        "local_path": "/data/Minko/models/Qwen3-VL-2B-Instruct",
+        "provenance": "pre-existing node42 model cache"
+      },
+      {
+        "name": "Qwen3-VL-4B-Instruct",
+        "local_path": "/data/Minko/models/Qwen3-VL-4B-Instruct",
+        "provenance": "pre-existing node42 model cache"
+      },
+      {
+        "name": "SmolVLM2-2.2B-Instruct",
+        "local_path": "/data/Minko/models/SmolVLM2-2.2B-Instruct",
+        "provenance": "pre-existing node42 model cache"
+      },
+      {
+        "name": "InternVL3_5-2B-HF",
+        "local_path": "/data/Minko/models/InternVL3_5-2B-HF",
+        "provenance": "pre-existing node42 model cache"
+      }
+    ],
+    "training_data": {
+      "name": "project-local v3 mixed adaptation stream",
+      "local_root": "/data/Minko/datasets",
+      "sampling": "the established data_v2 v3 weighted stream with a recorded per-run seed",
+      "accessed": "2026-08-31"
+    },
+    "evaluation_data": {
+      "name": "local lmms-eval caches for AI2D, MMBench, MMMU, MMStar, OCRBench, RealWorldQA",
+      "local_cache": "/data/Minko/hf_cache",
+      "accessed": "2026-08-31"
+    },
+    "software": {
+      "python": "/data/Minko/starVLA_workspace/envs/reskip_rebuttal/bin/python",
+      "evaluation_framework": "the project-pinned lmms-eval installation in the same environment",
+      "code_snapshot": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code"
+    }
+  }
+}

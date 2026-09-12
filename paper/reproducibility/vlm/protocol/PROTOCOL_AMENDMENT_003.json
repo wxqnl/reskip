@@ -1,0 +1,13 @@
+{
+  "amendment_id": "PROTOCOL_AMENDMENT_003",
+  "date": "2026-08-31",
+  "status": "frozen before any generic Full-AttnRes control result",
+  "change": "Add one clean, matched Full AttnRes seed-0 control for SmolVLM2-2.2B and InternVL3.5-2B.",
+  "rationale": "The pre-registered ReSkip continuation rule requires comparison against both Base and a matched Full AttnRes control. Existing archived cross-decoder AttnRes checkpoints included skip-aware objectives and therefore cannot serve as clean controls.",
+  "controlled_difference": "The control uses the identical pretrained model, data stream, seed, 5000 steps, learning rate 0.0002, Full-path KL objective, entropy term, adapter rank, and official six-task evaluation. The only difference is --disable-residual-strength-gate.",
+  "method_or_threshold_change": false,
+  "new_training_data": false,
+  "skip_training": false,
+  "second_stage_training": false,
+  "seeds": [0]
+}

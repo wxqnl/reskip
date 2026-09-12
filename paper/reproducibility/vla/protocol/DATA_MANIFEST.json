@@ -1,0 +1,62 @@
+{
+  "status": "complete",
+  "data_root": "/data/Minko/datasets/starvla_libero_lerobot_20260902",
+  "suites": {
+    "spatial": {
+      "status": "complete",
+      "directory": "/data/Minko/datasets/starvla_libero_lerobot_20260902/libero_spatial_no_noops_1.0.0_lerobot",
+      "episodes": 432,
+      "frames": 52970,
+      "tasks": 10,
+      "parquet_files": 432,
+      "video_files": {
+        "observation.images.image": 432,
+        "observation.images.wrist_image": 432
+      },
+      "incomplete_files": 0,
+      "modality_json": true
+    },
+    "object": {
+      "status": "complete",
+      "directory": "/data/Minko/datasets/starvla_libero_lerobot_20260902/libero_object_no_noops_1.0.0_lerobot",
+      "episodes": 454,
+      "frames": 66984,
+      "tasks": 10,
+      "parquet_files": 454,
+      "video_files": {
+        "observation.images.image": 454,
+        "observation.images.wrist_image": 454
+      },
+      "incomplete_files": 0,
+      "modality_json": true
+    },
+    "goal": {
+      "status": "complete",
+      "directory": "/data/Minko/datasets/starvla_libero_lerobot_20260902/libero_goal_no_noops_1.0.0_lerobot",
+      "episodes": 428,
+      "frames": 52042,
+      "tasks": 10,
+      "parquet_files": 428,
+      "video_files": {
+        "observation.images.image": 428,
+        "observation.images.wrist_image": 428
+      },
+      "incomplete_files": 0,
+      "modality_json": true
+    },
+    "10": {
+      "status": "complete",
+      "directory": "/data/Minko/datasets/starvla_libero_lerobot_20260902/libero_10_no_noops_1.0.0_lerobot",
+      "episodes": 379,
+      "frames": 101469,
+      "tasks": 10,
+      "parquet_files": 379,
+      "video_files": {
+        "observation.images.image": 379,
+        "observation.images.wrist_image": 379
+      },
+      "incomplete_files": 0,
+      "modality_json": true
+    }
+  }
+}

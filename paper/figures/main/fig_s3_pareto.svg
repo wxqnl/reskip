@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+<title id="title">Frozen ReSkip quality-compute Pareto frontier</title>
+<desc id="desc">Official six-task quality against observed removed block-equivalents per decode token.</desc>
+<style>
+text{font-family:Inter,Arial,sans-serif} .datum{transition:opacity .18s,transform .18s;transform-box:fill-box;transform-origin:center}.datum:hover{opacity:.72;transform:scale(1.035)}.hair{vector-effect:non-scaling-stroke}.label{paint-order:stroke;stroke:#F7F2EB;stroke-width:5px;stroke-linejoin:round}
+</style>
+<rect width="1200" height="780" rx="28" fill="#F7F2EB"/>
+<rect x="48.00" y="38.00" width="174.00" height="30.00" rx="15" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ></rect>
+<text x="135.00" y="59.00" font-size="12" font-weight="800" fill="#334EAC" text-anchor="middle" letter-spacing="1.6">INFERENCE-ONLY PARETO</text>
+<text x="1152.00" y="58.00" font-size="12" font-weight="800" fill="#526187" text-anchor="end" letter-spacing="1.4">FIG. S3</text>
+<text x="48.00" y="112.00" font-size="31" font-weight="800" fill="#081F5C" text-anchor="start" >Frozen native policies trace the quality–compute tradeoff</text>
+<text x="48.00" y="145.00" font-size="15" font-weight="500" fill="#526187" text-anchor="start" >Requested coverage is used only for calibration; the x-axis reports observed benchmark compute removal.</text>
+<rect x="100.00" y="215.00" width="1010.00" height="210.00" rx="0" fill="#E8F0FA" stroke="none" stroke-width="0" class="datum" ></rect>
+<line x1="100.00" y1="425.00" x2="1110.00" y2="425.00" stroke="#7096D1" stroke-width="1.4" stroke-dasharray="7 7" class="hair" />
+<text x="1102.00" y="415.00" font-size="11" font-weight="800" fill="#334EAC" text-anchor="end" >REGISTERED MACRO BAND  ≥ −0.30 pp</text>
+<line x1="100.00" y1="635.00" x2="100.00" y2="643.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="100.00" y="666.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.00</text>
+<line x1="302.00" y1="635.00" x2="302.00" y2="643.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="302.00" y="666.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.28</text>
+<line x1="504.00" y1="635.00" x2="504.00" y2="643.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="504.00" y="666.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.56</text>
+<line x1="706.00" y1="635.00" x2="706.00" y2="643.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="706.00" y="666.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >0.84</text>
+<line x1="908.00" y1="635.00" x2="908.00" y2="643.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="908.00" y="666.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >1.12</text>
+<line x1="1110.00" y1="635.00" x2="1110.00" y2="643.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="1110.00" y="666.00" font-size="12" font-weight="600" fill="#526187" text-anchor="middle" >1.40</text>
+<line x1="100.00" y1="635.00" x2="1110.00" y2="635.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="86.00" y="639.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >-0.8</text>
+<line x1="100.00" y1="551.00" x2="1110.00" y2="551.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="86.00" y="555.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >-0.6</text>
+<line x1="100.00" y1="467.00" x2="1110.00" y2="467.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="86.00" y="471.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >-0.4</text>
+<line x1="100.00" y1="383.00" x2="1110.00" y2="383.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="86.00" y="387.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >-0.2</text>
+<line x1="100.00" y1="299.00" x2="1110.00" y2="299.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="86.00" y="303.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >-0.0</text>
+<line x1="100.00" y1="215.00" x2="1110.00" y2="215.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="86.00" y="219.00" font-size="12" font-weight="600" fill="#526187" text-anchor="end" >+0.2</text>
+<line x1="100.00" y1="635.00" x2="1110.00" y2="635.00" stroke="#9AA6C1" stroke-width="1.2" class="hair" />
+<line x1="100.00" y1="285.00" x2="1110.00" y2="285.00" stroke="#081F5C" stroke-width="1.4" class="hair" />
+<path d="M 100.00 285.00 L 596.04 299.39 L 682.82 353.91 L 790.83 404.99 L 834.39 429.36" fill="none" stroke="#334EAC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="hair" />
+<circle cx="596.04" cy="299.39" r="7.50" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B, target coverage 0.10: 0.688 block-eq/token, Δ=-0.031 pp</title></circle>
+<text x="596.04" y="324.39" font-size="11" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">q10 · -0.03</text>
+<circle cx="682.82" cy="353.91" r="7.50" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B, target coverage 0.25: 0.809 block-eq/token, Δ=-0.148 pp</title></circle>
+<text x="682.82" y="378.91" font-size="11" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">q25 · -0.15</text>
+<circle cx="790.83" cy="404.99" r="14.00" fill="none" stroke="#7096D1" stroke-width="3" class="datum" ></circle>
+<circle cx="790.83" cy="404.99" r="7.50" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B, target coverage 0.45: 0.959 block-eq/token, Δ=-0.257 pp</title></circle>
+<text x="790.83" y="429.99" font-size="11" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">q45 · -0.26</text>
+<circle cx="834.39" cy="429.36" r="7.50" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B, target coverage 0.65: 1.019 block-eq/token, Δ=-0.309 pp</title></circle>
+<text x="834.39" y="454.36" font-size="11" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">q65 · -0.31</text>
+<path d="M 100.00 285.00 L 451.92 366.00 L 652.82 401.98 L 885.12 523.96 L 1035.19 570.48" fill="none" stroke="#081F5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 7" class="hair" />
+<circle cx="451.92" cy="366.00" r="7.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B, target coverage 0.10: 0.488 block-eq/token, Δ=-0.174 pp</title></circle>
+<text x="451.92" y="391.00" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">q10 · -0.17</text>
+<circle cx="652.82" cy="401.98" r="14.00" fill="none" stroke="#7096D1" stroke-width="3" class="datum" ></circle>
+<circle cx="652.82" cy="401.98" r="7.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B, target coverage 0.25: 0.767 block-eq/token, Δ=-0.251 pp</title></circle>
+<text x="652.82" y="426.98" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">q25 · -0.25</text>
+<circle cx="885.12" cy="523.96" r="7.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B, target coverage 0.45: 1.089 block-eq/token, Δ=-0.512 pp</title></circle>
+<text x="885.12" y="548.96" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">q45 · -0.51</text>
+<circle cx="1035.19" cy="570.48" r="7.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B, target coverage 0.65: 1.298 block-eq/token, Δ=-0.612 pp</title></circle>
+<text x="1035.19" y="595.48" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">q65 · -0.61</text>
+<text x="605.00" y="704.00" font-size="13" font-weight="750" fill="#526187" text-anchor="middle" >Observed removed block-equivalents per decode token →</text>
+<text x="31.00" y="425.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" transform="rotate(-90 31 425.0)" letter-spacing=".8">Δ SIX-TASK MACRO vs FULL RSM (pp)</text>
+<circle cx="855.00" cy="678.00" r="6.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ></circle>
+<text x="870.00" y="682.00" font-size="11" font-weight="700" fill="#526187" text-anchor="start" >Qwen3-VL-2B</text>
+<circle cx="1000.00" cy="678.00" r="6.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ></circle>
+<text x="1015.00" y="682.00" font-size="11" font-weight="700" fill="#526187" text-anchor="start" >Qwen3-VL-4B</text>
+<text x="100.00" y="677.00" font-size="10" font-weight="700" fill="#9AA6C1" text-anchor="start" >PER-TASK DELTAS ARE REPORTED IN THE COMPANION TABLE; TASKS ARE NOT TREATED AS IID REPLICATES</text>
+<text x="48.00" y="750.00" font-size="11" font-weight="700" fill="#9AA6C1" text-anchor="start" letter-spacing="1.2">PLUMB SCATTER · PORCELAIN · FROZEN POLICIES · NO POST-RESULT INSERTION</text>
+</svg>

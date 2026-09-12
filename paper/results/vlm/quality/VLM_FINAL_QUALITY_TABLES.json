@@ -1,0 +1,597 @@
+{
+  "formal_tasks": [
+    "AI2D",
+    "MMBench",
+    "MMMU",
+    "MMStar",
+    "OCRBench",
+    "RealWorldQA"
+  ],
+  "rows": [
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Base",
+      "seed": null,
+      "AI2D": 75.64766839378238,
+      "MMBench": 76.20274914089347,
+      "MMMU": 42.333,
+      "MMStar": 53.753921688999284,
+      "OCRBench": 80.7,
+      "RealWorldQA": 65.22875816993464,
+      "macro_average": 65.64434956560163,
+      "provenance": "canonical paper completion",
+      "result_json": "/data/Minko/experiments/reskip_paper_vlm_completion_20260824/full6/base/models__Qwen3-VL-2B-Instruct/20260824_165253_results.json"
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "AI2D": 76.5220207253886,
+      "MMBench": 78.95189003436425,
+      "MMMU": 45.111000000000004,
+      "MMStar": 54.923453945183766,
+      "OCRBench": 83.8,
+      "RealWorldQA": 64.83660130718954,
+      "macro_average": 67.35749433535436,
+      "provenance": "canonical paper completion",
+      "result_json": "/data/Minko/experiments/reskip_paper_vlm_completion_20260824/full6/fullar/models__Qwen3-VL-2B-Instruct/20260824_160303_results.json"
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full AttnRes",
+      "seed": 1,
+      "AI2D": 76.58678756476684,
+      "MMBench": 77.66323024054984,
+      "MMMU": 45.444,
+      "MMStar": 55.07338539975497,
+      "OCRBench": 84.3,
+      "RealWorldQA": 64.9673202614379,
+      "macro_average": 67.33912057775159,
+      "provenance": "current matched-seed control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/qwen3vl_2b_full_attnres_seed1/models__Qwen3-VL-2B-Instruct/20260831_231705_results.json"
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full AttnRes",
+      "seed": 2,
+      "AI2D": 75.58290155440415,
+      "MMBench": 77.23367697594502,
+      "MMMU": 44.444,
+      "MMStar": 53.1941925953904,
+      "OCRBench": 84.7,
+      "RealWorldQA": 64.83660130718954,
+      "macro_average": 66.66522873882151,
+      "provenance": "current matched-seed control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/qwen3vl_2b_full_attnres_seed2/models__Qwen3-VL-2B-Instruct/20260831_232919_results.json"
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "AI2D": 76.91062176165802,
+      "MMBench": 78.00687285223368,
+      "MMMU": 46.111000000000004,
+      "MMStar": 56.65688707026345,
+      "OCRBench": 83.6,
+      "RealWorldQA": 66.53594771241829,
+      "macro_average": 67.97022156609557,
+      "provenance": "canonical accepted RSM seed 0",
+      "result_json": "/data/Minko/experiments/attnres_residual_strength_gate_2b_20260831/full6/candidate/models__Qwen3-VL-2B-Instruct/20260831_171603_results.json"
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 1,
+      "AI2D": 76.97538860103627,
+      "MMBench": 77.83505154639175,
+      "MMMU": 45.889,
+      "MMStar": 55.99013195386304,
+      "OCRBench": 84.2,
+      "RealWorldQA": 66.27450980392156,
+      "macro_average": 67.86068031753544,
+      "provenance": "current formal run",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm/qwen3vl_2b_rsm_seed1/models__Qwen3-VL-2B-Instruct/20260831_220711_results.json"
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 2,
+      "AI2D": 76.32772020725389,
+      "MMBench": 77.40549828178695,
+      "MMMU": 44.333,
+      "MMStar": 54.67063085728674,
+      "OCRBench": 84.2,
+      "RealWorldQA": 65.7516339869281,
+      "macro_average": 67.11474722220929,
+      "provenance": "current formal run",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm/qwen3vl_2b_rsm_seed2/models__Qwen3-VL-2B-Instruct/20260831_220709_results.json"
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "RSM-ReSkip",
+      "seed": 0,
+      "AI2D": 76.91062176165802,
+      "MMBench": 78.69415807560138,
+      "MMMU": 45.889,
+      "MMStar": 56.04890617698914,
+      "OCRBench": 82.19999999999999,
+      "RealWorldQA": 66.53594771241829,
+      "macro_average": 67.71310562111114,
+      "provenance": "canonical device-policy quality run",
+      "result_json": "/data/Minko/experiments/attnres_residual_strength_gate_2b_20260831/full6/reskip_conservative/models__Qwen3-VL-2B-Instruct/20260831_184523_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Base",
+      "seed": null,
+      "AI2D": 81.80051813471503,
+      "MMBench": 83.33333333333334,
+      "MMMU": 50.444,
+      "MMStar": 61.78954968853164,
+      "OCRBench": 82.6,
+      "RealWorldQA": 71.63398692810458,
+      "macro_average": 71.93356468078076,
+      "provenance": "current matched control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/qwen3vl_4b_base/models__Qwen3-VL-4B-Instruct/20260831_225729_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "AI2D": 81.21761658031087,
+      "MMBench": 84.70790378006873,
+      "MMMU": 52.222,
+      "MMStar": 60.831897639519006,
+      "OCRBench": 84.3,
+      "RealWorldQA": 71.50326797385621,
+      "macro_average": 72.46378099562581,
+      "provenance": "preserved exact-protocol AttnRes control",
+      "result_json": "/data/Minko/experiments/_archive/reskip_precanonical_20260824/paper_vlm_exact_repro_20260819/accuracy/4b_full_ar/models__Qwen3-VL-4B-Instruct/20260819_144631_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full AttnRes",
+      "seed": 1,
+      "AI2D": 82.70725388601036,
+      "MMBench": 85.30927835051546,
+      "MMMU": 52.778000000000006,
+      "MMStar": 60.3828914370776,
+      "OCRBench": 84.8,
+      "RealWorldQA": 71.37254901960785,
+      "macro_average": 72.89166211553521,
+      "provenance": "current matched-seed control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/qwen3vl_4b_full_attnres_seed1/models__Qwen3-VL-4B-Instruct/20260831_234911_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full AttnRes",
+      "seed": 2,
+      "AI2D": 82.38341968911918,
+      "MMBench": 85.39518900343643,
+      "MMMU": 51.666999999999994,
+      "MMStar": 62.02221897144411,
+      "OCRBench": 85.5,
+      "RealWorldQA": 72.02614379084967,
+      "macro_average": 73.16566190914156,
+      "provenance": "current matched-seed control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/qwen3vl_4b_full_attnres_seed2/models__Qwen3-VL-4B-Instruct/20260831_234933_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "AI2D": 82.28626943005182,
+      "MMBench": 83.93470790378007,
+      "MMMU": 51.111,
+      "MMStar": 62.041674915399234,
+      "OCRBench": 85.3,
+      "RealWorldQA": 72.54901960784314,
+      "macro_average": 72.87044530951238,
+      "provenance": "current formal run",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm/qwen3vl_4b_rsm_seed0/models__Qwen3-VL-4B-Instruct/20260831_220711_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full RSM-AttnRes",
+      "seed": 1,
+      "AI2D": 82.70725388601036,
+      "MMBench": 84.45017182130584,
+      "MMMU": 51.888999999999996,
+      "MMStar": 62.097438170338336,
+      "OCRBench": 85.5,
+      "RealWorldQA": 72.02614379084967,
+      "macro_average": 73.1116679447507,
+      "provenance": "current formal run",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm/qwen3vl_4b_rsm_seed1/models__Qwen3-VL-4B-Instruct/20260831_220712_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full RSM-AttnRes",
+      "seed": 2,
+      "AI2D": 82.80440414507773,
+      "MMBench": 83.93470790378007,
+      "MMMU": 51.444,
+      "MMStar": 62.80751113184769,
+      "OCRBench": 85.6,
+      "RealWorldQA": 72.94117647058823,
+      "macro_average": 73.25529994188228,
+      "provenance": "current formal run",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm/qwen3vl_4b_rsm_seed2/models__Qwen3-VL-4B-Instruct/20260831_220710_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "RSM-ReSkip aggressive (failed)",
+      "seed": 0,
+      "AI2D": 82.28626943005182,
+      "MMBench": 83.8487972508591,
+      "MMMU": 50.778,
+      "MMStar": 61.85808615422428,
+      "OCRBench": 78.9,
+      "RealWorldQA": 72.2875816993464,
+      "macro_average": 71.65978908908026,
+      "provenance": "preserved failed formal policy; exceeded quality-loss gate",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/reskip/qwen3vl_4b_seed0/models__Qwen3-VL-4B-Instruct/20260831_233321_results.json"
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "RSM-ReSkip",
+      "seed": 2,
+      "AI2D": 82.80440414507773,
+      "MMBench": 84.02061855670104,
+      "MMMU": 51.222,
+      "MMStar": 62.370319734571275,
+      "OCRBench": 84.8,
+      "RealWorldQA": 72.81045751633987,
+      "macro_average": 73.00463332544832,
+      "provenance": "final capped-policy confirmatory run",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/reskip/qwen3vl_4b_seed2_capped/models__Qwen3-VL-4B-Instruct/20260901_010801_results.json"
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Base",
+      "seed": null,
+      "AI2D": 66.35362694300518,
+      "MMBench": 68.04123711340206,
+      "MMMU": 35.778,
+      "MMStar": 44.54837336339649,
+      "OCRBench": 60.199999999999996,
+      "RealWorldQA": 58.43137254901961,
+      "macro_average": 55.558768328137226,
+      "provenance": "preserved matched six-task control",
+      "result_json": "/data/Minko/experiments/_archive/reskip_precanonical_20260824/ar_retrofit_v2_20260814/evaluation/smolvlm2_transfer_screen_5k/Frozen_Base/vlm/models__SmolVLM2-2.2B-Instruct/20260815_045454_results.json"
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "AI2D": 66.48316062176166,
+      "MMBench": 67.09621993127148,
+      "MMMU": 35.888999999999996,
+      "MMStar": 43.55815708230962,
+      "OCRBench": 61.7,
+      "RealWorldQA": 58.30065359477125,
+      "macro_average": 55.504531871685664,
+      "provenance": "Amendment-009 accepted matched-seed control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/smolvlm2_2p2b_full_attnres_lr1e3_noent_5k_seed0/models__SmolVLM2-2.2B-Instruct/20260901_094740_results.json"
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "AI2D": 66.41839378238342,
+      "MMBench": 67.86941580756015,
+      "MMMU": 35.778,
+      "MMStar": 43.76349422488205,
+      "OCRBench": 62.0,
+      "RealWorldQA": 59.08496732026144,
+      "macro_average": 55.819045189181175,
+      "provenance": "Amendment-009 accepted three-seed RSM confirmation",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm_lr1e3_noent/smolvlm2_2p2b_rsm_lr1e3_noent_5k_seed0/models__SmolVLM2-2.2B-Instruct/20260901_094800_results.json"
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "seed": 1,
+      "AI2D": 66.22409326424871,
+      "MMBench": 67.9553264604811,
+      "MMMU": 35.443999999999996,
+      "MMStar": 43.38597720232774,
+      "OCRBench": 61.8,
+      "RealWorldQA": 56.86274509803921,
+      "macro_average": 55.27869033751613,
+      "provenance": "Amendment-009 accepted matched-seed control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/smolvlm2_2p2b_full_attnres_lr1e3_noent_5k_seed1/models__SmolVLM2-2.2B-Instruct/20260901_115829_results.json"
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 1,
+      "AI2D": 65.96502590673575,
+      "MMBench": 67.86941580756015,
+      "MMMU": 36.333,
+      "MMStar": 44.256333099801395,
+      "OCRBench": 60.9,
+      "RealWorldQA": 58.16993464052288,
+      "macro_average": 55.58228490910336,
+      "provenance": "Amendment-009 accepted three-seed RSM confirmation",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm_lr1e3_noent/smolvlm2_2p2b_rsm_lr1e3_noent_5k_seed1/models__SmolVLM2-2.2B-Instruct/20260901_115659_results.json"
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "seed": 2,
+      "AI2D": 65.8678756476684,
+      "MMBench": 67.9553264604811,
+      "MMMU": 34.888999999999996,
+      "MMStar": 43.113538677697136,
+      "OCRBench": 60.199999999999996,
+      "RealWorldQA": 56.99346405228758,
+      "macro_average": 54.836534139689036,
+      "provenance": "Amendment-009 accepted matched-seed control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/smolvlm2_2p2b_full_attnres_lr1e3_noent_5k_seed2/models__SmolVLM2-2.2B-Instruct/20260901_120100_results.json"
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 2,
+      "AI2D": 66.41839378238342,
+      "MMBench": 68.29896907216495,
+      "MMMU": 35.888999999999996,
+      "MMStar": 43.267755617461134,
+      "OCRBench": 60.3,
+      "RealWorldQA": 57.90849673202615,
+      "macro_average": 55.347102534005934,
+      "provenance": "Amendment-009 accepted three-seed RSM confirmation",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm_lr1e3_noent/smolvlm2_2p2b_rsm_lr1e3_noent_5k_seed2/models__SmolVLM2-2.2B-Instruct/20260901_120130_results.json"
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Base",
+      "seed": null,
+      "AI2D": 75.90673575129534,
+      "MMBench": 77.14776632302406,
+      "MMMU": 49.333,
+      "MMStar": 59.32653813190476,
+      "OCRBench": 83.1,
+      "RealWorldQA": 60.65359477124183,
+      "macro_average": 67.577939162911,
+      "provenance": "preserved matched six-task control",
+      "result_json": "/data/Minko/experiments/_archive/reskip_precanonical_20260824/ar_retrofit_v2_20260814/evaluation/internvl35_transfer_screen_5k/Frozen_Base/vlm/models__InternVL3_5-2B-HF/20260815_082851_results.json"
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "AI2D": 75.51813471502591,
+      "MMBench": 76.46048109965635,
+      "MMMU": 49.667,
+      "MMStar": 59.14019417838401,
+      "OCRBench": 83.3,
+      "RealWorldQA": 61.568627450980394,
+      "macro_average": 67.60907290734112,
+      "provenance": "current clean matched control",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/controls/internvl3p5_2b_full_attnres_seed0/models__InternVL3_5-2B-HF/20260901_005319_results.json"
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "AI2D": 75.51813471502591,
+      "MMBench": 76.46048109965635,
+      "MMMU": 49.778,
+      "MMStar": 59.229537556437975,
+      "OCRBench": 82.69999999999999,
+      "RealWorldQA": 60.91503267973856,
+      "macro_average": 67.43353100847646,
+      "provenance": "current formal run",
+      "result_json": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/eval/full_rsm/internvl3p5_2b_rsm_lr2e4_5k_seed0/models__InternVL3_5-2B-HF/20260831_222723_results.json"
+    }
+  ],
+  "summaries": [
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Base",
+      "n": 1,
+      "macro_average_mean": 67.577939162911,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full AttnRes",
+      "n": 1,
+      "macro_average_mean": 67.60907290734112,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full RSM-AttnRes",
+      "n": 1,
+      "macro_average_mean": 67.43353100847646,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Base",
+      "n": 1,
+      "macro_average_mean": 65.64434956560163,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full AttnRes",
+      "n": 3,
+      "macro_average_mean": 67.12061455064249,
+      "macro_average_sample_std": 0.39448267002239457
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "Full RSM-AttnRes",
+      "n": 3,
+      "macro_average_mean": 67.64854970194676,
+      "macro_average_sample_std": 0.4655197491132246
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "system": "RSM-ReSkip",
+      "n": 1,
+      "macro_average_mean": 67.71310562111114,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Base",
+      "n": 1,
+      "macro_average_mean": 71.93356468078076,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full AttnRes",
+      "n": 3,
+      "macro_average_mean": 72.84036834010085,
+      "macro_average_sample_std": 0.3537407139956588
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "Full RSM-AttnRes",
+      "n": 3,
+      "macro_average_mean": 73.07913773204847,
+      "macro_average_sample_std": 0.19447861853680615
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "RSM-ReSkip",
+      "n": 1,
+      "macro_average_mean": 73.00463332544832,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "system": "RSM-ReSkip aggressive (failed)",
+      "n": 1,
+      "macro_average_mean": 71.65978908908026,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Base",
+      "n": 1,
+      "macro_average_mean": 55.558768328137226,
+      "macro_average_sample_std": null
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "n": 3,
+      "macro_average_mean": 55.206585449630275,
+      "macro_average_sample_std": 0.3397860777473579
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "n": 3,
+      "macro_average_mean": 55.582810877430155,
+      "macro_average_sample_std": 0.23597176722115426
+    }
+  ],
+  "matched_seed_deltas": [
+    {
+      "family": "Qwen3-VL-2B",
+      "seed": 0,
+      "full_attnres_macro": 67.35749433535436,
+      "full_rsm_attnres_macro": 67.97022156609557,
+      "rsm_minus_attnres_pp": 0.6127272307412142
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "seed": 1,
+      "full_attnres_macro": 67.33912057775159,
+      "full_rsm_attnres_macro": 67.86068031753544,
+      "rsm_minus_attnres_pp": 0.5215597397838536
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "seed": 2,
+      "full_attnres_macro": 66.66522873882151,
+      "full_rsm_attnres_macro": 67.11474722220929,
+      "rsm_minus_attnres_pp": 0.4495184833877772
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "seed": 0,
+      "full_attnres_macro": 72.46378099562581,
+      "full_rsm_attnres_macro": 72.87044530951238,
+      "rsm_minus_attnres_pp": 0.40666431388656576
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "seed": 1,
+      "full_attnres_macro": 72.89166211553521,
+      "full_rsm_attnres_macro": 73.1116679447507,
+      "rsm_minus_attnres_pp": 0.22000582921549494
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "seed": 2,
+      "full_attnres_macro": 73.16566190914156,
+      "full_rsm_attnres_macro": 73.25529994188228,
+      "rsm_minus_attnres_pp": 0.0896380327407229
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "seed": 0,
+      "full_attnres_macro": 55.504531871685664,
+      "full_rsm_attnres_macro": 55.819045189181175,
+      "rsm_minus_attnres_pp": 0.3145133174955106
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "seed": 1,
+      "full_attnres_macro": 55.27869033751613,
+      "full_rsm_attnres_macro": 55.58228490910336,
+      "rsm_minus_attnres_pp": 0.3035945715872259
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "seed": 2,
+      "full_attnres_macro": 54.836534139689036,
+      "full_rsm_attnres_macro": 55.347102534005934,
+      "rsm_minus_attnres_pp": 0.5105683943168984
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "seed": 0,
+      "full_attnres_macro": 67.60907290734112,
+      "full_rsm_attnres_macro": 67.43353100847646,
+      "rsm_minus_attnres_pp": -0.1755418988646511
+    }
+  ],
+  "matched_seed_summaries": [
+    {
+      "family": "InternVL3.5-2B",
+      "n_matched_seeds": 1,
+      "rsm_minus_attnres_pp_mean": -0.1755418988646511,
+      "rsm_minus_attnres_pp_sample_std": null
+    },
+    {
+      "family": "Qwen3-VL-2B",
+      "n_matched_seeds": 3,
+      "rsm_minus_attnres_pp_mean": 0.5279351513042817,
+      "rsm_minus_attnres_pp_sample_std": 0.08179094208535935
+    },
+    {
+      "family": "Qwen3-VL-4B",
+      "n_matched_seeds": 3,
+      "rsm_minus_attnres_pp_mean": 0.23876939194759453,
+      "rsm_minus_attnres_pp_sample_std": 0.15934387091787316
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "n_matched_seeds": 3,
+      "rsm_minus_attnres_pp_mean": 0.3762254277998783,
+      "rsm_minus_attnres_pp_sample_std": 0.11647243984092248
+    }
+  ],
+  "cross_family_pooling": false,
+  "caveat": "Preserved controls are reused only when model, task set, and official scoring protocol match; each source path is retained."
+}

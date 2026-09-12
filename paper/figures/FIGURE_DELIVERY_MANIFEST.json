@@ -1,0 +1,43 @@
+{
+  "status": "rendered_and_verified",
+  "html": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/VLM_SENSITIVITY_FIGURES.html",
+  "figures": [
+    {
+      "stem": "fig_s1_gate_scale",
+      "svg": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s1_gate_scale.svg",
+      "png": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s1_gate_scale.png",
+      "pdf": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s1_gate_scale.pdf",
+      "png_width": 2400,
+      "png_height": 1520
+    },
+    {
+      "stem": "fig_s2_block_token",
+      "svg": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s2_block_token.svg",
+      "png": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s2_block_token.png",
+      "pdf": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s2_block_token.pdf",
+      "png_width": 2400,
+      "png_height": 1840
+    },
+    {
+      "stem": "fig_s3_pareto",
+      "svg": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s3_pareto.svg",
+      "png": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s3_pareto.png",
+      "pdf": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s3_pareto.pdf",
+      "png_width": 2400,
+      "png_height": 1560
+    },
+    {
+      "stem": "fig_s4_runtime",
+      "svg": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s4_runtime.svg",
+      "png": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s4_runtime.png",
+      "pdf": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/sensitivity/figures/fig_s4_runtime.pdf",
+      "png_width": 2400,
+      "png_height": 1560
+    }
+  ],
+  "single_file_html": true,
+  "external_dependencies": false,
+  "javascript_node_check": "PASS",
+  "svg_xml_parse": "PASS",
+  "png_pdf_render": "PASS"
+}

@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+<title id="title">Fixed-64 runtime sensitivity</title>
+<desc id="desc">Paired end-to-end speedup over real benchmark images and prompts at fixed 64-token generation.</desc>
+<style>
+text{font-family:Inter,Arial,sans-serif} .datum{transition:opacity .18s,transform .18s;transform-box:fill-box;transform-origin:center}.datum:hover{opacity:.72;transform:scale(1.035)}.hair{vector-effect:non-scaling-stroke}.label{paint-order:stroke;stroke:#F7F2EB;stroke-width:5px;stroke-linejoin:round}
+</style>
+<rect width="1200" height="780" rx="28" fill="#F7F2EB"/>
+<rect x="48.00" y="38.00" width="174.00" height="30.00" rx="15" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ></rect>
+<text x="135.00" y="59.00" font-size="12" font-weight="800" fill="#334EAC" text-anchor="middle" letter-spacing="1.6">DECODE RUNTIME</text>
+<text x="1152.00" y="58.00" font-size="12" font-weight="800" fill="#526187" text-anchor="end" letter-spacing="1.4">FIG. S4</text>
+<text x="48.00" y="112.00" font-size="31" font-weight="800" fill="#081F5C" text-anchor="start" >Measured speed across native token-level removal levels</text>
+<text x="48.00" y="145.00" font-size="15" font-weight="500" fill="#526187" text-anchor="start" >Paired H100 runs, batch 1, real six-task benchmark inputs, fixed 64 generated tokens, three repetitions.</text>
+<text x="90.00" y="210.00" font-size="15" font-weight="800" fill="#081F5C" text-anchor="start" letter-spacing="1.1">QWEN3-VL-2B</text>
+<line x1="90.00" y1="625.00" x2="560.00" y2="625.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="80.00" y="629.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >0.96×</text>
+<line x1="90.00" y1="530.00" x2="560.00" y2="530.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="80.00" y="534.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.03×</text>
+<line x1="90.00" y1="435.00" x2="560.00" y2="435.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="80.00" y="439.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.10×</text>
+<line x1="90.00" y1="340.00" x2="560.00" y2="340.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="80.00" y="344.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.17×</text>
+<line x1="90.00" y1="245.00" x2="560.00" y2="245.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="80.00" y="249.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.24×</text>
+<line x1="90.00" y1="570.71" x2="560.00" y2="570.71" stroke="#081F5C" stroke-width="1.5" class="hair" />
+<line x1="153.00" y1="557.14" x2="169.00" y2="557.14" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="153.00" y1="543.57" x2="169.00" y2="543.57" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="161.00" y1="570.71" x2="161.00" y2="535.55" stroke="#334EAC" stroke-width="1.1" class="hair" />
+<line x1="161.00" y1="564.32" x2="161.00" y2="502.13" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="156.00" y1="564.32" x2="166.00" y2="564.32" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="156.00" y1="502.13" x2="166.00" y2="502.13" stroke="#334EAC" stroke-width="2" class="hair" />
+<circle cx="161.00" cy="535.55" r="6.50" fill="#334EAC" stroke="#334EAC" stroke-width="0" class="datum" ><title>2B, coverage 0.10, speedup_vs_base=1.0259x</title></circle>
+<text x="161.00" y="522.55" font-size="10" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">1.026×</text>
+<line x1="181.00" y1="557.14" x2="197.00" y2="557.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="543.57" x2="197.00" y2="543.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="530.00" x2="197.00" y2="530.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="516.43" x2="197.00" y2="516.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="502.86" x2="197.00" y2="502.86" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="489.29" x2="197.00" y2="489.29" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="475.71" x2="197.00" y2="475.71" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="462.14" x2="197.00" y2="462.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="448.57" x2="197.00" y2="448.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="435.00" x2="197.00" y2="435.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="421.43" x2="197.00" y2="421.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="407.86" x2="197.00" y2="407.86" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="394.29" x2="197.00" y2="394.29" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="380.71" x2="197.00" y2="380.71" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="367.14" x2="197.00" y2="367.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="353.57" x2="197.00" y2="353.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="340.00" x2="197.00" y2="340.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="181.00" y1="326.43" x2="197.00" y2="326.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="189.00" y1="570.71" x2="189.00" y2="317.54" stroke="#081F5C" stroke-width="1.1" class="hair" />
+<circle cx="189.00" cy="317.54" r="6.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ><title>2B, coverage 0.10, speedup_vs_full_rsm=1.1865x</title></circle>
+<text x="189.00" y="304.54" font-size="10" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">1.187×</text>
+<text x="175.00" y="654.00" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" >q10</text>
+<text x="175.00" y="673.00" font-size="10" font-weight="600" fill="#526187" text-anchor="middle" >0.69 blk</text>
+<line x1="298.00" y1="557.14" x2="314.00" y2="557.14" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="298.00" y1="543.57" x2="314.00" y2="543.57" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="298.00" y1="530.00" x2="314.00" y2="530.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="298.00" y1="516.43" x2="314.00" y2="516.43" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="306.00" y1="570.71" x2="306.00" y2="511.32" stroke="#334EAC" stroke-width="1.1" class="hair" />
+<line x1="306.00" y1="522.24" x2="306.00" y2="498.47" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="301.00" y1="522.24" x2="311.00" y2="522.24" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="301.00" y1="498.47" x2="311.00" y2="498.47" stroke="#334EAC" stroke-width="2" class="hair" />
+<circle cx="306.00" cy="511.32" r="6.50" fill="#334EAC" stroke="#334EAC" stroke-width="0" class="datum" ><title>2B, coverage 0.45, speedup_vs_base=1.0438x</title></circle>
+<text x="306.00" y="498.32" font-size="10" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">1.044×</text>
+<line x1="326.00" y1="557.14" x2="342.00" y2="557.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="543.57" x2="342.00" y2="543.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="530.00" x2="342.00" y2="530.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="516.43" x2="342.00" y2="516.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="502.86" x2="342.00" y2="502.86" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="489.29" x2="342.00" y2="489.29" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="475.71" x2="342.00" y2="475.71" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="462.14" x2="342.00" y2="462.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="448.57" x2="342.00" y2="448.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="435.00" x2="342.00" y2="435.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="421.43" x2="342.00" y2="421.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="407.86" x2="342.00" y2="407.86" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="394.29" x2="342.00" y2="394.29" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="380.71" x2="342.00" y2="380.71" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="367.14" x2="342.00" y2="367.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="353.57" x2="342.00" y2="353.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="326.00" y1="340.00" x2="342.00" y2="340.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="334.00" y1="570.71" x2="334.00" y2="333.00" stroke="#081F5C" stroke-width="1.1" class="hair" />
+<circle cx="334.00" cy="333.00" r="6.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ><title>2B, coverage 0.45, speedup_vs_full_rsm=1.1752x</title></circle>
+<text x="334.00" y="320.00" font-size="10" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">1.175×</text>
+<text x="320.00" y="654.00" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" >q45</text>
+<text x="320.00" y="673.00" font-size="10" font-weight="600" fill="#526187" text-anchor="middle" >0.96 blk</text>
+<line x1="443.00" y1="557.14" x2="459.00" y2="557.14" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="443.00" y1="543.57" x2="459.00" y2="543.57" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="443.00" y1="530.00" x2="459.00" y2="530.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="443.00" y1="516.43" x2="459.00" y2="516.43" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="443.00" y1="502.86" x2="459.00" y2="502.86" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="451.00" y1="570.71" x2="451.00" y2="495.88" stroke="#334EAC" stroke-width="1.1" class="hair" />
+<line x1="451.00" y1="507.95" x2="451.00" y2="481.27" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="446.00" y1="507.95" x2="456.00" y2="507.95" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="446.00" y1="481.27" x2="456.00" y2="481.27" stroke="#334EAC" stroke-width="2" class="hair" />
+<circle cx="451.00" cy="495.88" r="6.50" fill="#334EAC" stroke="#334EAC" stroke-width="0" class="datum" ><title>2B, coverage 0.65, speedup_vs_base=1.0551x</title></circle>
+<text x="451.00" y="482.88" font-size="10" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">1.055×</text>
+<line x1="471.00" y1="557.14" x2="487.00" y2="557.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="543.57" x2="487.00" y2="543.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="530.00" x2="487.00" y2="530.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="516.43" x2="487.00" y2="516.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="502.86" x2="487.00" y2="502.86" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="489.29" x2="487.00" y2="489.29" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="475.71" x2="487.00" y2="475.71" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="462.14" x2="487.00" y2="462.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="448.57" x2="487.00" y2="448.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="435.00" x2="487.00" y2="435.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="421.43" x2="487.00" y2="421.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="407.86" x2="487.00" y2="407.86" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="394.29" x2="487.00" y2="394.29" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="380.71" x2="487.00" y2="380.71" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="367.14" x2="487.00" y2="367.14" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="353.57" x2="487.00" y2="353.57" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="340.00" x2="487.00" y2="340.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="326.43" x2="487.00" y2="326.43" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="312.86" x2="487.00" y2="312.86" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="471.00" y1="299.29" x2="487.00" y2="299.29" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="479.00" y1="570.71" x2="479.00" y2="298.20" stroke="#081F5C" stroke-width="1.1" class="hair" />
+<circle cx="479.00" cy="298.20" r="6.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ><title>2B, coverage 0.65, speedup_vs_full_rsm=1.2008x</title></circle>
+<text x="479.00" y="285.20" font-size="10" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">1.201×</text>
+<text x="465.00" y="654.00" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" >q65</text>
+<text x="465.00" y="673.00" font-size="10" font-weight="600" fill="#526187" text-anchor="middle" >1.02 blk</text>
+<circle cx="140.00" cy="690.00" r="5.50" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ></circle>
+<text x="153.00" y="694.00" font-size="10" font-weight="700" fill="#526187" text-anchor="start" >vs Base (95% CI)</text>
+<circle cx="305.00" cy="690.00" r="5.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ></circle>
+<text x="318.00" y="694.00" font-size="10" font-weight="700" fill="#526187" text-anchor="start" >vs Full RSM</text>
+<text x="560.00" y="694.00" font-size="10" font-weight="700" fill="#9AA6C1" text-anchor="end" >1 rung = 0.01×</text>
+<text x="650.00" y="210.00" font-size="15" font-weight="800" fill="#081F5C" text-anchor="start" letter-spacing="1.1">QWEN3-VL-4B</text>
+<line x1="650.00" y1="625.00" x2="1120.00" y2="625.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="640.00" y="629.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >0.96×</text>
+<line x1="650.00" y1="530.00" x2="1120.00" y2="530.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="640.00" y="534.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.01×</text>
+<line x1="650.00" y1="435.00" x2="1120.00" y2="435.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="640.00" y="439.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.06×</text>
+<line x1="650.00" y1="340.00" x2="1120.00" y2="340.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="640.00" y="344.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.11×</text>
+<line x1="650.00" y1="245.00" x2="1120.00" y2="245.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="640.00" y="249.00" font-size="10" font-weight="650" fill="#526187" text-anchor="end" >1.16×</text>
+<line x1="650.00" y1="549.00" x2="1120.00" y2="549.00" stroke="#081F5C" stroke-width="1.5" class="hair" />
+<line x1="713.00" y1="568.00" x2="729.00" y2="568.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="721.00" y1="549.00" x2="721.00" y2="568.00" stroke="#334EAC" stroke-width="1.1" class="hair" />
+<line x1="721.00" y1="579.26" x2="721.00" y2="554.14" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="716.00" y1="579.26" x2="726.00" y2="579.26" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="716.00" y1="554.14" x2="726.00" y2="554.14" stroke="#334EAC" stroke-width="2" class="hair" />
+<circle cx="721.00" cy="568.00" r="6.50" fill="#334EAC" stroke="#334EAC" stroke-width="0" class="datum" ><title>4B, coverage 0.10, speedup_vs_base=0.9900x</title></circle>
+<text x="721.00" y="555.00" font-size="10" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">0.990×</text>
+<line x1="741.00" y1="530.00" x2="757.00" y2="530.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="741.00" y1="511.00" x2="757.00" y2="511.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="741.00" y1="492.00" x2="757.00" y2="492.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="741.00" y1="473.00" x2="757.00" y2="473.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="741.00" y1="454.00" x2="757.00" y2="454.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="749.00" y1="549.00" x2="749.00" y2="453.46" stroke="#081F5C" stroke-width="1.1" class="hair" />
+<circle cx="749.00" cy="453.46" r="6.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ><title>4B, coverage 0.10, speedup_vs_full_rsm=1.0503x</title></circle>
+<text x="749.00" y="440.46" font-size="10" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">1.050×</text>
+<text x="735.00" y="654.00" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" >q10</text>
+<text x="735.00" y="673.00" font-size="10" font-weight="600" fill="#526187" text-anchor="middle" >0.49 blk</text>
+<line x1="858.00" y1="530.00" x2="874.00" y2="530.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="858.00" y1="511.00" x2="874.00" y2="511.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="866.00" y1="549.00" x2="866.00" y2="494.57" stroke="#334EAC" stroke-width="1.1" class="hair" />
+<line x1="866.00" y1="505.95" x2="866.00" y2="480.01" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="861.00" y1="505.95" x2="871.00" y2="505.95" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="861.00" y1="480.01" x2="871.00" y2="480.01" stroke="#334EAC" stroke-width="2" class="hair" />
+<circle cx="866.00" cy="494.57" r="6.50" fill="#334EAC" stroke="#334EAC" stroke-width="0" class="datum" ><title>4B, coverage 0.25, speedup_vs_base=1.0286x</title></circle>
+<text x="866.00" y="481.57" font-size="10" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">1.029×</text>
+<line x1="886.00" y1="530.00" x2="902.00" y2="530.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="886.00" y1="511.00" x2="902.00" y2="511.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="886.00" y1="492.00" x2="902.00" y2="492.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="886.00" y1="473.00" x2="902.00" y2="473.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="886.00" y1="454.00" x2="902.00" y2="454.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="886.00" y1="435.00" x2="902.00" y2="435.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="886.00" y1="416.00" x2="902.00" y2="416.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="894.00" y1="549.00" x2="894.00" y2="413.10" stroke="#081F5C" stroke-width="1.1" class="hair" />
+<circle cx="894.00" cy="413.10" r="6.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ><title>4B, coverage 0.25, speedup_vs_full_rsm=1.0715x</title></circle>
+<text x="894.00" y="400.10" font-size="10" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">1.072×</text>
+<text x="880.00" y="654.00" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" >q25</text>
+<text x="880.00" y="673.00" font-size="10" font-weight="600" fill="#526187" text-anchor="middle" >0.77 blk</text>
+<line x1="1003.00" y1="530.00" x2="1019.00" y2="530.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="1003.00" y1="511.00" x2="1019.00" y2="511.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="1003.00" y1="492.00" x2="1019.00" y2="492.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="1003.00" y1="473.00" x2="1019.00" y2="473.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="1003.00" y1="454.00" x2="1019.00" y2="454.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="1003.00" y1="435.00" x2="1019.00" y2="435.00" stroke="#334EAC" stroke-width="1.3" class="hair" />
+<line x1="1011.00" y1="549.00" x2="1011.00" y2="424.25" stroke="#334EAC" stroke-width="1.1" class="hair" />
+<line x1="1011.00" y1="431.69" x2="1011.00" y2="417.08" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="1006.00" y1="431.69" x2="1016.00" y2="431.69" stroke="#334EAC" stroke-width="2" class="hair" />
+<line x1="1006.00" y1="417.08" x2="1016.00" y2="417.08" stroke="#334EAC" stroke-width="2" class="hair" />
+<circle cx="1011.00" cy="424.25" r="6.50" fill="#334EAC" stroke="#334EAC" stroke-width="0" class="datum" ><title>4B, coverage 0.65, speedup_vs_base=1.0657x</title></circle>
+<text x="1011.00" y="411.25" font-size="10" font-weight="800" fill="#334EAC" text-anchor="middle" class="label">1.066×</text>
+<line x1="1031.00" y1="530.00" x2="1047.00" y2="530.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="511.00" x2="1047.00" y2="511.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="492.00" x2="1047.00" y2="492.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="473.00" x2="1047.00" y2="473.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="454.00" x2="1047.00" y2="454.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="435.00" x2="1047.00" y2="435.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="416.00" x2="1047.00" y2="416.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="397.00" x2="1047.00" y2="397.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="378.00" x2="1047.00" y2="378.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="359.00" x2="1047.00" y2="359.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1031.00" y1="340.00" x2="1047.00" y2="340.00" stroke="#081F5C" stroke-width="1.3" class="hair" />
+<line x1="1039.00" y1="549.00" x2="1039.00" y2="325.41" stroke="#081F5C" stroke-width="1.1" class="hair" />
+<circle cx="1039.00" cy="325.41" r="6.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ><title>4B, coverage 0.65, speedup_vs_full_rsm=1.1177x</title></circle>
+<text x="1039.00" y="312.41" font-size="10" font-weight="800" fill="#081F5C" text-anchor="middle" class="label">1.118×</text>
+<text x="1025.00" y="654.00" font-size="11" font-weight="800" fill="#081F5C" text-anchor="middle" >q65</text>
+<text x="1025.00" y="673.00" font-size="10" font-weight="600" fill="#526187" text-anchor="middle" >1.30 blk</text>
+<circle cx="700.00" cy="690.00" r="5.50" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ></circle>
+<text x="713.00" y="694.00" font-size="10" font-weight="700" fill="#526187" text-anchor="start" >vs Base (95% CI)</text>
+<circle cx="865.00" cy="690.00" r="5.50" fill="#F7F2EB" stroke="#081F5C" stroke-width="2" class="datum" ></circle>
+<text x="878.00" y="694.00" font-size="10" font-weight="700" fill="#526187" text-anchor="start" >vs Full RSM</text>
+<text x="1120.00" y="694.00" font-size="10" font-weight="700" fill="#9AA6C1" text-anchor="end" >1 rung = 0.01×</text>
+<text x="48.00" y="720.00" font-size="9" font-weight="650" fill="#526187" text-anchor="start" >2B q10 uses the Amendment 015 quiescent rerun; the original concurrent-run estimate remains in the audit table.</text>
+<text x="48.00" y="750.00" font-size="11" font-weight="700" fill="#9AA6C1" text-anchor="start" letter-spacing="1.2">PAIRED RUNGS · PORCELAIN · END-TO-END FIXED-64 BENCHMARK</text>
+</svg>

@@ -1,0 +1,42 @@
+{
+  "experiment_id": "attnres_rsm_vla_transfer_fix_20260903",
+  "status": "locked_before_training",
+  "primary_question": "Can an identity-safe, jointly adapted RSM preserve or improve full-path AttnRes VLA accuracy before token-level ReSkip is enabled?",
+  "method": {
+    "base_vlm": "Qwen3-VL-Instruct",
+    "scales": ["2B", "4B"],
+    "initialization": "trained VLM AttnRes router and adapters plus zero-initialized token-conditioned RSM gates",
+    "rsm_gate_factor": "1 + 0.5 * tanh(g(x))",
+    "initial_gate_factor": 1.0,
+    "gamma_ramp_steps": 9000,
+    "gamma_target": 1.0,
+    "attnres_adapter_learning_rate": 0.0001,
+    "training_steps": 30000,
+    "training_seed": 42,
+    "skipping_during_training": false,
+    "skip_supervision": false,
+    "second_stage_skip_training": false
+  },
+  "fixed_controls": {
+    "dataset": "libero_all at /data/Minko/datasets/starvla_libero_lerobot_20260902",
+    "per_device_batch_size": 8,
+    "num_processes": 2,
+    "gradient_accumulation_steps": 2,
+    "effective_global_batch_size": 32,
+    "frozen_module": "qwen_vl_interface.model.model.visual",
+    "precision": "same StarVLA formal training configuration as the 20260902 Base and AttnRes controls"
+  },
+  "evaluation": {
+    "task_suites": ["libero_spatial", "libero_object", "libero_goal", "libero_10"],
+    "trials_per_task": 50,
+    "tasks_per_suite": 10,
+    "evaluation_seed": 7,
+    "full_path_first": true,
+    "token_level_reskip_only_after_full_path": true
+  },
+  "interpretation_guardrails": [
+    "The corrected full-path model must be compared with the frozen Base and original AttnRes controls before any skip claim.",
+    "Token-level ReSkip remains an inference-time consequence of native AttnRes/RSM signals and receives no separate training.",
+    "The superseded direct-transfer RSM run remains archived as negative-transfer evidence and is not pooled with corrected results."
+  ]
+}

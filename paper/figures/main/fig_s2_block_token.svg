@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="920" viewBox="0 0 1200 920" role="img" aria-labelledby="title desc">
+<title id="title">Block and token specialization</title>
+<desc id="desc">RSM specialization by block and token role, with causal single-block identity ablations.</desc>
+<style>
+text{font-family:Inter,Arial,sans-serif} .datum{transition:opacity .18s,transform .18s;transform-box:fill-box;transform-origin:center}.datum:hover{opacity:.72;transform:scale(1.035)}.hair{vector-effect:non-scaling-stroke}.label{paint-order:stroke;stroke:#F7F2EB;stroke-width:5px;stroke-linejoin:round}
+</style>
+<rect width="1200" height="920" rx="28" fill="#F7F2EB"/>
+<rect x="48.00" y="38.00" width="174.00" height="30.00" rx="15" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ></rect>
+<text x="135.00" y="59.00" font-size="12" font-weight="800" fill="#334EAC" text-anchor="middle" letter-spacing="1.6">MECHANISM</text>
+<text x="1152.00" y="58.00" font-size="12" font-weight="800" fill="#526187" text-anchor="end" letter-spacing="1.4">FIG. S2</text>
+<text x="48.00" y="112.00" font-size="31" font-weight="800" fill="#081F5C" text-anchor="start" >RSM separates both token roles and residual blocks</text>
+<text x="48.00" y="145.00" font-size="15" font-weight="500" fill="#526187" text-anchor="start" >Normalized native route specialization on 128 held-out examples; identity ablations use 32 paired requests per block.</text>
+<text x="60.00" y="206.00" font-size="15" font-weight="800" fill="#081F5C" text-anchor="start" letter-spacing="1.1">QWEN3-VL-2B</text>
+<text x="201.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B1</text>
+<text x="249.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B2</text>
+<text x="297.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B3</text>
+<text x="345.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B4</text>
+<text x="393.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B5</text>
+<text x="441.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B6</text>
+<text x="168.00" y="276.00" font-size="9" font-weight="750" fill="#526187" text-anchor="end" >VISUAL PREFIX</text>
+<rect x="180.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 1, visual_prefix: specialization=0.7190</title></rect>
+<text x="201.50" y="277.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.72</text>
+<rect x="228.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 2, visual_prefix: specialization=0.5604</title></rect>
+<text x="249.50" y="277.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.56</text>
+<rect x="276.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 3, visual_prefix: specialization=0.0619</title></rect>
+<text x="297.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.06</text>
+<rect x="324.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 4, visual_prefix: specialization=0.0324</title></rect>
+<text x="345.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.03</text>
+<rect x="372.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 5, visual_prefix: specialization=0.0356</title></rect>
+<text x="393.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="420.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 6, visual_prefix: specialization=0.0355</title></rect>
+<text x="441.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<text x="168.00" y="335.00" font-size="9" font-weight="750" fill="#526187" text-anchor="end" >TEXT PROMPT</text>
+<rect x="180.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 1, text_prompt: specialization=0.5421</title></rect>
+<text x="201.50" y="336.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.54</text>
+<rect x="228.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 2, text_prompt: specialization=0.5382</title></rect>
+<text x="249.50" y="336.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.54</text>
+<rect x="276.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 3, text_prompt: specialization=0.0763</title></rect>
+<text x="297.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.08</text>
+<rect x="324.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 4, text_prompt: specialization=0.0483</title></rect>
+<text x="345.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.05</text>
+<rect x="372.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 5, text_prompt: specialization=0.0577</title></rect>
+<text x="393.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.06</text>
+<rect x="420.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 6, text_prompt: specialization=0.0594</title></rect>
+<text x="441.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.06</text>
+<text x="168.00" y="394.00" font-size="9" font-weight="750" fill="#526187" text-anchor="end" >ASSISTANT RESPONSE</text>
+<rect x="180.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 1, assistant_response: specialization=0.4979</title></rect>
+<text x="201.50" y="395.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.50</text>
+<rect x="228.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 2, assistant_response: specialization=0.5007</title></rect>
+<text x="249.50" y="395.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.50</text>
+<rect x="276.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 3, assistant_response: specialization=0.0578</title></rect>
+<text x="297.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.06</text>
+<rect x="324.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 4, assistant_response: specialization=0.0358</title></rect>
+<text x="345.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="372.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 5, assistant_response: specialization=0.0436</title></rect>
+<text x="393.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="420.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-2B, block 6, assistant_response: specialization=0.0507</title></rect>
+<text x="441.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.05</text>
+<text x="610.00" y="206.00" font-size="15" font-weight="800" fill="#081F5C" text-anchor="start" letter-spacing="1.1">QWEN3-VL-4B</text>
+<text x="751.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B1</text>
+<text x="799.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B2</text>
+<text x="847.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B3</text>
+<text x="895.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B4</text>
+<text x="943.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B5</text>
+<text x="991.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B6</text>
+<text x="1039.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B7</text>
+<text x="1087.50" y="230.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" >B8</text>
+<text x="718.00" y="276.00" font-size="9" font-weight="750" fill="#526187" text-anchor="end" >VISUAL PREFIX</text>
+<rect x="730.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#7096D1" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 1, visual_prefix: specialization=0.4278</title></rect>
+<text x="751.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.43</text>
+<rect x="778.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 2, visual_prefix: specialization=0.4801</title></rect>
+<text x="799.50" y="277.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.48</text>
+<rect x="826.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 3, visual_prefix: specialization=0.6195</title></rect>
+<text x="847.50" y="277.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.62</text>
+<rect x="874.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 4, visual_prefix: specialization=0.5896</title></rect>
+<text x="895.50" y="277.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.59</text>
+<rect x="922.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 5, visual_prefix: specialization=0.0383</title></rect>
+<text x="943.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="970.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 6, visual_prefix: specialization=0.0439</title></rect>
+<text x="991.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="1018.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 7, visual_prefix: specialization=0.0378</title></rect>
+<text x="1039.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="1066.00" y="245.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 8, visual_prefix: specialization=0.0246</title></rect>
+<text x="1087.50" y="277.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.02</text>
+<text x="718.00" y="335.00" font-size="9" font-weight="750" fill="#526187" text-anchor="end" >TEXT PROMPT</text>
+<rect x="730.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 1, text_prompt: specialization=0.5278</title></rect>
+<text x="751.50" y="336.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.53</text>
+<rect x="778.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 2, text_prompt: specialization=0.5252</title></rect>
+<text x="799.50" y="336.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.53</text>
+<rect x="826.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 3, text_prompt: specialization=0.6110</title></rect>
+<text x="847.50" y="336.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.61</text>
+<rect x="874.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 4, text_prompt: specialization=0.5798</title></rect>
+<text x="895.50" y="336.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.58</text>
+<rect x="922.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 5, text_prompt: specialization=0.0445</title></rect>
+<text x="943.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="970.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 6, text_prompt: specialization=0.0674</title></rect>
+<text x="991.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.07</text>
+<rect x="1018.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 7, text_prompt: specialization=0.0612</title></rect>
+<text x="1039.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.06</text>
+<rect x="1066.00" y="304.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 8, text_prompt: specialization=0.0398</title></rect>
+<text x="1087.50" y="336.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<text x="718.00" y="394.00" font-size="9" font-weight="750" fill="#526187" text-anchor="end" >ASSISTANT RESPONSE</text>
+<rect x="730.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 1, assistant_response: specialization=0.4890</title></rect>
+<text x="751.50" y="395.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.49</text>
+<rect x="778.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 2, assistant_response: specialization=0.5013</title></rect>
+<text x="799.50" y="395.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.50</text>
+<rect x="826.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 3, assistant_response: specialization=0.5814</title></rect>
+<text x="847.50" y="395.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.58</text>
+<rect x="874.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 4, assistant_response: specialization=0.5578</title></rect>
+<text x="895.50" y="395.00" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle" >0.56</text>
+<rect x="922.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 5, assistant_response: specialization=0.0354</title></rect>
+<text x="943.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<rect x="970.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 6, assistant_response: specialization=0.0582</title></rect>
+<text x="991.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.06</text>
+<rect x="1018.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 7, assistant_response: specialization=0.0568</title></rect>
+<text x="1039.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.06</text>
+<rect x="1066.00" y="363.00" width="43.00" height="54.00" rx="9" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ><title>Qwen3-VL-4B, block 8, assistant_response: specialization=0.0377</title></rect>
+<text x="1087.50" y="395.00" font-size="12" font-weight="800" fill="#081F5C" text-anchor="middle" >0.04</text>
+<text x="95.00" y="462.00" font-size="10" font-weight="750" fill="#526187" text-anchor="start" >LOW SPECIALIZATION</text>
+<rect x="227.00" y="448.00" width="28.00" height="18.00" rx="4" fill="#D0E3FF" stroke="none" stroke-width="0" class="datum" ></rect>
+<rect x="261.00" y="448.00" width="28.00" height="18.00" rx="4" fill="#BAD6EB" stroke="none" stroke-width="0" class="datum" ></rect>
+<rect x="295.00" y="448.00" width="28.00" height="18.00" rx="4" fill="#7096D1" stroke="none" stroke-width="0" class="datum" ></rect>
+<rect x="329.00" y="448.00" width="28.00" height="18.00" rx="4" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ></rect>
+<rect x="363.00" y="448.00" width="28.00" height="18.00" rx="4" fill="#081F5C" stroke="none" stroke-width="0" class="datum" ></rect>
+<text x="405.00" y="462.00" font-size="10" font-weight="750" fill="#526187" text-anchor="start" >HIGH</text>
+<line x1="110.00" y1="820.00" x2="1090.00" y2="820.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="96.00" y="824.00" font-size="11" font-weight="600" fill="#526187" text-anchor="end" >0.000</text>
+<line x1="110.00" y1="755.00" x2="1090.00" y2="755.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="96.00" y="759.00" font-size="11" font-weight="600" fill="#526187" text-anchor="end" >0.002</text>
+<line x1="110.00" y1="690.00" x2="1090.00" y2="690.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="96.00" y="694.00" font-size="11" font-weight="600" fill="#526187" text-anchor="end" >0.003</text>
+<line x1="110.00" y1="625.00" x2="1090.00" y2="625.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="96.00" y="629.00" font-size="11" font-weight="600" fill="#526187" text-anchor="end" >0.005</text>
+<line x1="110.00" y1="560.00" x2="1090.00" y2="560.00" stroke="#CFD9EA" stroke-width="1" class="hair" />
+<text x="96.00" y="564.00" font-size="11" font-weight="600" fill="#526187" text-anchor="end" >0.006</text>
+<line x1="110.00" y1="820.00" x2="110.00" y2="827.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="110.00" y="847.00" font-size="11" font-weight="600" fill="#526187" text-anchor="middle" >0.394</text>
+<line x1="355.00" y1="820.00" x2="355.00" y2="827.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="355.00" y="847.00" font-size="11" font-weight="600" fill="#526187" text-anchor="middle" >0.416</text>
+<line x1="600.00" y1="820.00" x2="600.00" y2="827.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="600.00" y="847.00" font-size="11" font-weight="600" fill="#526187" text-anchor="middle" >0.438</text>
+<line x1="845.00" y1="820.00" x2="845.00" y2="827.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="845.00" y="847.00" font-size="11" font-weight="600" fill="#526187" text-anchor="middle" >0.460</text>
+<line x1="1090.00" y1="820.00" x2="1090.00" y2="827.00" stroke="#9AA6C1" stroke-width="1" class="hair" />
+<text x="1090.00" y="847.00" font-size="11" font-weight="600" fill="#526187" text-anchor="middle" >0.482</text>
+<line x1="110.00" y1="820.00" x2="1090.00" y2="820.00" stroke="#9AA6C1" stroke-width="1.2" class="hair" />
+<text x="110.00" y="535.00" font-size="12" font-weight="800" fill="#526187" text-anchor="start" letter-spacing="1.2">FUNCTIONAL TEST · SINGLE-BLOCK IDENTITY ABLATION</text>
+<circle cx="990.22" cy="742.17" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B B1: response |g−1|=0.4729, identity KL=0.00184</title></circle>
+<text x="1000.22" y="734.17" font-size="9" font-weight="750" fill="#334EAC" text-anchor="start" class="label">2B·B1</text>
+<circle cx="1090.00" cy="593.91" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B B2: response |g−1|=0.4819, identity KL=0.00534</title></circle>
+<text x="1100.00" y="585.91" font-size="9" font-weight="750" fill="#334EAC" text-anchor="start" class="label">2B·B2</text>
+<circle cx="550.15" cy="734.13" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B B3: response |g−1|=0.4334, identity KL=0.00203</title></circle>
+<text x="560.15" y="726.13" font-size="9" font-weight="750" fill="#334EAC" text-anchor="start" class="label">2B·B3</text>
+<circle cx="343.11" cy="689.02" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B B4: response |g−1|=0.4148, identity KL=0.00309</title></circle>
+<text x="353.11" y="681.02" font-size="9" font-weight="750" fill="#334EAC" text-anchor="start" class="label">2B·B4</text>
+<circle cx="769.32" cy="658.97" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B B5: response |g−1|=0.4531, identity KL=0.00380</title></circle>
+<text x="779.32" y="650.97" font-size="9" font-weight="750" fill="#334EAC" text-anchor="start" class="label">2B·B5</text>
+<circle cx="541.84" cy="711.41" r="7.00" fill="#334EAC" stroke="none" stroke-width="0" class="datum" ><title>2B B6: response |g−1|=0.4326, identity KL=0.00256</title></circle>
+<text x="551.84" y="703.41" font-size="9" font-weight="750" fill="#334EAC" text-anchor="start" class="label">2B·B6</text>
+<circle cx="974.99" cy="759.32" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B1: response |g−1|=0.4715, identity KL=0.00143</title></circle>
+<text x="984.99" y="751.32" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B1</text>
+<circle cx="628.10" cy="741.64" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B2: response |g−1|=0.4404, identity KL=0.00185</title></circle>
+<text x="638.10" y="733.64" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B2</text>
+<circle cx="702.11" cy="742.95" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B3: response |g−1|=0.4470, identity KL=0.00182</title></circle>
+<text x="712.11" y="734.95" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B3</text>
+<circle cx="1055.37" cy="628.83" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B4: response |g−1|=0.4788, identity KL=0.00451</title></circle>
+<text x="1065.37" y="620.83" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B4</text>
+<circle cx="1006.61" cy="668.22" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B5: response |g−1|=0.4744, identity KL=0.00358</title></circle>
+<text x="1016.61" y="660.22" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B5</text>
+<circle cx="634.42" cy="729.44" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B6: response |g−1|=0.4409, identity KL=0.00214</title></circle>
+<text x="644.42" y="721.44" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B6</text>
+<circle cx="110.00" cy="759.90" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B7: response |g−1|=0.3938, identity KL=0.00142</title></circle>
+<text x="120.00" y="751.90" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B7</text>
+<circle cx="853.28" cy="687.74" r="7.00" fill="#F7F2EB" stroke="#081F5C" stroke-width="2.5" class="datum" ><title>4B B8: response |g−1|=0.4606, identity KL=0.00312</title></circle>
+<text x="863.28" y="679.74" font-size="9" font-weight="750" fill="#081F5C" text-anchor="start" class="label">4B·B8</text>
+<text x="600.00" y="885.00" font-size="12" font-weight="700" fill="#526187" text-anchor="middle" >Assistant-token mean |residual strength − identity|</text>
+<text x="30.00" y="690.00" font-size="11" font-weight="800" fill="#526187" text-anchor="middle" transform="rotate(-90 30 690.0)" letter-spacing="1">LEARNED → IDENTITY KL ↑</text>
+<text x="1090.00" y="525.00" font-size="12" font-weight="750" fill="#526187" text-anchor="end" >Spearman ρ: 2B 0.20 · 4B 0.67</text>
+<text x="48.00" y="898.00" font-size="11" font-weight="700" fill="#9AA6C1" text-anchor="start" letter-spacing="1.2">MATRIX HEAT + PLUMB SCATTER · PORCELAIN · PAIRED HELD-OUT ANALYSIS</text>
+</svg>

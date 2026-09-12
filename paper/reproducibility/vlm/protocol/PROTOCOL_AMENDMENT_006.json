@@ -1,0 +1,91 @@
+{
+  "amendment": 6,
+  "status": "frozen before any lr1e-3 training launch",
+  "date": "2026-09-01",
+  "purpose": "Test whether the weak SmolVLM2 and InternVL3.5 transfer results come from carrying a low learning rate from the obsolete skip-KL recipe into the new Full-path-only objective.",
+  "evidence_before_freeze": {
+    "smol_full_attnres_minus_base_pp": -0.06575536013360028,
+    "smol_rsm_minus_full_attnres_pp": 0.20249024411906902,
+    "internvl_full_attnres_minus_base_pp": 0.031133744430120957,
+    "internvl_rsm_minus_full_attnres_pp": -0.1755418988646511,
+    "generic_learning_rate": 0.0002,
+    "qwen_learning_rate": 0.001,
+    "diagnosis": "The matched Full AttnRes controls themselves are nearly neutral, while generic RSM parameter magnitudes are much smaller than in successful Qwen runs. Learning-rate transfer is therefore tested before changing the RSM equation or adding capacity."
+  },
+  "matrix": [
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "learning_rate": 0.001,
+      "gpu": 0
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "learning_rate": 0.001,
+      "gpu": 1
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "learning_rate": 0.001,
+      "gpu": 2
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "learning_rate": 0.001,
+      "gpu": 3
+    }
+  ],
+  "fixed_recipe": {
+    "fresh_pretrained_base_per_run": true,
+    "steps": 5000,
+    "data_mix": "v3",
+    "max_sequence_length": 1536,
+    "warmup_steps": 100,
+    "full_path_teacher_kl_weight": 1.0,
+    "route_entropy_weight": 0.02,
+    "gamma_ramp_fraction": 0.3,
+    "gate_scale": 0.5,
+    "skip_branch_during_training": false,
+    "skip_labels": false,
+    "compute_target": false,
+    "second_stage_training": false,
+    "warm_start": false
+  },
+  "evaluation": {
+    "tasks": [
+      "AI2D",
+      "MMBench",
+      "MMMU",
+      "MMStar",
+      "OCRBench",
+      "RealWorldQA"
+    ],
+    "metric": "unweighted six-task macro average",
+    "report_all_four_cells": true
+  },
+  "continuation_gate": {
+    "replicate_seeds_1_and_2_if": [
+      "RSM is above the corresponding lr1e-3 Full AttnRes control",
+      "RSM remains above Frozen Base",
+      "RSM improves at least 0.15 percentage points over the corresponding lr1e-3 Full AttnRes control"
+    ],
+    "failure_policy": "Retain the result and diagnose one mechanism change; do not continue the current checkpoint or add an unbounded hyperparameter sweep."
+  },
+  "material_passport": {
+    "models": [
+      "/data/Minko/models/SmolVLM2-2.2B-Instruct",
+      "/data/Minko/models/InternVL3_5-2B-HF"
+    ],
+    "training_data": "/data/Minko/datasets, v3 stream",
+    "evaluation_data": "local lmms-eval caches for the six formal VLM tasks",
+    "hardware": "node42 GPUs 0-3",
+    "software": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code"
+  }
+}

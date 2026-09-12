@@ -1,0 +1,50 @@
+{
+  "experiment": "reskip_llm_benchmark_20260911",
+  "objective": "Measure zero-shot text quality for matched Qwen3-VL Base, Full AttnRes, and Full RSM-AttnRes checkpoints at 2B and 4B scale.",
+  "frozen_before_launch": true,
+  "software": {
+    "lm_eval": "0.4.12",
+    "transformers": "4.57.6",
+    "torch": "2.6.0+cu124"
+  },
+  "tasks": [
+    "lambada_openai",
+    "hellaswag",
+    "piqa",
+    "arc_easy",
+    "arc_challenge",
+    "openbookqa",
+    "winogrande"
+  ],
+  "protocol": {
+    "num_fewshot": 0,
+    "apply_chat_template": false,
+    "limit": null,
+    "dtype": "bfloat16",
+    "batch_size": 8,
+    "seed": 1234,
+    "automatic_retry": false
+  },
+  "headline_metrics": {
+    "lambada_openai": "acc,none",
+    "hellaswag": "acc_norm,none",
+    "piqa": "acc_norm,none",
+    "arc_easy": "acc_norm,none",
+    "arc_challenge": "acc_norm,none",
+    "openbookqa": "acc_norm,none",
+    "winogrande": "acc,none"
+  },
+  "rows": [
+    "qwen3vl_2b_base",
+    "qwen3vl_2b_full_attnres_seed0",
+    "qwen3vl_2b_full_rsm_seed0",
+    "qwen3vl_4b_base",
+    "qwen3vl_4b_full_attnres_seed2",
+    "qwen3vl_4b_full_rsm_seed2"
+  ],
+  "excluded": {
+    "rsm_reskip": "The frozen safe policy is decode_only, while stock lm-eval loglikelihood uses full-sequence forwards without cached one-token decoding. Including it would not exercise ReSkip.",
+    "gsm8k": "Generative accuracy would introduce answer-extraction and chat-template choices into an otherwise deterministic loglikelihood panel.",
+    "mmlu": "Omitted from the compact panel to avoid a 57-subject five-shot aggregate and keep every selected column under one zero-shot protocol."
+  }
+}

@@ -1,0 +1,61 @@
+datasets:
+  vla_data:
+    CoT_prompt: Your task is {instruction}. To identify the key objects for your task.
+      Locate their bounding boxes in [x1,y1,x2,y2] format.
+    data_mix: libero_all
+    data_root_dir: /data/Minko/datasets/starvla_libero_lerobot_20260902
+    dataset_py: lerobot_datasets
+    per_device_batch_size: 8
+    sequential_step_sampling: false
+    video_backend: torchvision_av
+framework:
+  action_model:
+    action_dim: 7
+    action_hidden_dim: 2048
+    action_model_type: L1Regression
+    future_action_window_size: 7
+    past_action_window_size: 0
+  attnres:
+    adapter_rank: 256
+    enabled: true
+    gamma_ramp_steps: 9000
+    gamma_target: 1.0
+    init_state_path: /data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/init/qwen3vl_2b_attnres_plus_identity_rsm.pt
+    n_blocks: 7
+    residual_strength_gate: true
+    residual_strength_gate_scale: 0.5
+    temperature: 1.0
+  name: QwenOFT
+  qwenvl:
+    attn_implementation: flash_attention_2
+    base_vlm: /data/Minko/models/Qwen3-VL-2B-Instruct
+output_dir: /data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train/2b_rsm_v2_identity_transfer_seed42_30000steps
+run_id: 2b_rsm_v2_identity_transfer_seed42_30000steps
+run_root_dir: /data/Minko/experiments/attnres_rsm_vla_transfer_fix_20260903/train
+seed: 42
+trainer:
+  eval_interval: 1000000
+  freeze_modules: qwen_vl_interface.model.model.visual
+  gradient_accumulation_steps: 2
+  gradient_clipping: 1.0
+  is_resume: false
+  learning_rate:
+    action_model: 0.0001
+    attnres_adapter: 0.0001
+    base: 2.5e-05
+    qwen_vl_interface: 1.0e-05
+  logging_frequency: 10
+  lr_scheduler_type: cosine_with_min_lr
+  max_train_steps: 30000
+  num_warmup_steps: 5000
+  optimizer:
+    betas:
+    - 0.9
+    - 0.95
+    eps: 1.0e-08
+    weight_decay: 1.0e-08
+  save_interval: 5000
+  scheduler_specific_kwargs:
+    min_lr: 1.0e-06
+wandb_entity: reskip
+wandb_project: AttnRes_RSM_LIBERO_TransferFix

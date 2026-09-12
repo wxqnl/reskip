@@ -1,0 +1,84 @@
+{
+  "amendment": 10,
+  "status": "frozen before any Granite Vision benchmark result or AttnRes adaptation launch",
+  "date": "2026-09-01",
+  "purpose": "Replace the stopped InternVL refinement with one architecture-transfer test on a genuinely different Granite decoder, using one fixed recipe and a seed-0 promotion gate.",
+  "model_selection": {
+    "model": "ibm-granite/granite-vision-3.3-2b",
+    "local_path": "/data/Minko/models/granite-vision-3.3-2b",
+    "reason": "Apache-2.0 standard llava_next checkpoint with a 40-layer Granite text decoder; it is neither Qwen nor Llama and is directly supported by the architecture-light decoder hook.",
+    "download_endpoint": "https://hf-mirror.com",
+    "model_size_on_hub": "5.96 GB"
+  },
+  "seed0_matrix": [
+    {
+      "system": "Frozen Base",
+      "seed": null,
+      "gpu": 6
+    },
+    {
+      "system": "Full AttnRes",
+      "seed": 0,
+      "gpu": 2
+    },
+    {
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "gpu": 3,
+      "schedule": "starts after the final bounded InternVL evaluation exits"
+    }
+  ],
+  "fixed_recipe": {
+    "fresh_pretrained_base_per_run": true,
+    "num_decoder_layers": 40,
+    "num_blocks": 10,
+    "layers_per_block": 4,
+    "adapter_rank": 180,
+    "learning_rate": 0.001,
+    "steps": 5000,
+    "data_mix": "v3",
+    "max_sequence_length": 1536,
+    "warmup_steps": 100,
+    "full_path_teacher_kl_weight": 1.0,
+    "route_entropy_weight": 0.0,
+    "gamma_ramp_fraction": 0.3,
+    "gate_scale": 0.5,
+    "skip_branch_during_training": false,
+    "skip_labels": false,
+    "compute_target": false,
+    "second_stage_training": false,
+    "warm_start": false
+  },
+  "evaluation": {
+    "tasks": [
+      "AI2D",
+      "MMBench",
+      "MMMU",
+      "MMStar",
+      "OCRBench",
+      "RealWorldQA"
+    ],
+    "metric": "unweighted six-task macro average",
+    "report_all_cells": true
+  },
+  "promotion_gate": {
+    "run_seeds_1_and_2_only_if": [
+      "seed-0 RSM exceeds seed-0 matched Full AttnRes by at least 0.15 percentage points",
+      "seed-0 RSM exceeds Frozen Base"
+    ],
+    "three_seed_acceptance": [
+      "mean paired RSM-minus-Full gain is at least 0.15 percentage points",
+      "mean RSM macro exceeds Frozen Base",
+      "at least two of three paired seed deltas are positive"
+    ],
+    "failure_policy": "Report Granite as a failed architecture-transfer test and stop replacing models; do not search another Granite recipe."
+  },
+  "material_passport": {
+    "model_source": "https://huggingface.co/ibm-granite/granite-vision-3.3-2b",
+    "model_local_path": "/data/Minko/models/granite-vision-3.3-2b",
+    "training_data": "/data/Minko/datasets, v3 stream",
+    "evaluation_data": "local lmms-eval caches for the six formal VLM tasks",
+    "hardware": "node42 GPUs 2, 3, and 6 for seed-0; GPU 7 excluded",
+    "software": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "amendment": 11,
+  "status": "frozen before any Granite Vision 4.1 benchmark result, weight download completion, or AttnRes adaptation launch",
+  "date": "2026-09-01",
+  "purpose": "Replace the stopped Granite Vision 3.3 preflight with one current-generation architecture-transfer test. The replacement preserves native dynamic-resolution processing and uses one fixed recipe with a seed-0 promotion gate.",
+  "model_selection": {
+    "model": "ibm-granite/granite-vision-4.1-4b",
+    "local_path": "/data/Minko/models/granite-vision-4.1-4b",
+    "release_generation": "2026 current-generation Granite Vision 4.1",
+    "reason": "Current Apache-2.0 IBM VLM with a 40-layer Granite text decoder, a model-native dynamic-resolution processor, and an architecture distinct from the Qwen primary models.",
+    "download_endpoint": "https://hf-mirror.com",
+    "trust_remote_code": true,
+    "fix_mistral_regex": true,
+    "excluded_old_models": [
+      "Phi-3-based VLMs",
+      "BakLLaVA"
+    ]
+  },
+  "preflight_evidence_before_freeze": {
+    "benchmark_scores_observed": false,
+    "weights_complete": false,
+    "processor": "unmodified Granite Vision 4.1 native dynamic-resolution processor",
+    "first_16_v3_sample_sequence_lengths": [
+      1797,
+      1882,
+      1414,
+      1988,
+      1475,
+      1845,
+      1601,
+      1823,
+      1544,
+      564,
+      490,
+      807,
+      1053,
+      1419,
+      926,
+      802
+    ],
+    "first_16_native_image_tile_counts_range": [
+      4,
+      11
+    ],
+    "samples_with_sequence_length_at_most_2048": "16/16",
+    "sequence_policy": "Use max_sequence_length=2048 without changing image_grid_pinpoints, tile selection, or processor output. Reject overlength examples in the same deterministic stream policy used by the existing trainer.",
+    "stopped_granite_3p3_preflight": "Granite Vision 3.3 commonly produced 6k-plus native sequences under the frozen 1536-token setup; it was stopped before a benchmark result or checkpoint rather than simplified to one tile."
+  },
+  "seed0_matrix": [
+    {
+      "system": "Frozen Base",
+      "seed": null,
+      "gpu": 6
+    },
+    {
+      "system": "Full AttnRes",
+      "seed": 0,
+      "gpu": 2
+    },
+    {
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "gpu": 3
+    }
+  ],
+  "fixed_recipe": {
+    "fresh_pretrained_base_per_run": true,
+    "num_decoder_layers": 40,
+    "num_blocks": 10,
+    "layers_per_block": 4,
+    "hidden_size": 2560,
+    "adapter_rank": 144,
+    "adapter_parameter_budget_rationale": "Ten rank-144 adapters contain 7,372,800 weights, matching the 7,372,800 adapter weights used by the six-block rank-300 SmolVLM2 experiment.",
+    "learning_rate": 0.001,
+    "steps": 5000,
+    "data_mix": "v3",
+    "max_sequence_length": 2048,
+    "warmup_steps": 100,
+    "full_path_teacher_kl_weight": 1.0,
+    "route_entropy_weight": 0.0,
+    "gamma_ramp_fraction": 0.3,
+    "gate_scale": 0.5,
+    "skip_branch_during_training": false,
+    "skip_labels": false,
+    "compute_target": false,
+    "second_stage_training": false,
+    "warm_start": false
+  },
+  "evaluation": {
+    "tasks": [
+      "AI2D",
+      "MMBench",
+      "MMMU",
+      "MMStar",
+      "OCRBench",
+      "RealWorldQA"
+    ],
+    "metric": "unweighted six-task macro average",
+    "processor_policy": "same native processor, trust_remote_code=true, and fix_mistral_regex=true for Base, Full AttnRes, and Full RSM-AttnRes",
+    "report_all_cells": true
+  },
+  "promotion_gate": {
+    "run_seeds_1_and_2_only_if": [
+      "seed-0 RSM exceeds seed-0 matched Full AttnRes by at least 0.15 percentage points",
+      "seed-0 RSM exceeds Frozen Base"
+    ],
+    "three_seed_acceptance": [
+      "mean paired RSM-minus-Full gain is at least 0.15 percentage points",
+      "mean RSM macro exceeds Frozen Base",
+      "at least two of three paired seed deltas are positive"
+    ],
+    "failure_policy": "Report Granite Vision 4.1 as a failed current-model transfer and stop recipe/model search for this extension."
+  },
+  "material_passport": {
+    "model_source": "https://huggingface.co/ibm-granite/granite-vision-4.1-4b",
+    "model_local_path": "/data/Minko/models/granite-vision-4.1-4b",
+    "training_data": "/data/Minko/datasets, v3 stream",
+    "evaluation_data": "local lmms-eval caches for the six formal VLM tasks",
+    "hardware": "node42 GPUs 2, 3, and 6 for seed-0; GPU 7 excluded",
+    "software": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code"
+  }
+}

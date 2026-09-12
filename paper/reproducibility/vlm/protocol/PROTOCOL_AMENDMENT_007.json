@@ -1,0 +1,84 @@
+{
+  "amendment": 7,
+  "status": "frozen before any no-entropy training launch and before any lr1e-3 benchmark result",
+  "date": "2026-09-01",
+  "purpose": "Test whether the generic AttnRes maximum-entropy reward prevents source and block specialization.",
+  "mechanism_evidence_before_freeze": {
+    "smol_observed_route_entropy": 1.0937,
+    "smol_uniform_route_entropy_ceiling": 1.0965,
+    "internvl_observed_route_entropy": 1.2187,
+    "internvl_uniform_route_entropy_ceiling": 1.2187,
+    "online_lr1e3_check": "At step 250, InternVL route entropy remains 1.219 despite a larger learning rate; no benchmark result exists yet.",
+    "interpretation": "The negative entropy term is acting as an almost exact uniform-routing prior in the architecture-light wrapper, suppressing the block/source differentiation that AttnRes is intended to learn."
+  },
+  "change": {
+    "route_entropy_weight": 0.0,
+    "previous_route_entropy_weight": 0.02,
+    "parameters_added": 0,
+    "equation_changed": false,
+    "skip_objective_added": false,
+    "description": "Remove the uniform-routing reward and let the ordinary Full-path CE plus teacher KL determine source specialization."
+  },
+  "matrix": [
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "gpu": 4
+    },
+    {
+      "family": "SmolVLM2-2.2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "gpu": 5
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full AttnRes",
+      "seed": 0,
+      "gpu": 6
+    },
+    {
+      "family": "InternVL3.5-2B",
+      "system": "Full RSM-AttnRes",
+      "seed": 0,
+      "gpu": 6,
+      "schedule": "starts after the matched InternVL Full AttnRes cell exits"
+    }
+  ],
+  "fixed_recipe": {
+    "fresh_pretrained_base_per_run": true,
+    "learning_rate": 0.001,
+    "steps": 5000,
+    "data_mix": "v3",
+    "max_sequence_length": 1536,
+    "warmup_steps": 100,
+    "full_path_teacher_kl_weight": 1.0,
+    "gamma_ramp_fraction": 0.3,
+    "gate_scale": 0.5,
+    "skip_branch_during_training": false,
+    "skip_labels": false,
+    "compute_target": false,
+    "second_stage_training": false,
+    "warm_start": false
+  },
+  "selection_and_confirmation": {
+    "report_all_cells": true,
+    "candidate_must_exceed": [
+      "its matched no-entropy Full AttnRes control by at least 0.15 percentage points",
+      "Frozen Base",
+      "the corresponding entropy-regularized RSM cell"
+    ],
+    "confirmation": "A passing candidate must be rerun from the original pretrained model at seeds 1 and 2 before replacing the paper result."
+  },
+  "material_passport": {
+    "models": [
+      "/data/Minko/models/SmolVLM2-2.2B-Instruct",
+      "/data/Minko/models/InternVL3_5-2B-HF"
+    ],
+    "training_data": "/data/Minko/datasets, v3 stream",
+    "evaluation_data": "local lmms-eval caches for the six formal VLM tasks",
+    "hardware": "node42 GPUs 4-6",
+    "software": "/data/Minko/experiments/attnres_rsm_vlm_scale_generalization_20260831/code"
+  }
+}

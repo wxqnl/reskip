@@ -1,0 +1,33 @@
+{
+  "frozen_before_conservative_results": true,
+  "reason": "The aggressive 1.805 block-equivalent policy failed on the complete six-task distribution, predominantly on OCRBench, after a misleading first-256 screen.",
+  "unchanged": [
+    "trained checkpoint",
+    "w_recent thresholds",
+    "Block-1 residual-strength upper bound",
+    "token-level execution semantics"
+  ],
+  "single_contraction": {
+    "removed_blocks": [
+      4,
+      5
+    ],
+    "removed_action": "Block 1 layer offset 2",
+    "retained_actions": {
+      "1": [
+        1,
+        3
+      ],
+      "2": [
+        1
+      ],
+      "3": [
+        0,
+        1
+      ]
+    },
+    "basis": "The already-computed held-out forced-skip analysis ranked Blocks 4/5 and Block-1 offset 2 among the riskier actions. No task-specific threshold was fitted.",
+    "estimated_block_equivalents_per_decode_token": 0.9395
+  },
+  "evaluation": "one complete six-task run; no further policy change under this experiment id"
+}

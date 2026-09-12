@@ -1,0 +1,35 @@
+{
+  "experiment_id": "attnres_rsm_vla_transfer_fix_20260903",
+  "phase": "formal_fullpath_closed_loop_evaluation",
+  "locked_before_formal_rollout": true,
+  "checkpoint_selection": "final 30000-step checkpoint from each completed training cell",
+  "benchmark": "LIBERO",
+  "suites": [
+    "libero_spatial",
+    "libero_object",
+    "libero_goal",
+    "libero_10"
+  ],
+  "seed": 7,
+  "tasks_per_suite": 10,
+  "trials_per_task": 50,
+  "episodes_per_suite": 500,
+  "episodes_per_policy": 2000,
+  "inference": {
+    "skipping": false,
+    "compile_mode": "off",
+    "dtype": "bfloat16",
+    "action_chunk_length": 8,
+    "renderer": "OSMesa"
+  },
+  "policies": [
+    {"label": "2b_base", "gpu": 0, "port": 5800},
+    {"label": "2b_attnres", "gpu": 1, "port": 5801},
+    {"label": "2b_rsm_v2", "gpu": 2, "port": 5802},
+    {"label": "4b_base", "gpu": 3, "port": 5803},
+    {"label": "4b_attnres", "gpu": 4, "port": 5804},
+    {"label": "4b_rsm_v2", "gpu": 5, "port": 5805}
+  ],
+  "reporting_rule": "Only a suite log with an exit code of zero and exactly 500 completed episodes is admissible. Partial results are diagnostic and are not pooled.",
+  "reskip_note": "Token-level ReSkip calibration and formal evaluation start only after this full-path comparison; no full-path outcome is used to tune skip thresholds."
+}
